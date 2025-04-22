@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Đăng Nhập và Đăng Ký</title>
+
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+          background-color: #f5f5f5;
+          padding: 20px;
+        }
+
+        /* Demo buttons to open modals */
+        .demo-buttons {
+          display: flex;
+          gap: 20px;
+          margin-bottom: 30px;
+          justify-content: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+          display: flex;
+          position: fixed;
+          z-index: 999;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.6);
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal.show {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .modal-content {
+          background-color: white;
+          border-radius: 12px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          padding: 30px;
+          width: 100%;
+          max-width: 420px;
+          position: relative;
+          transform: translateY(20px);
+          opacity: 0;
+          transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .modal.show .modal-content {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        .modal-close {
+          position: absolute;
+          right: 20px;
+          top: 20px;
+          font-size: 24px;
+          font-weight: bold;
+          cursor: pointer;
+          color: #666;
+          transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+          color: #d4202c;
+        }
+
+        .modal h2 {
+          color: #333;
+          margin-bottom: 25px;
+          font-size: 24px;
+          text-align: center;
+          position: relative;
+          padding-bottom: 10px;
+        }
+
+        .modal h2::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 60px;
+          height: 3px;
+          background: linear-gradient(45deg, #d4202c, #c71f1f);
+        }
+
+        .form-group {
+          margin-bottom: 20px;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+          color: #444;
+        }
+
+        input {
+          width: 100%;
+          padding: 14px 16px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 16px;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+          outline: none;
+          border-color: #c71f1f;
+          box-shadow: 0 0 0 3px rgba(212, 32, 44, 0.2);
+        }
+
+        .btn {
+          display: inline-block;
+          padding: 14px 24px;
+          font-size: 16px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 600;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          border: none;
+          width: 100%;
+          text-align: center;
+        }
+
+        .btn-solid {
+          background: linear-gradient(45deg, #d4202c, #c71f1f);
+          color: white;
+          box-shadow: 0 4px 12px rgba(212, 32, 44, 0.3);
+        }
+
+        .btn-solid:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(212, 32, 44, 0.5);
+        }
+
+        .btn-outline {
+          background: transparent;
+          color: #c71f1f;
+          border: 2px solid #c71f1f;
+        }
+
+        .btn-outline:hover {
+          background: rgba(212, 32, 44, 0.1);
+        }
+
+        .form-footer {
+          text-align: center;
+          margin-top: 20px;
+          color: #666;
+          font-size: 15px;
+        }
+
+        .form-footer a {
+          color: #c71f1f;
+          text-decoration: none;
+          font-weight: 500;
+        }
+
+        .form-footer a:hover {
+          text-decoration: underline;
+        }
+
+        .password-container {
+          position: relative;
+        }
+
+        .toggle-password {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          color: #777;
+          font-size: 18px;
+        }
+
+        input, .btn {
+            padding: 12px;
+          }
+        
+    </style>
+</head>
+<body>
+    <!-- Demo buttons to show modals -->
+    <div class="demo-buttons">
+        <button onclick="showModal('login-modal')" class="btn btn-solid">Mở Modal Đăng Nhập</button>
+        <button onclick="showModal('register-modal')" class="btn btn-outline">Mở Modal Đăng Ký</button>
+    </div>
+
+    <!-- Đăng nhập Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('login-modal')">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" placeholder="Nhập địa chỉ email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">Mật khẩu:</label>
+                    <div class="password-container">
+                        <input type="password" id="login-password" placeholder="Nhập mật khẩu" required>
+                        <span class="toggle-password" onclick="togglePassword('login-password')">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="text-align: right;">
+                    <a href="#" style="color: #c71f1f; text-decoration: none; font-size: 14px;">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="btn btn-solid">Đăng nhập</button>
+
+                <div class="form-footer">
+                    Chưa có tài khoản? <a href="#" onclick="switchModal('login-modal', 'register-modal')">Đăng ký ngay</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Đăng ký Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('register-modal')">&times;</span>
+            <h2>Đăng ký</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Họ và tên:</label>
+                    <input type="text" id="register-name" placeholder="Nhập họ và tên" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" placeholder="Nhập địa chỉ email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-password">Mật khẩu:</label>
+                    <div class="password-container">
+                        <input type="password" id="register-password" placeholder="Tạo mật khẩu" required>
+                        <span class="toggle-password" onclick="togglePassword('register-password')">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-confirm-password">Xác nhận mật khẩu:</label>
+                    <div class="password-container">
+                        <input type="password" id="register-confirm-password" placeholder="Nhập lại mật khẩu" required>
+                        <span class="toggle-password" onclick="togglePassword('register-confirm-password')">👁️</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-solid">Đăng ký</button>
+
+                <div class="form-footer">
+                    Đã có tài khoản? <a href="#" onclick="switchModal('register-modal', 'login-modal')">Đăng nhập</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to show modal
+        function showModal(modalId) {
+          const modal = document.getElementById(modalId);
+          modal.classList.add('show');
+        }
+
+        // Function to close modal
+        function closeModal(modalId) {
+          const modal = document.getElementById(modalId);
+          modal.classList.remove('show');
+        }
+
+        // Function to switch between modals
+        function switchModal(closeModalId, openModalId) {
+          closeModal(closeModalId);
+          setTimeout(() => {
+            showModal(openModalId);
+          }, 300);
+        }
+
+        // Function to toggle password visibility
+        function togglePassword(inputId) {
+          const input = document.getElementById(inputId);
+          if (input.type === "password") {
+            input.type = "text";
+          } else {
+            input.type = "password";
+          }
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+          const modals = document.querySelectorAll('.modal');
+          modals.forEach(modal => {
+            if (event.target === modal) {
+              modal.classList.remove('show');
+            }
+          });
+        });
+
+        // Form submission (prevent default for demo)
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          alert('Đã đăng nhập thành công!');
+          closeModal('login-modal');
+        });
+
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const password = document.getElementById('register-password').value;
+          const confirmPassword = document.getElementById('register-confirm-password').value;
+
+          if (password !== confirmPassword) {
+            alert('Mật khẩu không khớp. Vui lòng kiểm tra lại!');
+            return;
+          }
+
+          alert('Đã đăng ký thành công!');
+          closeModal('register-modal');
+        });
+    </script>
+</body>
+</html>
