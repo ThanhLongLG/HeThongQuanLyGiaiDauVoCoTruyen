@@ -1,0 +1,444 @@
+﻿@model List<BaoCaoDACS.Models.Match>
+@{
+    ViewData["Title"] = "Lịch Thi Đấu";
+    var now = DateTime.Now;
+    var winRateMap = ViewData["WinRateMap"] as Dictionary<string, float>;
+}
+
+<div class="container my-4">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white py-3">
+            <h3 class="mb-0">
+                <i class="fas fa-calendar-alt me-2"></i>Lịch Thi Đấu
+            </h3>
+        </div>
+
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted py-4">
+                    Không có lịch thi đấu nào được tìm thấy.
+                </div>
+            }
+            else
+            {
+                <div class="matches-grid" id="matches-grid">
+                    @foreach (var match in Model)
+                    {
+                        // Lấy 2 võ sinh đầu tiên
+                        var scores = match.Socre
+                        .OrderBy(s => s.ParticipantId)
+                        .ToList();
+
+                        var p1 = scores.Count > 0 ? scores[0].participant : null;
+                        var p2 = scores.Count > 1 ? scores[1].participant : null;
+
+
+                        string nguoi1 = p1?.FullName ?? "Đang cập nhật";
+                        string club1 = p1?.Club ?? "";
+
+                        string nguoi2 = p2?.FullName ?? "Đang cập nhật";
+                        string club2 = p2?.Club ?? "";
+
+                        float? winA = null;
+                        if (winRateMap != null && winRateMap.TryGetValue(match.MatchId, out var w))
+                        {
+                            winA = w; // giả sử w là %
+                        }
+                        var winB = winA.HasValue ? 100f - winA.Value : (float?)null;
+
+
+
+                        // Thời gian thi đấu
+                        var startTime = match.Date;
+                        var endTime = match.Date.AddMinutes(30);
+
+                        // Trạng thái (tùy bạn map lại theo trangthai)
+                        string statusText;
+                        string statusClass;
+
+                        if (match.trangthai == 2) // ví dụ: 2 = đã hoàn thành
+                        {
+                            statusText = "Đã hoàn thành";
+                            statusClass = "status-completed";
+                        }
+                        else if (match.trangthai == 1) // ví dụ: 1 = đang diễn ra
+                        {
+                            statusText = "Đang diễn ra";
+                            statusClass = "status-ongoing";
+                        }
+                        else // 0 hoặc khác = đã lên lịch
+                        {
+                            statusText = "Đã lên lịch";
+                            statusClass = "status-scheduled";
+                        }
+                        <div class="match-card">
+                            <div class="match-header">
+                                <div class="match-status @statusClass">@statusText</div>
+                                <div class="match-time">
+                                    @startTime.ToString("HH:mm") - @endTime.ToString("HH:mm")
+                                    <span class="match-date d-block">@startTime.ToString("dd/MM/yyyy")</span>
+                                </div>
+                            </div>
+
+                            <div class="match-content">
+                                <div class="match-competitors">
+                                    <div class="competitor red-corner">
+                                        <div class="competitor-name">@nguoi1</div>
+                                        @if (!string.IsNullOrWhiteSpace(club1))
+                                        {
+                                            <div class="competitor-club">@club1</div>
+                                        }
+                                    </div>
+
+                                    <div class="vs-indicator @(statusClass == "status-ongoing" ? "live" : "")">
+                                        VS
+                                    </div>
+
+                                    <div class="competitor blue-corner">
+                                        <div class="competitor-name">@nguoi2</div>
+                                        @if (!string.IsNullOrWhiteSpace(club2))
+                                        {
+                                            <div class="competitor-club">@club2</div>
+                                        }
+                                    </div>
+                                </div>
+                                @if (winA.HasValue)
+                                {
+                                    <div class="winrate-row">
+                                        <div class="winrate-item red">
+                                            <span>@nguoi1</span>
+                                            <b>@winA.Value.ToString("0.#")%</b>
+                                        </div>
+
+                                        <div class="winrate-bar">
+                                            <div class="winrate-fill" style="width:@winA.Value.ToString("0.##")%"></div>
+                                        </div>
+
+                                        <div class="winrate-item blue">
+                                            <b>@winB.Value.ToString("0.#")%</b>
+                                            <span>@nguoi2</span>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="winrate-row text-muted" style="font-size:0.8rem; margin-top:8px;">
+                                        (Chưa có dự đoán)
+                                    </div>
+                                }
+
+
+
+                                <div class="match-info">
+                                    <div class="match-category">
+                                        @(string.IsNullOrEmpty(match.LoaiHinhThiDau?.Name)
+                                            ? "Loại hình: Chưa xác định"
+                                            : "Loại hình: " + match.LoaiHinhThiDau.Name)
+                                    </div>
+                                    <div class="match-round">
+                                        Vòng: @match.Vongdau
+                                        @if (!string.IsNullOrEmpty(match.Hangcan))
+                                        {
+                                            <span> • Hạng cân: @match.Hangcan</span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(match.SanDau))
+                                        {
+                                            <span> • Sàn: @match.SanDau</span>
+                                        }
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(match.Trongtai))
+                                    {
+                                        <div class="match-referee">
+                                            Trọng tài: @match.Trongtai
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="match-actions">
+                                <!-- Bạn có thể đổi lại route/action theo hệ thống của bạn -->
+                                <button type="button"
+                                        class="btn btn-sm btn-success"
+                                        onclick="xuLyChonGiaiDau2('@match.MatchId')">
+                                    <i class="fas fa-calculator"></i> Chấm điểm
+                                </button>
+
+                                <a asp-controller="Home"
+                                   asp-action="ChiTietTranDau"
+                                   asp-route-id="@match.MatchId"
+                                   class="btn btn-sm btn-outline">
+                                    <i class="fas fa-eye"></i> Chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .matches-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .match-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 16px 18px 14px;
+        box-shadow: 0 12px 25px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 180px;
+    }
+
+    .match-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .match-status {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 999px;
+    }
+
+    .status-scheduled {
+        background: rgba(59, 130, 246, 0.1);
+        color: #1d4ed8;
+    }
+
+    .status-ongoing {
+        background: rgba(16, 185, 129, 0.12);
+        color: #047857;
+    }
+
+    .status-completed {
+        background: rgba(148, 163, 184, 0.2);
+        color: #4b5563;
+    }
+
+    .match-time {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #0f172a;
+        text-align: right;
+    }
+
+    .match-date {
+        font-size: 0.75rem;
+        color: #6b7280;
+    }
+
+    .match-content {
+        margin-top: 6px;
+    }
+
+    .match-competitors {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .competitor {
+        flex: 1;
+    }
+
+    .competitor-name {
+        font-weight: 700;
+        font-size: 0.98rem;
+        color: #0f172a;
+    }
+
+    .competitor-club {
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+
+    .red-corner .competitor-name {
+        color: #b91c1c;
+    }
+
+    .blue-corner .competitor-name {
+        color: #1d4ed8;
+    }
+
+    .vs-indicator {
+        font-weight: 800;
+        font-size: 1.05rem;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        color: #111827;
+        min-width: 42px;
+        text-align: center;
+    }
+
+        .vs-indicator.live {
+            background: #dc2626;
+            color: #fff;
+            box-shadow: 0 0 0 6px rgba(248, 113, 113, 0.35);
+            position: relative;
+        }
+
+    .match-info {
+        margin-top: 10px;
+        font-size: 0.82rem;
+        color: #4b5563;
+    }
+
+    .match-category {
+        font-weight: 500;
+    }
+
+    .match-round {
+        margin-top: 2px;
+    }
+
+    .match-referee {
+        margin-top: 2px;
+        font-style: italic;
+        color: #6b7280;
+    }
+
+    .match-actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+
+        .match-actions .btn-outline {
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+            .match-actions .btn-outline:hover {
+                background-color: #f3f4f6;
+                border-color: #9ca3af;
+                color: #111827;
+            }
+
+    .winrate-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .winrate-item {
+        display: flex;
+        gap: 6px;
+        align-items: baseline;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+        .winrate-item.red b {
+            color: #b91c1c;
+        }
+
+        .winrate-item.blue b {
+            color: #1d4ed8;
+        }
+
+    .winrate-bar {
+        flex: 1;
+        height: 10px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        overflow: hidden;
+    }
+
+    .winrate-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #dc2626, #2563eb);
+    }
+
+
+</style>
+@section Scripts {
+    <script>
+        async function xuLyChonGiaiDau2(matchId) {
+            try {
+                console.log('xuLyChonGiaiDau, matchId =', matchId);
+
+                if (!matchId || matchId === 'undefined') {
+                    Swal.fire('Cảnh báo', 'Vui lòng chọn trận đấu hợp lệ', 'warning');
+                    return;
+                }
+
+                // 1. Gọi API kiểm tra trạng thái trận đấu
+                const response = await fetch(`/ChamDiem/GetMatchParticipants?matchId=${encodeURIComponent(matchId)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Lỗi kiểm tra trạng thái: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('matchStatus:', data);
+
+                const vdv1 = data.vanDongVien1 || data.VanDongVien1;
+
+                // Nếu trạng thái là 1 (đã chấm điểm)
+                if (vdv1 && vdv1.trangthai === 1) {
+                    const { isConfirmed } = await Swal.fire({
+                        title: 'CẢNH BÁO',
+                        html: `
+                            <div class="text-center">
+                                <p>Trận đấu này đã được chấm điểm.</p>
+                                <p>Bạn có muốn xem lại kết quả không?</p>
+                            </div>
+                        `,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Xem kết quả',
+                        cancelButtonText: 'Đóng'
+                    });
+
+                    if (isConfirmed) {
+                        window.location.href = '/Home/Index';
+                    }
+                    return;
+                }
+
+                // 2. Hỏi xác nhận chấm điểm (không cần lấy text từ option nữa)
+                const { isConfirmed } = await Swal.fire({
+                    title: 'XÁC NHẬN CHẤM ĐIỂM',
+                    html: `<p>Bạn có chắc muốn chấm điểm cho trận đấu <b>${matchId}</b> không?</p>`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Hủy'
+                });
+
+                if (isConfirmed) {
+                    const searchParams = new URLSearchParams({ matchId });
+                    window.location.href = `/ChamDiem/Index?${searchParams.toString()}`;
+                }
+
+
+            } catch (error) {
+                console.error('Chi tiết lỗi:', error);
+                Swal.fire('LỖI HỆ THỐNG', error.message, 'error');
+            }
+        }
+    </script>
+}
+

@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert @(ViewBag.Message == "Thanh toán thành công!" ? "alert-success" : "alert-danger") text-center mt-5">
+        <h3>@ViewBag.Message</h3>
+        @if (ViewBag.Amount != null)
+        {
+            <p><strong>Số tiền:</strong> @String.Format("{0:N0}", Convert.ToInt32(ViewBag.Amount)) VNĐ</p>
+        }
+        @if (ViewBag.OrderInfo != null)
+        {
+            <p><strong>Nội dung:</strong> @ViewBag.OrderInfo</p>
+        }
+        @if (ViewBag.BankCode != null)
+        {
+            <p><strong>Ngân hàng:</strong> @ViewBag.BankCode</p>
+        }
+        @if (ViewBag.PayDate != null)
+        {
+            <p><strong>Thời gian thanh toán:</strong> @ViewBag.PayDate</p>
+        }
+        @if (ViewBag.TxnRef != null)
+        {
+            <p><strong>Mã giao dịch:</strong> @ViewBag.TxnRef</p>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center mt-5">
+        <h4>Không có thông tin giao dịch.</h4>
+    </div>
+}

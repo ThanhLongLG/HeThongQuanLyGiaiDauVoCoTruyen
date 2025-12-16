@@ -1,0 +1,27 @@
+﻿@model List<BaoCaoDACS.Models.Participant>
+
+<h3>Hồ sơ của bạn trong các giải đang hoạt động</h3>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Bạn chưa có võ sinh nào đang tham gia giải đấu.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead><tr><th>Họ tên</th><th>CLB</th><th>Giải đấu</th><th>Ngày</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.FullName</td>
+                    <td>@p.Club</td>
+                    <td>@p.Tournament?.Name</td>
+                   <td>
+                        <a asp-action="Profile" asp-route-participantId="@p.ParticipantID" class="btn btn-sm btn-primary">Sửa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

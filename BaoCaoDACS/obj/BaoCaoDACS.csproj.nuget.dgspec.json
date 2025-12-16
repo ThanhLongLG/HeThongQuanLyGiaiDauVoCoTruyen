@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\HOC\\BAO_CAO_DACS\\BaoCaoDACS\\BaoCaoDACS\\BaoCaoDACS.csproj": {}
+    "D:\\HOC\\BAO_CAO_DACS\\BaoCaoCN - Copy\\BaoCaoDACS\\BaoCaoDACS.csproj": {}
   },
   "projects": {
-    "D:\\HOC\\BAO_CAO_DACS\\BaoCaoDACS\\BaoCaoDACS\\BaoCaoDACS.csproj": {
+    "D:\\HOC\\BAO_CAO_DACS\\BaoCaoCN - Copy\\BaoCaoDACS\\BaoCaoDACS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\HOC\\BAO_CAO_DACS\\BaoCaoDACS\\BaoCaoDACS\\BaoCaoDACS.csproj",
+        "projectUniqueName": "D:\\HOC\\BAO_CAO_DACS\\BaoCaoCN - Copy\\BaoCaoDACS\\BaoCaoDACS.csproj",
         "projectName": "BaoCaoDACS",
-        "projectPath": "D:\\HOC\\BAO_CAO_DACS\\BaoCaoDACS\\BaoCaoDACS\\BaoCaoDACS.csproj",
+        "projectPath": "D:\\HOC\\BAO_CAO_DACS\\BaoCaoCN - Copy\\BaoCaoDACS\\BaoCaoDACS.csproj",
         "packagesPath": "C:\\Users\\hello\\.nuget\\packages\\",
-        "outputPath": "D:\\HOC\\BAO_CAO_DACS\\BaoCaoDACS\\BaoCaoDACS\\obj\\",
+        "outputPath": "D:\\HOC\\BAO_CAO_DACS\\BaoCaoCN - Copy\\BaoCaoDACS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -75,6 +75,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.2, )"
+            },
+            "Microsoft.ML": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.ML.FastTree": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",

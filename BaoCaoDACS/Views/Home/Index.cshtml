@@ -1,6 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@{
+    var loginUrl = Url.Page("/Account/Login", new { area = "Identity" });
+}
+<script>
+    // Razor sẽ in ra true hoặc false trực tiếp
+    const isAuthenticated = @((User?.Identity?.IsAuthenticated ?? false).ToString().ToLower());
+    const loginUrl = "@loginUrl";
+</script>
+
 
 <!-- Banner -->
 <section class="banner">
@@ -15,146 +24,14 @@
 
 <!-- Main Content -->
 <main class="main-content container">
-    <section>
+    <section id="GiaDau">
         <h2 class="section-title">Giải đấu sắp diễn ra</h2>
-        <div class="tournaments">
+        <div class="tournaments" id="tournaments">
             <!-- Giải đấu 1 -->
-            <div class="tournament-card">
-                <div class="tournament-img" style="background-image: url('https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/481154785_578588288513342_8057775681277637611_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=75d36f&_nc_ohc=3WNVft_5weYQ7kNvwE8dE6t&_nc_oc=AdlWFxuqWvXHuAB1r1GZnHqKErUP-DVaK8xxYVsJr93Gx94QSb-q5-YKaldGRurz7r8&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=MfDUSvUHhbm_YUDtaaVXRA&oh=00_AfGwQGxtUBQ1Bkl-JiOb2GQG4KDV2Y0ntpDlhaYFbfge-A&oe=67FF2ECA');">
-                </div>
-                <div class="tournament-content">
-
-                    <span class="tournament-status status-upcoming"> Đang diễn ra </span>
-                    <h3>GIẢI VÔ ĐỊCH CÁC CÂU LẠC BỘ VÕ CỔ TRUYỀN QUỐC GIA LẦN THỨ XIV NĂM 2025</h3>
-
-                    <div class="countdown-container">
-                        <div class="countdown">
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="days-1">00</div>
-                                <div class="countdown-label">Ngày</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="hours-1">00</div>
-                                <div class="countdown-label">Giờ</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="minutes-1">00</div>
-                                <div class="countdown-label">Phút</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="seconds-1">00</div>
-                                <div class="countdown-label">Giây</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tournament-meta">
-                        <span><i>🗓️</i> <span class="event-date">20/04 - 30/04/2025</span></span>
-                        <span><i>👥</i> 150 VĐV</span>
-                    </div>
-
-                    <div class="tournament-location">
-                        <i>📍</i>
-                        <div class="location-text">Nhà thi đấu thể dục thể thao tỉnh Thái Nguyên (đường Đội Cấn, phường Trưng Vương, thành phố Thái Nguyên)</div>
-                    </div>
-
-                    <div class="tournament-actions">
-                        <button class="btn" onclick="alert('Xem chi tiết giải đấu!')">Xem chi tiết</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Giải đấu 2 -->
-            <div class="tournament-card">
-                <div class="special-badge">Đặc biệt</div>
-                <div class="tournament-img" style="background-image: url('https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/490705696_620366651002172_4686783815590056597_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=75d36f&_nc_ohc=dR0QrQ5wge8Q7kNvwHo9ZeM&_nc_oc=AdkD4bK2af7ra0eMpsd4TSfQ6SUs7GbEI92TR5_htCr9EKtD63eK2rK8pyuhk9rhOok&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=32p5y4tkTTQyk6d8rd-9uw&oh=00_AfGGOQ6I07fVmXw3yU-nPvVokFVNkLMdKfFErGBstClWTw&oe=67FF2419');">
-                </div>
-                <div class="tournament-content">
-                    <span class="tournament-status status-upcoming">Sắp diễn ra</span>
-                    <h3>CHƯƠNG TRÌNH GIAO LƯU BIỂU DIỄN VÕ THUẬT VIỆT NAM - TRIỀU TIÊN</h3>
-
-                    <div class="countdown-container">
-                        <div class="countdown">
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="days-2">00</div>
-                                <div class="countdown-label">Ngày</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="hours-2">00</div>
-                                <div class="countdown-label">Giờ</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="minutes-2">00</div>
-                                <div class="countdown-label">Phút</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="seconds-2">00</div>
-                                <div class="countdown-label">Giây</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tournament-meta">
-                        <span><i>🗓️</i> <span class="event-date">22/04/2025</span></span>
-                        <span><i>🕖</i> 19:00 (GMT+7)</span>
-                    </div>
-
-                    <div class="tournament-location">
-                        <i>📍</i>
-                        <div class="location-text">Nhà thi đấu tỉnh Thái Nguyên</div>
-                    </div>
-
-                    <div class="tournament-actions">
-                        <button class="btn" onclick="alert('Đăng ký tham dự giải đấu!')">Đăng ký tham dự</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Giải đấu 3 -->
-            <div class="tournament-card">
-                <div class="tournament-img" style="background-image: url('https://scontent.fsgn2-10.fna.fbcdn.net/v/t39.30808-6/486629997_607700442268793_4758270897049475693_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=75d36f&_nc_ohc=ZheKc8Uk-ZEQ7kNvwHYMjWF&_nc_oc=AdkGGQnNXTd91fxmpzDAvnm4HvG8jNPAMt32aNiCdj96noRTwGIthBbc1FmPTodcPz0&_nc_zt=23&_nc_ht=scontent.fsgn2-10.fna&_nc_gid=su9CoQHVB5CegY_W9I93gA&oh=00_AfFlHIezkUOyFKE_PdrS1zTo9FqYAR4QMAEhhft948jDDQ&oe=67FEFC78');">
-                </div>
-                <div class="tournament-content">
-                    <span class="tournament-status status-upcoming">Sắp diễn ra</span>
-                    <h3>GIẢI VÔ ĐICH TRẺ VÕ CỔ TRUYỀN QUỐC GIA LẦN THỨ XXVI, NĂM 2025</h3>
-
-                    <div class="countdown-container">
-                        <div class="countdown">
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="days-3">00</div>
-                                <div class="countdown-label">Ngày</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="hours-3">00</div>
-                                <div class="countdown-label">Giờ</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="minutes-3">00</div>
-                                <div class="countdown-label">Phút</div>
-                            </div>
-                            <div class="countdown-item">
-                                <div class="countdown-value" id="seconds-3">00</div>
-                                <div class="countdown-label">Giây</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tournament-meta">
-                        <span><i>🗓️</i> <span class="event-date">15/06 - 25/06/2025</span></span>
-                        <span><i>👥</i> 80 VĐV</span>
-                    </div>
-
-                    <div class="tournament-location">
-                        <i>📍</i>
-                        <div class="location-text">QUẢNG TRƯỜNG LAM SƠN, TP. THANH HÓA</div>
-                    </div>
-
-                    <div class="tournament-actions">
-                        <button class="btn" onclick="alert('Xem chi tiết giải đấu!')">Xem chi tiết</button>
-                    </div>
-                </div>
-            </div>
+            
+           
         </div>
+          
     </section>
 
     <!-- Lịch -->
@@ -179,77 +56,16 @@
             <!-- Calendar days will be dynamically rendered here -->
         </div>
     </section>
-    <script>
-        const monthNames = [
-          "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-          "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
-        ];
-        const dayNames = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-        const calendarGrid = document.querySelector(".calendar-grid");
-        const currentMonthDisplay = document.getElementById("current-month");
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
-
-        function renderCalendar(month, year) {
-          const firstDay = new Date(year, month, 1).getDay();
-          const daysInMonth = new Date(year, month + 1, 0).getDate();
-          calendarGrid.innerHTML = dayNames.map(day => `<div class="day-name">${day}</div>`).join("");
-
-          // Add empty slots for days before the first day
-          for (let i = 0; i < firstDay; i++) {
-            calendarGrid.innerHTML += `<div class="calendar-day empty"></div>`;
-          }
-
-          // Add days of the month
-          for (let day = 1; day <= daysInMonth; day++) {
-            const today = new Date();
-            const isToday =
-              day === today.getDate() &&
-              month === today.getMonth() &&
-              year === today.getFullYear();
-            calendarGrid.innerHTML += `
-              <div class="calendar-day ${isToday ? "current-day" : ""}">
-                <span class="day-number">${day}</span>
-              </div>`;
-          }
-        }
-
-        function updateMonthDisplay() {
-          currentMonthDisplay.textContent = `${monthNames[currentMonth]}, ${currentYear}`;
-        }
-
-        document.getElementById("prev-month").addEventListener("click", () => {
-          currentMonth--;
-          if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-          }
-          updateMonthDisplay();
-          renderCalendar(currentMonth, currentYear);
-        });
-
-        document.getElementById("next-month").addEventListener("click", () => {
-          currentMonth++;
-          if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-          }
-          updateMonthDisplay();
-          renderCalendar(currentMonth, currentYear);
-        });
-
-        // Initial render
-        updateMonthDisplay();
-        renderCalendar(currentMonth, currentYear);
-    </script>
+  
 
     <!-- Kết quả mới nhất -->
-    <section class="results-section">
+    <section class="results-section" id="Ketquamoinhat">
         <h2 class="section-title">Kết Quả Mới Nhất</h2>
-        <table class="results-table">
+        <table class="results-table" id="scoreTable">
             <thead>
                 <tr>
                     <th>Giải đấu</th>
+                    <th>Loại hình thi đấu</th>
                     <th>Võ sinh</th>
                     <th>CLB/Đội</th>
                     <th>Điểm</th>
@@ -257,50 +73,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Giải Vô địch Quốc gia</td>
-                    <td class="competitor">
-                        <div class="competitor-img">
-                            <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/472909012_122193966962218370_3480821407554640564_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_ohc=tVSeB91k38gQ7kNvwGbLFFc&_nc_oc=Adl5nbEtodqVQjW8mUh9JWdyWFiSHkn4corOFuWzsw0zqmII9vhzXyL4lLVjF38PM30rD6m6_m73VbiC-7eWpE8V&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=l1ulfnuhNPyz56mb3931Lw&oh=00_AfGhSeazP7IncP6QVzhzf9AL-4jTUg0sXYx25Fa_OKrYKw&oe=6807F2E0" alt="Nguyễn Quốc An">
-                        </div>
-                        <span>Nguyễn Quốc An</span>
-                    </td>
-                    <td>CLB Hutech </td>
-                    <td class="score">9.5 🥇</td>
-                    <td>09/03/2025</td>
-                </tr>
+                
                 <tr>
                     <td>Giải Trẻ Toàn Quốc</td>
-                    <td class="competitor">
-                        <div class="competitor-img">
-                            <img src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/472940248_122193966614218370_8521915524410968994_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=99T6fkvHtsMQ7kNvwG3wVFv&_nc_oc=AdnwiCaZ_3VRH6Mvi24TuGvZxQpmHTMwaAg8qtesik5rYpJjX_ky5BjIIXu3lIxWITgaxouXclhzydAYTve1Wcgu&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=0hhWH2o-Rqox-WVgYG3K6w&oh=00_AfGwyjf7fTljyT1VETWluNDBPjH03S9G52HUp7igntqsJw&oe=6807CB01" alt="Trần Thị B">
-                        </div>
-                        <span>Nguyễn Quốc An </span>
-                    </td>
-                    <td>CLB TP HCM</td>
-                    <td class="score">9.3 🥈</td>
-                    <td>09/03/2025</td>
-                </tr>
-                <tr>
-                    <td>Giải Trẻ Toàn Quốc</td>
-                    <td class="competitor">
-                        <div class="competitor-img">
-                            <img src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/482129111_627784056664292_3014624714713246366_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=FoyKXQcyVHQQ7kNvwF_YRMG&_nc_oc=Adl_7p4NiovvZ3aWk9J9UP8ca4itW7qddTXDN5w3NNBVFJCQQbPS7blT6_sWjkXXxLOngQPVPtCEXRzj_RqLzgkb&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=Aw7zleJBBG_9uxja8IRPXA&oh=00_AfFn1pEZDWmw4xQ4ekQ5hZxb73Qj7Hui4UC5LFk2gxiSlQ&oe=6807E13A" alt="Lê Văn C">
-                        </div>
-                        <span>Ngô Gia Bảo </span>
-                    </td>
-                    <td>CLB Đồng Nai </td>
-                    <td class="score">9.2 🥉</td>
-                    <td>08/03/2025</td>
-                </tr>
-                <tr>
-                    <td>Giải Trẻ Toàn Quốc</td>
-                    <td class="competitor">
-                        <div class="competitor-img">
-                            <img src="/api/placeholder/40/40" alt="Phạm Thị D">
-                        </div>
-                        <span>Phạm Thị D</span>
-                    </td>
+                    <td>Phạm Thị D</td>
                     <td>CLB Cần Thơ</td>
                     <td class="score">9.0</td>
                     <td>08/03/2025</td>
@@ -310,40 +86,16 @@
     </section>
 </main>
 
-<!-- Login Modal -->
-<div id="login-modal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('login-modal')">&times;</span>
-        <h2>Đăng nhập</h2>
-        <form id="login-form">
-            <div class="form-group">
-                <label for="login-email">Email:</label>
-                <input type="email" id="login-email" placeholder="Nhập địa chỉ email" required>
-            </div>
-            <div class="form-group">
-                <label for="login-password">Mật khẩu:</label>
-                <div class="password-container">
-                    <input type="password" id="login-password" placeholder="Nhập mật khẩu" required>
-                    <span class="toggle-password" onclick="togglePassword('login-password')">👁️</span>
-                </div>
-            </div>
-            <div class="form-group" style="text-align: right;">
-                <a href="#" style="color: #c71f1f; text-decoration: none; font-size: 14px;">Quên mật khẩu?</a>
-            </div>
-            <button type="submit" class="btn btn-solid">Đăng nhập</button>
-            <div class="form-footer">
-                Chưa có tài khoản? <a href="#" onclick="switchModal('login-modal', 'register-modal')">Đăng ký ngay</a>
-            </div>
-        </form>
-    </div>
-</div>
 
-<!-- Register Modal -->
-<div id="register-modal" class="modal">
+
+
+
+@* Thedangkygiai *@
+<div id="register-tournament-modal" class="modal" data-tournament-id="">
     <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('register-modal')">&times;</span>
-        <h2>Đăng ký</h2>
-        <form id="register-form">
+        <span class="modal-close">&times;</span>
+        <h2>Đăng ký tham dự</h2>
+        <form id="registrationForm" onsubmit="return false;">
             <div class="form-group">
                 <label for="register-name">Họ và tên:</label>
                 <input type="text" id="register-name" placeholder="Nhập họ và tên" required>
@@ -353,23 +105,38 @@
                 <input type="email" id="register-email" placeholder="Nhập địa chỉ email" required>
             </div>
             <div class="form-group">
-                <label for="register-password">Mật khẩu:</label>
-                <div class="password-container">
-                    <input type="password" id="register-password" placeholder="Tạo mật khẩu" required>
-                    <span class="toggle-password" onclick="togglePassword('register-password')">👁️</span>
-                </div>
+                <label for="register-phone">Số điện thoại:</label>
+                <input type="tel" id="register-phone" placeholder="Nhập số điện thoại" required>
             </div>
             <div class="form-group">
-                <label for="register-confirm-password">Xác nhận mật khẩu:</label>
-                <div class="password-container">
-                    <input type="password" id="register-confirm-password" placeholder="Nhập lại mật khẩu" required>
-                    <span class="toggle-password" onclick="togglePassword('register-confirm-password')">👁️</span>
-                </div>
+                <label for="register-club">Câu lạc bộ:</label>
+                <input type="text" id="register-club" placeholder="Nhập tên CLB">
             </div>
-            <button type="submit" class="btn btn-solid">Đăng ký</button>
-            <div class="form-footer">
-                Đã có tài khoản? <a href="#" onclick="switchModal('register-modal', 'login-modal')">Đăng nhập</a>
-            </div>
+            <button type="submit" class="btn btn-primary">Đăng ký</button>
         </form>
     </div>
 </div>
+
+
+<script>
+    fetch('/Home/TopScores')
+    .then(response => response.json())
+    .then(data => {
+        const tbody = document.querySelector('#scoreTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+            const row = `
+                <tr>
+                    <td>${item.giai}</td>
+                    <td>${item.loaiHinhThiDau}</td>
+                    <td>${item.vanDongVien}</td>
+                    <td>${item.clb}</td>
+                    <td class="score">${item.diem}</td>
+                    <td>${item.ngayDau}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    });
+   
+</script>

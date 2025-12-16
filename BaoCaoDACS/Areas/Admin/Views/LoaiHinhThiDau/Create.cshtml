@@ -1,0 +1,93 @@
+@model BaoCaoDACS.Models.LoaiHinhThiDau
+@{
+    ViewData["Title"] = "Thêm loại hình thi đấu";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-transparent">
+            <li class="breadcrumb-item"><a href="/Admin/TrangQL" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item">
+                <a asp-area="Admin" asp-controller="LoaiHinhThiDau" asp-action="Index" class="text-decoration-none">Loại hình thi đấu</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Thêm loại hình thi đấu mới</h5>
+                </div>
+                <div class="card-body p-4">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@modelError.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Tên loại hình</label>
+                            <input asp-for="Name" class="form-control" placeholder="Nhập tên loại hình (ví dụ: Đối kháng, Quyền...)" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MonVo" class="form-label">Môn võ</label>
+                            <input asp-for="MonVo" class="form-control" placeholder="Nhập tên môn võ (ví dụ: Karate, Taekwondo...)" required />
+                            <span asp-validation-for="MonVo" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Hủy bỏ
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i> Lưu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Bootstrap 5 validation
+        (() => {
+            'use strict'
+
+            // Fetch all forms with the class 'needs-validation'
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

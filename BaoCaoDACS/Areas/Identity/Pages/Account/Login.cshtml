@@ -1,0 +1,177 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<style>
+
+
+    .login-container {
+        max-width: 400px;
+        width: 100%; /* Đảm bảo container có chiều rộng tối đa */
+        margin: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-container {
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+        .form-control:focus {
+            border-color: #4a90e2;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+    .password-container {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+
+
+
+    .form-footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #666;
+        font-size: 14px;
+    }
+
+        .form-footer a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .form-footer a:hover {
+                text-decoration: underline;
+            }
+
+    .forgot-password {
+        text-align: right;
+        margin-bottom: 15px;
+    }
+
+        .forgot-password a {
+            color: #c71f1f;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 8px;
+        }
+</style>
+
+<div class="row">
+    <div class="col-md-4 login-container">
+        <section>
+            <form id="account" method="post">
+                <h2>Đăng nhập</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Email">Email:</label>
+                    <input asp-for="Input.Email" class="form-control"
+                           autocomplete="username" aria-required="true"
+                           placeholder="Nhập địa chỉ email" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Password">Mật khẩu:</label>
+                    <div class="password-container">
+                        <input asp-for="Input.Password" class="form-control"
+                               autocomplete="current-password" aria-required="true"
+                               placeholder="Nhập mật khẩu" />
+                        <span class="toggle-password" onclick="togglePassword('Input_Password')">👁️</span>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="checkbox-container">
+                    <label asp-for="Input.RememberMe">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        Ghi nhớ đăng nhập
+                    </label>
+                </div>
+
+                <div class="forgot-password">
+                    <a id="forgot-password" asp-page="./ForgotPassword">Quên mật khẩu?</a>
+                </div>
+
+                <button id="login-submit" type="submit" class="btn btn-solid">Đăng nhập</button>
+
+                <div class="form-footer">
+                    Chưa có tài khoản?
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Đăng ký ngay</a>
+                </div>
+            </form>
+        </section>
+    </div>
+
+</div>
+<script>
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+        } else {
+            input.type = "password";
+        }
+    }
+</script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

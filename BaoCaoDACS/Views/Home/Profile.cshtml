@@ -1,0 +1,108 @@
+﻿<head>
+
+	<link href="~/css/profile.css" rel="stylesheet" />
+
+</head>
+@model BaoCaoDACS.Models.Participant
+@if (Model == null)
+{
+    <div class="alert alert-info text-center py-4" style="font-size: 18px;">
+        <i class="bi bi-info-circle"></i> Bạn chưa tham gia giải đấu nào.Vui Lòng đăng ký
+    </div>
+
+}
+else
+{
+<div class="card">
+        <div class="card-header">
+            <h5 class="title">Edit Profile</h5>
+        </div>
+        <div class="card-body">
+        <form class="text-decoration-none" asp-action="Profile" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-md-5 pr-md-1">
+                        <div class="form-group">
+                        <label>Club</label>
+                        <input asp-for="Club" type="text" class="form-control" placeholder="Club" value="@Model.Club">
+                        </div>
+                    </div>
+                    <div class="col-md-3 px-md-1">
+                        <div class="form-group">
+                            <label>Username</label>
+                        <input asp-for="FullName" type="text" class="form-control" placeholder="Username" value="@Model.FullName">
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-md-1">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                        <input asp-for="email" type="email" class="form-control" placeholder="admin@gmail.com" value="@Model.email">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 pr-md-1">
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                        <input asp-for="sdt" type="text" class="form-control" placeholder="0123456789" value="@Model.sdt">
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-md-1">
+                        <div class="form-group">
+                            <label>Tuổi</label>
+                        <input asp-for="tuoi" type="text" class="form-control" placeholder="18" value="@Model.tuoi">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Address</label>
+                        <input asp-for="Diachi" type="text" class="form-control" placeholder="Home Address" value="@Model.Diachi">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 pr-md-1">
+                        <div class="form-group">
+                            <label>Chiều Cao</label>
+                        <input asp-for="ChieuCao" type="text" class="form-control" placeholder="170cm" value="@Model.ChieuCao">
+                        </div>
+                    </div>
+                    <div class="col-md-4 px-md-1">
+                        <div class="form-group">
+                            <label>Cân Nặng</label>
+                        <input asp-for="CanNang" type="text" class="form-control" placeholder="50kg" value="@Model.CanNang">
+                        </div>
+                    </div>
+                   
+                </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-fill btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+        
+    </div>
+
+
+@section Scripts {
+    <script>
+        // Kích hoạt validation Bootstrap
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}
+}
