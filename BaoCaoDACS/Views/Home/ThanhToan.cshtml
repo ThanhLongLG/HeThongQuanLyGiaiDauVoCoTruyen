@@ -1,0 +1,95 @@
+﻿@using BaoCaoDACS.Models.VnPay
+@{
+    Layout = "_Layout";
+}
+
+@model PaymentMultiViewModel
+
+<div class="container mt-5">
+    @if (Model == null)
+    {
+        <div class="alert alert-warning text-center">
+            <h4>
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Bạn chưa đăng ký tham gia giải đấu
+            </h4>
+            <p>Vui lòng đăng ký tham gia trước khi thanh toán.</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
+                <i class="fas fa-calendar-alt me-2"></i>Xem Các Giải Đấu
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-money-check-alt me-2"></i>
+                    Thanh Toán Phí Tham Gia Giải Đấu
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="payment-info">
+                            <h5>Thông Tin Thanh Toán</h5>
+                            <hr />
+                            <p><strong>Họ và Tên:</strong> @Model.MomoInfo.FullName</p>
+                            <p><strong>Số Tiền Thanh Toán:</strong> @Model.MomoInfo.Amount.ToString("N0") VNĐ</p>
+                            <p><strong>Nội Dung:</strong> @Model.MomoInfo.OrderInfo</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="payment-methods">
+                            <h5>Phương Thức Thanh Toán</h5>
+                            <hr />
+                            <form method="POST" asp-action="CreatePaymentUrl" asp-controller="Payment">
+                                <input type="hidden" asp-for="MomoInfo.FullName" value="@Model.MomoInfo.FullName" />
+                                <input type="hidden" asp-for="MomoInfo.Amount" value="@Model.MomoInfo.Amount" />
+                                <input type="hidden" asp-for="MomoInfo.OrderInfo" value="@Model.MomoInfo.OrderInfo" />
+
+                                <div class="payment-options">
+                                    <button class="btn btn-success btn-lg mb-3" name="PayUrl" type="submit">
+                                        <i class="fab fa-cc-mastercard me-2"></i>Thanh Toán MoMo
+                                    </button>
+
+                                    <div class="text-muted small">
+                                        <p>
+                                            <i class="fas fa-shield-alt me-2 text-success"></i>
+                                            Giao dịch an toàn và bảo mật
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                            <form method="POST" asp-action="CreateVnpayPaymentUrl" asp-controller="Payment">
+                                <input type="hidden" asp-for="VnpayInfo.Name" value="@Model.VnpayInfo.Name" />
+                                <input type="hidden" asp-for="VnpayInfo.Amount" value="@Model.VnpayInfo.Amount" />
+                                <input type="hidden" asp-for="VnpayInfo.OrderDescription" value="@Model.VnpayInfo.OrderDescription" />
+                                <input type="hidden" asp-for="VnpayInfo.OrderType" value="other" />
+
+                                <button class="btn btn-primary btn-lg mb-3" type="submit">
+                                    <i class="fab fa-cc-visa me-2"></i>Thanh Toán VNPAY
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <small>
+                    <i class="fas fa-info-circle me-2"></i>
+                    Sau khi thanh toán thành công, bạn sẽ được xác nhận tham gia giải đấu
+                </small>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .payment-info, .payment-methods {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+</style>

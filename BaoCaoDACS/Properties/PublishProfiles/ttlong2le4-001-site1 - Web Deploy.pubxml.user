@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZXAQ31B3SEOvZBT0++svXwAAAAACAAAAAAAQZgAAAAEAACAAAACO5MUgeoWtOCwZo8nI7w/SJbbxiq+P0BL2neSzlWrMFgAAAAAOgAAAAAIAACAAAADxVaLsBAf5/6093VClnnFm0ayUNLHtiyN95d06KScgwiAAAABLUM/0enkxX65S99+BaEbnbp3ezm9f8ufpBeZls+okH0AAAADlYSMCMk0RUhfnewMPvv0KHpHkhPia/kE4JYYytxHPzFvL/JlsMWFKDv0PitujYau5VrV7ttagw/3YTQcuNXDt</EncryptedPassword>
+    <History>True|2025-12-14T16:52:56.1839831Z||;True|2025-12-14T22:55:11.4039126+07:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="QLTAPVO">
+      <Value>Server=SQL5113.site4now.net%3bDatabase=db_ac246f_login%3bUser Id=db_ac246f_login_admin%3bPassword=Gmail2004%40%3bTrustServerCertificate=True%3bEncrypt=False%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

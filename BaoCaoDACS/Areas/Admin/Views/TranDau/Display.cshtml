@@ -1,0 +1,216 @@
+﻿@model Match
+
+@{
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+    ViewData["Title"] = "Chi Tiết Trận Đấu";
+}
+<head>
+
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<div class="container-fluid py-4">
+    <nav class="mt-2 mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="text-white text-decoration-none" asp-controller="TrangQL" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item active text-white">Danh sách Trận Đấu</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-trophy me-2"></i>Chi Tiết Trận Đấu
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="fas fa-info-circle me-2"></i>Thông Tin Chung
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-hashtag me-2"></i>Mã Trận Đấu
+                                            </span>
+                                            <strong>@Model.MatchId</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-calendar-alt me-2"></i>Ngày Thi Đấu
+                                            </span>
+                                            <strong>@Model.Date.ToString("dd/MM/yyyy HH:mm")</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-map-marker-alt me-2"></i>Sân Đấu
+                                            </span>
+                                            <strong>@Model.SanDau</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-layer-group me-2"></i>Vòng Đấu
+                                            </span>
+                                            <strong>@Model.Vongdau</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-check-circle text-success"></i>Trạng Thái
+                                            </span>
+                                            @if (Model.trangthai == 1)
+                                            {
+                                                <strong></strong>
+                                            }
+                                            else{
+                                                <strong>Chưa chấm</strong>
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="fas fa-clipboard-list me-2"></i>Chi Tiết Bổ Sung
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-weight me-2"></i>Hạng Cân
+                                            </span>
+                                            <strong>@Model.Hangcan</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-user-tie me-2"></i>Trọng Tài
+                                            </span>
+                                            <strong>@Model.Trongtai</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-list-alt me-2"></i>Loại Hình Thi Đấu
+                                            </span>
+                                            <strong>
+                                                @(Model.LoaiHinhThiDau?.Name ?? "Chưa xác định")
+                                            </strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-award me-2"></i>Giải Đấu
+                                            </span>
+                                            <strong>
+                                                @(Model.Tournament?.Name ?? "Không thuộc giải")
+                                            </strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0 text-primary">
+                                <i class="fas fa-users me-2"></i>Danh Sách Điểm Số
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.Socre != null && Model.Socre.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Mã Điểm</th>
+                                                <th>Người Tham Gia</th>
+                                                <th>Điểm Số</th>
+                                                <th>Kết Quả</th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var score in Model.Socre)
+                                            {
+                                                <tr>
+                                                    <td>@score.ScoreId</td>
+                                                    <td>
+                                                        @(score.participant?.FullName ?? "Chưa xác định")
+                                                    </td>
+                                                    <td>
+                                                        @(score.Diem.HasValue
+                                                            ? score.Diem.Value.ToString("F2")
+                                                            : "Chưa có")
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            string resultClass = score.Kq switch
+                                                            {
+                                                                1 => "badge bg-success",
+                                                                0 => "badge bg-danger",
+                                                                2 => "badge bg-warning",
+                                                                _ => "badge bg-secondary"
+                                                            };
+                                                            string resultText = score.Kq switch
+                                                            {
+                                                                1 => "Thắng",
+                                                                0 => "Thua",
+                                                                2 => "Hòa",
+                                                                _ => "Chưa xác định"
+                                                            };
+                                                        }
+                                                        <span class="@resultClass">@resultText</span>
+                                                    </td>
+                                                   
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info text-center">
+                                    <i class="fas fa-info-circle me-2"></i>Chưa có điểm số cho trận đấu này
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+                    <div>
+                        <a asp-action="update" asp-route-id="@Model.MatchId" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>Chỉnh Sửa
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.MatchId" class="btn btn-danger ms-2">
+                            <i class="fas fa-trash me-2"></i>Xóa
+                        </a>
+                    </div>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            
+        });
+    </script>
+}

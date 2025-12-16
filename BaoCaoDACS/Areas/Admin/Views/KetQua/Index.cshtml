@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+    ViewData["Title"] = "Quản lý Kết quả";
+}
+<head>
+
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+
+<nav class="mt-2 mb-4" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-white text-decoration-none" asp-controller="TrangQL" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item active text-white">Danh sách Kết Quả</li>
+    </ol>
+</nav>
+
+
+<div class="container-fluid mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card">
+       
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Quản lý Kết quả</h4>
+            <button class="btn btn-light" onclick="location.href='@Url.Action("Add", "KetQua")'">
+                <i class="bi bi-plus-circle me-2"></i> Thêm Kết quả mới
+            </button>
+        </div>
+       
+        <div class="card-body">
+            <div class="row align-items-center mb-3">
+                <div class="col-md-5">
+                    <form asp-controller="Score" asp-action="Index" method="get">
+                        <div class="input-group">
+                            <input name="searchValue" type="text" class="form-control my-input" placeholder="Tìm kiếm kết quả..."
+                                   value="@ViewBag.searchValue">
+                            <button class="btn btn-primary my-button" type="submit">Tìm kiếm</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-7">
+                    @if (!string.IsNullOrEmpty(ViewBag.searchValue))
+                    {
+                        <div class="d-flex align-items-center">
+                            <h6 class="mb-0 text-primary">
+                                Kết quả tìm kiếm cho: <strong>"@ViewBag.searchValue"</strong>
+                            </h6>
+                            <a asp-controller="KetQua" asp-action="Index" class="btn btn-sm btn-outline-secondary ms-3">
+                                <i class="bi bi-x-circle me-1"></i> Xóa bộ lọc
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover border">
+                    <thead class="table-dark">
+                        <tr class="text-white">
+                            <th>ID</th>
+                            <th>Người tham gia</th>
+                            <th>Trận đấu</th>
+                            <th>Loại hình thi đấu</th>
+                            <th>Mã trận đấu</th>
+                            <th>Điểm</th>
+                            <th>Kết quả</th>
+                            <th>Giải đấu</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-light">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ScoreId</td>
+                                <td>@(item.participant?.FullName ?? "N/A")</td>
+                                <td>@(item.match?.Vongdau ?? "N/A")</td>
+                                <td>@(item.match.LoaiHinhThiDau.Name ?? "N/A")</td>
+                                <td>@(item.match?.MatchId ?? "N/A")</td>
+                                <td>@item.Diem</td>
+                          
+                                <td>@item.KietQua</td>
+                                <td>@item.participant.Tournament.Name</td>
+                                <td>
+                                    <a asp-action="Display" asp-route-id="@item.ScoreId" class="btn btn-info">Chi tiết</a>
+                                    <a asp-action="update" asp-route-id="@item.ScoreId" class="btn btn-primary">Sửa</a>
+                                    <a asp-action="Delete" asp-route-id="@item.ScoreId" class="btn btn-danger">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Lỗi Thanh Toán";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-danger">
+        <h4 class="alert-heading">Lỗi Thanh Toán</h4>
+        <p>@ViewBag.ErrorMessage</p>
+        <hr>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay về trang chủ</a>
+        <a href="javascript:history.back()" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>

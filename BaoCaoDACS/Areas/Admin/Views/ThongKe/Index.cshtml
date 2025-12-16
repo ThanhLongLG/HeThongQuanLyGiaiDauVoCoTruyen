@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/css/chart.css" rel="stylesheet" />
+    <link href="~/css/chart.min.css" rel="stylesheet" />
+</head>
+
+<style>
+    .chart {
+        max-width: 600px;   /* hoặc 700px, tuỳ ý */
+        margin: 0 auto;     /* căn giữa */
+        padding: 20px 0;
+    }
+#barChart {
+    max-width: 100%;
+    height: 350px !important;   /* hoặc 300px, tuỳ ý */
+}
+</style>
+<body>  
+
+        <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">@ViewData["Title"]</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+         </div>
+</body>
+</html>
+@section Scripts {
+	<script src="/chart.js/chart.min.js"></script>
+        <script>
+            $(function(){
+
+                drawchar();
+             function drawchar() {
+            $.getJSON('/Admin/ThongKe/SoNguoiThamGiaTheoThang', function (data) {
+                var labels = data.map(x => x.thang);
+                var values = data.map(x => x.soNguoi);
+
+                var barChartCanvas = $('#barChart').get(0).getContext('2d');
+                var barChartData = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số người tham gia',
+                        backgroundColor: 'rgba(60,141,188,0.9)',
+                        borderColor: 'rgba(60,141,188,0.8)',
+                        data: values
+                    }]
+                };
+
+                var barChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                };
+
+                new Chart(barChartCanvas, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: barChartOptions
+                });
+            });
+        }
+            });
+         </script>
+ }

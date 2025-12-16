@@ -1,0 +1,129 @@
+﻿@model BaoCaoDACS.Models.Match
+
+@{
+    ViewData["Title"] = "Thêm Trận Đấu Mới";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<head>
+    <link href="~/css/admin.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <nav class="mt-2 mb-4" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="text-white text-decoration-none" asp-controller="TrangQL" asp-action="Index">Trang chủ</a></li>
+                    <li class="breadcrumb-item active text-white">Danh sách Trận Đấu</li>
+                </ol>
+            </nav>
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="bi bi-plus-circle"></i> Thêm Trận Đấu Mới</h4>
+                </div>
+                <div class="card-body">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@modelError.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <form asp-action="Add" asp-controller="TranDau" asp-area="Admin" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                       
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Vongdau" class="control-label">Vòng Đấu</label>
+                            <select asp-for="Vongdau" class="form-select" required>
+                                <option value="">-- Chọn vòng đấu --</option>
+                                <option value="Vòng 1">Vòng 1</option>
+                                <option value="Vòng 2">Vòng 2</option>
+                                <option value="Vòng 3">Vòng 3</option>
+                                <option value="Tứ kết">Tứ kết</option>
+                                <option value="Bán kết">Bán kết</option>
+                                <option value="Chung kết">Chung kết</option>
+                            </select>
+                            <span asp-validation-for="Vongdau" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Hangcan" class="control-label">Hạng Cân</label>
+                            <input asp-for="Hangcan" class="form-control" placeholder="Nhập hạng cân" required />
+                            <span asp-validation-for="Hangcan" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Trongtai" class="control-label">Trọng Tài</label>
+                            <input asp-for="Trongtai" class="form-control" placeholder="Nhập tên trọng tài" required />
+                            <span asp-validation-for="Trongtai" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="SanDau" class="control-label">Sân Đấu</label>
+                            <input asp-for="SanDau" class="form-control" placeholder="Nhập Sân Đấu" required />
+                            <span asp-validation-for="SanDau" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Date" class="control-label">Ngày Thi Đấu</label>
+                            <input asp-for="Date" type="datetime-local" class="form-control" required />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+
+                        <select asp-for="LoaiHinhThiDauId"
+                                asp-items="ViewBag.LoaiHinhThiDauList"
+                                class="form-control"
+                                required>
+                            <option value="">-- Chọn loại hình --</option>
+                        </select>
+                
+
+                        <div class="form-group mb-3">
+                            <label asp-for="TournamentID" class="control-label">Giải Đấu</label>
+                            <select asp-for="TournamentID" asp-items="ViewBag.Tournaments" class="form-select">
+                                <option value="">-- Không tham gia giải đấu --</option>
+                            </select>
+                            <span asp-validation-for="TournamentID" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mt-4 d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Lưu Trận Đấu
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                if (!$(this).valid()) {
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+}
+@* <pre>@Json.Serialize(ViewBag.LoaiHinhThiDauList)</pre> kiểm tra xem view bag có null không *@ 

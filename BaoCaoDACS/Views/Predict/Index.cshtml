@@ -1,0 +1,89 @@
+﻿@model BaoCaoDACS.Models.PredictMatchViewModel
+
+<div class="container mt-4">
+
+    <div class="card shadow p-4">
+        <h3 class="text-center text-primary mb-3">
+            🔮 Dự đoán kết quả trận đấu
+        </h3>
+
+        <form asp-controller="Predict" asp-action="Index" method="get">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Chọn giải đấu</label>
+
+                <select asp-for="SelectedTournamentId"
+                        asp-items="Model.Tournaments"
+                        class="form-select"
+                        id="tournamentSelect"
+                        name="tournamentId">
+                    <option value="">-- Chọn giải --</option>
+                </select>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Chọn trận đấu</label>
+
+                <select asp-for="SelectedMatchId"
+                        asp-items="Model.Matches"
+                        class="form-select"
+                        id="matchSelect"
+                        name="matchId">
+                    <option value="">-- Chọn trận --</option>
+                </select>
+            </div>
+
+
+            <button class="btn btn-primary w-100 mt-3">Dự đoán</button>
+        </form>
+    </div>
+
+    @if (Model.WinnerName != null)
+    {
+        <div class="card shadow p-4 mt-4">
+            <h4 class="text-success text-center">✨ Kết quả dự đoán</h4>
+
+            <p>
+                <b>@Model.FighterAName</b>:
+                <span class="text-primary">
+                    @Model.FighterAProbPercent?.ToString("0.00")%
+                </span>
+            </p>
+            <p>
+                <b>@Model.FighterBName</b>:
+                <span class="text-danger">
+                    @Model.FighterBProbPercent?.ToString("0.00")%
+                </span>
+            </p>
+
+            <div class="alert alert-info mt-3">
+                AI dự đoán người thắng: <strong>@Model.WinnerName</strong>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        const tournamentSelect = document.getElementById('tournamentSelect');
+        const matchSelect = document.getElementById('matchSelect');
+
+        tournamentSelect.addEventListener('change', function () {
+            const tid = this.value;
+            matchSelect.innerHTML = '<option value="">-- Chọn trận --</option>';
+
+            if (!tid) return;
+
+            fetch(`/Predict/GetMatchesByTournament?tournamentId=${tid}`)
+                .then(r => r.json())
+                .then(data => {
+                    data.forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = m.id;
+                        opt.text = m.text;
+                        matchSelect.appendChild(opt);
+                    });
+                });
+        });
+    </script>
+}
