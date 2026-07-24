@@ -7,6 +7,8 @@ body {
     display:flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
+    background: transparent;
     font-size: 24px;
     cursor: pointer;
 }
@@ -77,6 +79,10 @@ body {
     background: rgba(0, 0, 0, 0.5);
     z-index: 997; 
     display: none;
+}
+
+.overlay.show {
+    display: block;
 }
 
 .side-bar.collapsed {

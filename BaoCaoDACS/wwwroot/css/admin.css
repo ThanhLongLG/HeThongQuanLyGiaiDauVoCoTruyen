@@ -76,10 +76,6 @@
         transform: translateY(-1px);
     }
 
-.bi {
-    margin-right: 0.5rem;
-}
-
 .validation-summary-errors {
     background-color: #fff3f3;
     padding: 1rem;

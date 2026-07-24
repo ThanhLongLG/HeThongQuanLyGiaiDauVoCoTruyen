@@ -1,0 +1,283 @@
+/*
+ * VCT Score responsive layer
+ * Tablet: <= 1199.98px | Mobile: <= 767.98px | Small mobile: <= 480px
+ * Luôn nạp file này sau vct-theme.css.
+ */
+
+@media (max-width: 1199.98px) {
+    .vct-public .header-container {
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .vct-public .header-container > .vct-brand {
+        order: 1;
+        margin-right: auto;
+    }
+
+    .vct-public .header-container > .vct-account-nav {
+        order: 2;
+    }
+
+    .vct-public .header-container > .vct-theme-toggle {
+        order: 3;
+    }
+
+    .vct-public .header-container > #real-time-clock {
+        order: 4;
+    }
+
+    .vct-public .navbar {
+        order: 5;
+        width: 100%;
+    }
+
+    .vct-public .navbar > .container-fluid {
+        padding-inline: 0;
+    }
+
+    .vct-public .navbar-toggler {
+        position: relative;
+        z-index: 2;
+        display: inline-grid;
+        margin-left: auto;
+        place-items: center;
+        pointer-events: auto;
+    }
+
+    .vct-public .navbar-collapse {
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .vct-public .navbar-collapse.show {
+        display: block !important;
+    }
+
+    .vct-public .navbar-nav {
+        width: 100%;
+    }
+
+    .vct-public .navbar .nav-link {
+        padding: 11px 8px !important;
+    }
+
+    .vct-public .navbar .nav-link::after {
+        right: auto;
+        bottom: 4px;
+        left: 8px;
+        width: 36px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .vct-scoring > nav {
+        top: 79px;
+    }
+
+    .vct-scoring .match-details {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .vct-scoring .scoring-tabs {
+        width: 100%;
+        border-radius: 14px;
+    }
+
+    .vct-scoring .scoring-tabs .tab {
+        min-width: 0;
+        padding-inline: 12px;
+    }
+
+    .vct-hero__seal {
+        opacity: .5;
+    }
+
+    .vct-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-topbar__title {
+        display: none;
+    }
+
+    .vct-theme-toggle {
+        width: 38px;
+        height: 38px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body.vct-admin.admin-menu-open {
+        overflow: hidden;
+    }
+
+    .vct-admin .side-bar {
+        z-index: 1001;
+    }
+
+    .vct-admin .overlay.show {
+        z-index: 1000;
+        display: block;
+    }
+
+    .vct-admin #sideBarToggler {
+        position: relative;
+        z-index: 2;
+        pointer-events: auto;
+    }
+
+    .vct-public .header-container {
+        align-items: center !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+    }
+
+    .vct-public .header-container > .vct-brand {
+        align-self: center;
+        margin-right: auto;
+    }
+
+    .vct-public .header-container > #real-time-clock {
+        display: none;
+    }
+
+    .vct-public .navbar-nav {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .vct-public .navbar-nav .nav-item {
+        width: 100%;
+        margin: 0;
+    }
+
+    .vct-public .navbar-nav .nav-link {
+        width: 100%;
+        text-align: left;
+    }
+
+    .vct-scoring > header {
+        position: relative;
+    }
+
+    .vct-scoring .header-content,
+    .vct-scoring .user-info {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .vct-scoring .user-info {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .vct-scoring .user-name {
+        text-align: left;
+    }
+
+    .vct-scoring > nav {
+        position: relative;
+        top: 0;
+        overflow-x: auto;
+    }
+
+    .vct-scoring .scoring-nav {
+        margin-inline: auto;
+    }
+
+    .vct-scoring .match-header {
+        flex-direction: column;
+    }
+
+    .vct-scoring .match-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .vct-scoring .scoring-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .vct-scoring .combat-result-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .vct-scoring .tab-content {
+        padding: 16px;
+    }
+
+    .vct-hero,
+    .vct-hero__inner {
+        min-height: 540px;
+    }
+
+    .vct-hero::before {
+        right: -35vw;
+        width: 95vw;
+    }
+
+    .vct-hero h1 {
+        font-size: clamp(2.8rem, 14vw, 4.2rem);
+    }
+
+    .vct-public .results-section {
+        overflow-x: auto;
+    }
+
+    .vct-admin .contents {
+        margin-left: 0;
+        padding: 28px 16px;
+    }
+
+    .vct-admin .my-nav-bar {
+        width: 100%;
+    }
+
+    .vct-search {
+        flex-direction: column;
+    }
+
+    .vct-panel__header {
+        align-items: flex-start !important;
+        gap: 14px;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .vct-public .header-container > .vct-account-nav {
+        order: 6;
+        width: 100%;
+    }
+
+    .vct-public .vct-auth-actions {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .vct-public .vct-auth-actions .vct-btn {
+        width: 100%;
+        padding-inline: 12px;
+    }
+
+    .vct-scoring .scoring-header-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .vct-scoring .scoring-header-actions .vct-btn {
+        width: 100%;
+    }
+
+    .vct-scoring .match-details,
+    .vct-scoring .combat-result-options {
+        grid-template-columns: 1fr;
+    }
+}
