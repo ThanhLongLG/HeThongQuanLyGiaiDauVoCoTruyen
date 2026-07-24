@@ -86,7 +86,11 @@
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Đăng ký tài khoản</h2>
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+<<<<<<< HEAD
             <div class="form-group">
+=======
+            <div class="form-group>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                 <label for="FullName" class="form-label">FullName</label>
                 <input asp-for="Input.FullName" class="form-control" autocomplete="FullName" aria-required="true" placeholder="Enter your FullName" />
                 <span asp-validation-for="Input.FullName" class="text-danger"></span>
@@ -120,6 +124,7 @@
                 </div>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+<<<<<<< HEAD
             <div class="form-group vct-role-field">
                 <label asp-for="Input.Role">Vai trò:</label>
                 <div class="vct-select-wrap">
@@ -128,6 +133,12 @@
                     </select>
                 </div>
                 <span asp-validation-for="Input.Role" class="text-danger"></span>
+=======
+            <div class="form-group">
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-control">
+                    <option disabled selected>-select Role-</option>
+                </select>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
             </div>
             <button id="registerSubmit" type="submit" class="btn btn-solid">Đăng ký</button>
 

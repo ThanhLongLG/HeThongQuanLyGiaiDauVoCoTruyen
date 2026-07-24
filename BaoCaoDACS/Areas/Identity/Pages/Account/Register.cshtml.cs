@@ -125,8 +125,19 @@ namespace BaoCaoDACS.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
 
             }
+<<<<<<< HEAD
             Input = new();
             await PopulateRoleListAsync();
+=======
+            Input = new()
+            {
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -134,7 +145,10 @@ namespace BaoCaoDACS.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+<<<<<<< HEAD
             ReturnUrl = returnUrl;
+=======
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -204,6 +218,7 @@ namespace BaoCaoDACS.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+<<<<<<< HEAD
             await PopulateRoleListAsync();
             return Page();
         }
@@ -222,6 +237,11 @@ namespace BaoCaoDACS.Areas.Identity.Pages.Account
             }).ToList();
         }
 
+=======
+            return Page();
+        }
+
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
         private ApplicationUser CreateUser()
         {
             try
