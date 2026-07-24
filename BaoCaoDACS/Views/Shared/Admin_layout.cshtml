@@ -1,38 +1,66 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+}
 
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta id="vctThemeColor" name="theme-color" content="#1c1a16" />
     <title>ADMIN - @ViewData["Title"]</title>
+    <script>
+        (() => {
+            const storageKey = "vct-theme";
+            let theme = "dark";
+            try {
+                const savedTheme = localStorage.getItem(storageKey);
+                theme = savedTheme === "light" || savedTheme === "dark"
+                    ? savedTheme
+                    : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch {
+                theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+            }
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/adminLayout.css" />
+    <link rel="stylesheet" href="~/css/vct-theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body>
+<body class="vct-admin">
     <div class="side-bar d-flex flex-column justify-content-between h-100 p-3">
         <div>
-            <h3>📖 Trang Admin</h3>
-            <a class="btn btn-outline-dark w-100 mb-2" asp-area="Admin" asp-action="Index" asp-controller="NguoiDung">Quản lý Người dùng</a>
-            <a class="btn btn-outline-dark w-100 mb-2" asp-area="Admin" asp-action="Index" asp-controller="GiaiDau">Quản lý Giải Đấu</a>
-            <a class="btn btn-outline-dark w-100 mb-2" asp-area="Admin" asp-action="Index" asp-controller="TranDau">Quản lý Trận Đấu</a>
-            <a class="btn btn-outline-dark w-100 mb-2" asp-area="Admin" asp-action="Index" asp-controller="KetQua">Quản lý Ket Qua</a>
-
+            <a class="vct-brand" asp-area="Admin" asp-action="Index" asp-controller="TrangQL">
+                <span class="vct-seal vct-seal--brand" aria-hidden="true">V</span>
+                <span class="vct-brand__copy">
+                    <span class="vct-brand__name">VCT Admin</span>
+                    <span class="vct-brand__sub">Bảng điều hành</span>
+                </span>
+            </a>
+            <div class="admin-sidebar__label">Quản trị</div>
+            <nav class="admin-menu" aria-label="Điều hướng quản trị">
+                <a class="admin-menu__item @(currentController == "TrangQL" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="TrangQL"><i class="fa-solid fa-chart-pie"></i> Tổng quan</a>
+                <a class="admin-menu__item @(currentController == "NguoiDung" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="NguoiDung"><i class="fa-regular fa-user"></i> Người dùng</a>
+                <a class="admin-menu__item @(currentController == "GiaiDau" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="GiaiDau"><i class="fa-solid fa-trophy"></i> Giải đấu</a>
+                <a class="admin-menu__item @(currentController == "TranDau" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="TranDau"><i class="fa-solid fa-people-arrows-left-right"></i> Trận đấu</a>
+                <a class="admin-menu__item @(currentController == "KetQua" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="KetQua"><i class="fa-solid fa-medal"></i> Kết quả</a>
+            </nav>
         </div>
 
-        <div>
-            <a class=" btn btn-secondary w-100 mb-2 text-center" asp-area="" asp-action="Index" asp-controller="Home">Về Trang Chủ</a>
-
+        <div class="admin-sidebar__footer">
+            <a class="vct-btn vct-btn--ghost" asp-area="" asp-action="Index" asp-controller="Home"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
                   asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="btn btn-danger w-100">Đăng xuất</button>
+                <button id="logout" type="submit" class="vct-btn vct-logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</button>
             </form>
         </div>
     </div>
@@ -41,13 +69,20 @@
         <div id="sideBarToggler">
             ☰
         </div>
-        <div>
-            <p class="p-0 m-0 d-inline"></p>
+        <div class="admin-topbar__actions">
+            <span class="admin-topbar__title">Hệ thống chấm điểm Võ Cổ Truyền</span>
+            <button type="button" class="vct-theme-toggle" data-theme-toggle aria-label="Chuyển sang giao diện sáng" title="Chuyển sang giao diện sáng">
+                <i class="bi bi-sun-fill vct-theme-toggle__sun" aria-hidden="true"></i>
+                <i class="bi bi-moon-stars-fill vct-theme-toggle__moon" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
     <div class="contents">
         @RenderBody()
     </div>
+
+    <!-- Nạp lại theme sau CSS riêng của từng view để design system luôn có độ ưu tiên cuối. -->
+    <link rel="stylesheet" href="~/css/vct-theme.css" asp-append-version="true" />
 
     <!-- jQuery first -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -55,6 +90,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
     <script src="~/js/adminLayout.js"></script>
+    <script src="~/js/theme-toggle.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

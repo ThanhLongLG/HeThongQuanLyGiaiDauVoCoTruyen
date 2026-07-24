@@ -139,12 +139,11 @@ window.handleSubmitPerformanceScore = async function () {
             <p><strong>Lỗi thừa thiếu động tác:</strong> ${surplusCount}</p>
             <p><strong>Lỗi mất thăng bằng:</strong> ${balanceCount}</p>
             <hr>
-            <h3 style="color: green;">Điểm cuối cùng: ${finalScore}</h3>
+            <h3 class="vct-score-summary">Điểm cuối cùng: ${finalScore}</h3>
         </div>
     `,
             icon: 'info',
-            confirmButtonText: 'Đóng',
-            confirmButtonColor: '#3085d6'
+            confirmButtonText: 'Đóng'
         }).then(async (result) => {
             if (result.isConfirmed) {
 

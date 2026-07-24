@@ -56,7 +56,7 @@ function handleSubmitWeaponScore() {
             <p><strong>Lỗi thăng bằng/chạm đất:</strong> ${balanceCount}</p>
             <p><strong>Lỗi binh khí chạm đất:</strong> ${groundCount}</p>
             <hr>
-            <h3 style="color: green;">Điểm cuối cùng: ${finalScore}</h3>
+            <h3 class="vct-score-summary">Điểm cuối cùng: ${finalScore}</h3>
         </div>
     `,
         icon: 'question',

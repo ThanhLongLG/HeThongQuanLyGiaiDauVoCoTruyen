@@ -10,14 +10,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 
-<nav class="mt-2 mb-4" aria-label="breadcrumb">
+<nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a class="text-white text-decoration-none" asp-controller="TrangQL" asp-action="Index">Trang chủ</a></li>
         <li class="breadcrumb-item active text-white">Danh sách giải đấu</li>
     </ol>
 </nav>
 
-<div class="container-fluid mt-4">
+<header class="mb-4">
+    <div class="vct-page-kicker">Quản lý thi đấu</div>
+    <h1 class="vct-page-title">Danh sách giải đấu</h1>
+    <p class="vct-page-subtitle">Tạo mới, cập nhật và theo dõi số lượng võ sinh của từng giải đấu.</p>
+</header>
+
+<div>
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,34 +32,34 @@
         </div>
     }
 
-    <div class="card">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card vct-panel">
+        <div class="card-header vct-panel__header d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Quản lý giải đấu</h4>
-            <button class="btn btn-light" onclick="location.href='@Url.Action("Add", "GiaiDau")'">
-                <i class="bi bi-plus-circle me-2"></i> Thêm giải đấu mới
+            <button class="vct-btn vct-btn--gold" onclick="location.href='@Url.Action("Add", "GiaiDau")'">
+                <i class="bi bi-plus-lg"></i> Thêm giải đấu mới
             </button>
         </div>
         <div class="card-body">
             <div class="row align-items-center mb-3">
-                <div class="col-md-5">
+                <div class="col-lg-7">
                     <form asp-controller="GiaiDau" asp-action="Index" method="get">
-                        <div class="input-group">
+                        <div class="vct-search">
                             <input name="searchValue" type="text" class="form-control" placeholder="Tìm kiếm theo tên giải đấu..."
                                    value="@ViewBag.searchValue">
-                            <button class="btn btn-primary" type="submit">
-                                <i class="bi bi-search me-1"></i> Tìm kiếm
+                            <button class="vct-btn vct-btn--ghost" type="submit">
+                                <i class="bi bi-search"></i> Tìm kiếm
                             </button>
                         </div>
                     </form>
                 </div>
-                <div class="col-md-7">
+                <div class="col-lg-5 mt-3 mt-lg-0">
                     @if (!string.IsNullOrEmpty(ViewBag.searchValue))
                     {
                         <div class="d-flex align-items-center">
-                            <h6 class="mb-0 text-primary">
+                            <h6 class="mb-0" style="color: var(--vct-gold-light)">
                                 Kết quả tìm kiếm cho: <strong>"@ViewBag.searchValue"</strong>
                             </h6>
-                            <a asp-controller="GiaiDau" asp-action="Index" class="btn btn-sm btn-outline-secondary ms-3">
+                            <a asp-controller="GiaiDau" asp-action="Index" class="vct-btn vct-btn--ghost ms-3">
                                 <i class="bi bi-x-circle me-1"></i> Xóa bộ lọc
                             </a>
                         </div>
@@ -62,8 +68,8 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-striped table-hover border">
-                    <thead class="table-dark">
+                <table class="table table-striped table-hover">
+                    <thead>
                         <tr class="text-center">
                             <th>Tên giải đấu</th>
                             <th>Ngày bắt đầu</th>
@@ -82,19 +88,19 @@
                                     <td>@item.Name</td>
                                     <td class="text-center">@item.StartDate.ToString("dd/MM/yyyy")</td>
                                     <td class="text-center">@item.EndDate.ToString("dd/MM/yyyy")</td>
-                                    <td class="text-center">
+                                    <td class="text-center vct-mono-value">
                                         @(ViewBag.ParticipantCounts.ContainsKey(item.TournamentID) ? ViewBag.ParticipantCounts[item.TournamentID] : 0)
                                     </td>
                                     <td class="text-center">
-                                        <div class="btn-group" role="group">
-                                            <a asp-action="Display" asp-route-id="@item.TournamentID" class="btn btn-info btn-sm">
-                                                <i class="bi bi-eye me-1"></i> Chi tiết
+                                        <div class="vct-actions" role="group" aria-label="Thao tác với @item.Name">
+                                            <a asp-action="Display" asp-route-id="@item.TournamentID" class="vct-icon-btn vct-icon-btn--view" title="Xem chi tiết" aria-label="Xem chi tiết @item.Name">
+                                                <i class="bi bi-eye"></i>
                                             </a>
-                                            <a asp-action="Update" asp-route-id="@item.TournamentID" class="btn btn-primary btn-sm">
-                                                <i class="bi bi-pencil me-1"></i> Sửa
+                                            <a asp-action="Update" asp-route-id="@item.TournamentID" class="vct-icon-btn vct-icon-btn--edit" title="Chỉnh sửa" aria-label="Chỉnh sửa @item.Name">
+                                                <i class="bi bi-pencil"></i>
                                             </a>
-                                            <a asp-action="Delete" asp-route-id="@item.TournamentID" class="btn btn-danger btn-sm">
-                                                <i class="bi bi-trash me-1"></i> Xóa
+                                            <a asp-action="Delete" asp-route-id="@item.TournamentID" class="vct-icon-btn vct-icon-btn--delete" title="Xóa" aria-label="Xóa @item.Name">
+                                                <i class="bi bi-trash"></i>
                                             </a>
                                           
                                         </div>
@@ -115,8 +121,8 @@
         <div class="card-footer">
             <div class="d-flex justify-content-between align-items-center">
                 <span>Tổng số: @(Model?.Count() ?? 0) giải đấu</span>
-                <a asp-controller="TrangQL" asp-action="Index" class="btn btn-outline-primary">
-                    <i class="bi bi-arrow-left me-1"></i> Quay lại trang quản trị
+                <a asp-controller="TrangQL" asp-action="Index" class="vct-btn vct-btn--ghost">
+                    <i class="bi bi-arrow-left"></i> Quay lại trang quản trị
                 </a>
             </div>
         </div>
