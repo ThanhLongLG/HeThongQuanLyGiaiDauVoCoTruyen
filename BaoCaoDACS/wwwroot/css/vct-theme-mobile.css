@@ -113,6 +113,31 @@
 }
 
 @media (max-width: 767.98px) {
+    .vct-public #register-tournament-modal {
+        align-items: flex-start;
+        padding: 16px 10px;
+    }
+
+    .vct-public .vct-registration-card__header,
+    .vct-public .vct-registration-form {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .vct-public .vct-registration-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .vct-public #registrationForm:not(.vct-registration-form) {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .vct-public #registrationForm:not(.vct-registration-form) .btn-primary {
+        grid-column: auto;
+    }
+
     body.vct-admin.admin-menu-open {
         overflow: hidden;
     }

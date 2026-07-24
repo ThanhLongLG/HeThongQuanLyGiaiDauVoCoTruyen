@@ -3,6 +3,9 @@
 }
 @{
     var loginUrl = Url.Page("/Account/Login", new { area = "Identity" });
+    var currentUserEmail = User?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
+        ?? User?.Identity?.Name
+        ?? string.Empty;
 }
 <script>
     // Razor sẽ in ra true hoặc false trực tiếp
@@ -97,27 +100,38 @@
 
 @* Thedangkygiai *@
 <div id="register-tournament-modal" class="modal" data-tournament-id="">
-    <div class="modal-content">
-        <span class="modal-close">&times;</span>
-        <h2>Đăng ký tham dự</h2>
-        <form id="registrationForm" onsubmit="return false;">
-            <div class="form-group">
-                <label for="register-name">Họ và tên:</label>
-                <input type="text" id="register-name" placeholder="Nhập họ và tên" required>
+    <div class="modal-content vct-registration-card" role="dialog" aria-modal="true" aria-labelledby="registration-title">
+        <button type="button" class="modal-close vct-registration-close" aria-label="Đóng form đăng ký">&times;</button>
+        <div class="vct-registration-card__header">
+            <span class="vct-seal vct-seal--brand" aria-hidden="true"><i class="bi bi-person-plus"></i></span>
+            <div>
+                <div class="vct-page-kicker">Thông tin võ sinh</div>
+                <h2 id="registration-title">Đăng ký tham dự</h2>
+                <p>Điền thông tin bên dưới để tham gia giải đấu.</p>
             </div>
-            <div class="form-group">
-                <label for="register-email">Email:</label>
-                <input type="email" id="register-email" placeholder="Nhập địa chỉ email" required>
+        </div>
+        <form id="registrationForm" class="vct-registration-form" onsubmit="return false;">
+            <div class="vct-registration-grid">
+                <div class="form-group">
+                    <label for="register-name">Họ và tên <span aria-hidden="true">*</span></label>
+                    <input type="text" id="register-name" autocomplete="name" placeholder="Nguyễn Văn A" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email tài khoản</label>
+                    <input type="email" id="register-email" value="@currentUserEmail" autocomplete="email" readonly aria-readonly="true" title="Email được lấy từ tài khoản đang đăng nhập">
+                    <small class="vct-field-help"><i class="bi bi-lock-fill" aria-hidden="true"></i> Tài Khoản email hiện tại</small>
+                </div>
+                <div class="form-group">
+                    <label for="register-phone">Số điện thoại <span aria-hidden="true">*</span></label>
+                    <input type="tel" id="register-phone" autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-club">Câu lạc bộ</label>
+                    <input type="text" id="register-club" autocomplete="organization" placeholder="Tên CLB hoặc đơn vị">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="register-phone">Số điện thoại:</label>
-                <input type="tel" id="register-phone" placeholder="Nhập số điện thoại" required>
-            </div>
-            <div class="form-group">
-                <label for="register-club">Câu lạc bộ:</label>
-                <input type="text" id="register-club" placeholder="Nhập tên CLB">
-            </div>
-            <button type="submit" class="btn btn-primary">Đăng ký</button>
+            <p class="vct-registration-note"><i class="bi bi-shield-check" aria-hidden="true"></i> Thông tin được dùng để lập danh sách thi đấu.</p>
+            <button type="submit" class="vct-btn vct-registration-submit"><i class="bi bi-check2-circle" aria-hidden="true"></i> Đăng ký tham dự</button>
         </form>
     </div>
 </div>

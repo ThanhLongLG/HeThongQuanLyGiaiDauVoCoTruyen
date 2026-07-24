@@ -334,6 +334,10 @@ namespace BaoCaoDACS.Controllers
                 if (user == null)
                     return Unauthorized(new { Message = "Vui lòng đăng nhập để thực hiện hành động này." });
 
+                var accountEmail = user.Email ?? user.UserName;
+                if (string.IsNullOrWhiteSpace(accountEmail))
+                    return BadRequest(new { Message = "Tài khoản hiện tại chưa có địa chỉ email." });
+
                 if (!ModelState.IsValid)
                 {
                     var errors = ModelState
@@ -414,7 +418,8 @@ namespace BaoCaoDACS.Controllers
                     FullName = participant.FullName ?? "Chưa tên",
                     Club = string.IsNullOrWhiteSpace(participant.Club) ? "Không có" : participant.Club,
                     sdt = participant.sdt,
-                    email = participant.email,
+                    // Luôn dùng email của tài khoản đăng nhập, không nhận email tùy chỉnh từ client.
+                    email = accountEmail.Trim(),
                     CanNang = participant.CanNang,
                     ChieuCao = participant.ChieuCao,
                     tuoi = participant.tuoi,

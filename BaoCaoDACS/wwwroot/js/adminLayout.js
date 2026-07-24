@@ -45,14 +45,6 @@
 
     overlay.addEventListener("click", closeMobileMenu);
 
-    sidebar.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-            if (mobileQuery.matches) {
-                closeMobileMenu();
-            }
-        });
-    });
-
     document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && sidebar.classList.contains("show")) {
             closeMobileMenu();
