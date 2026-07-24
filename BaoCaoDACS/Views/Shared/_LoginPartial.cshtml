@@ -3,60 +3,32 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-<style>
-
-        .photo {
-            display: inline-block;
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            vertical-align: middle;
-            overflow: hidden;
-        }
-
-        .photo img {
-            width: 100%;
-        }
-
-        .caret {
-            position: absolute;
-            left: 80%;
-            top: 55%;
-            margin-left: 0;
-        }
-</style>
-
-
-<ul class="navbar-nav">
+<ul class="navbar-nav vct-account-nav">
    
 @if (SignInManager.IsSignedIn(User))
 {
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <div class="photo">
-                    <img src="~/img/anime3.png" alt="Profile Photo">
-                </div>
-                <b class="caret d-none d-lg-block d-xl-block"></b>
-                <p class="d-lg-none">
-                    Log out
-                </p>
+            <a class="nav-link dropdown-toggle vct-account-trigger" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu tài khoản">
+                <span class="vct-seal vct-seal--small" aria-hidden="true"><i class="bi bi-person"></i></span>
             </a>
-            <ul class="dropdown-menu">
-                <li>  <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"> @UserManager.GetUserName(User)</a> </li>
-                <li><a class="dropdown-item" asp-area=""  asp-controller="Home" asp-action="ThanhToan">Thanh Toán</a></li>
-                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Profile">Profile</a></li>
-                <li><a class="dropdown-item" asp-area="" asp-controller="Predict" asp-action="Index">Dự Đoán Kết Quả</a></li>
+            <ul class="dropdown-menu dropdown-menu-end vct-user-menu">
+                <li class="vct-account-email">
+                    <span class="vct-seal vct-seal--small vct-seal--brand" aria-hidden="true"><i class="bi bi-person"></i></span>
+                    <span><strong>Tài khoản</strong><small>@UserManager.GetUserName(User)</small></span>
+                </li>
+                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ThanhToan"><i class="bi bi-credit-card"></i> Thanh toán</a></li>
+                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Profile"><i class="bi bi-person-vcard"></i> Hồ sơ</a></li>
+                <li><a class="dropdown-item" asp-area="" asp-controller="Predict" asp-action="Index"><i class="bi bi-stars"></i> Dự đoán kết quả</a></li>
                 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
                     <li>
-                        <a class="dropdown-item" href="/Admin/TrangQL/Index">Admin</a>
+                        <a class="dropdown-item" href="/Admin/TrangQL/Index"><i class="bi bi-grid"></i> Quản trị</a>
                         
                     </li>
                 }
-                <li><hr class="dropdown-divider"></li>
-                <li>
+                <li class="vct-logout">
                     <form class="dropdown-item p-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit" class="dropdown-item">Log out</button>
+                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
                     </form>
                 </li>
             </ul>
@@ -65,9 +37,9 @@
 }
 else
 {
-        <li class="auth-buttons">
-            <a class="btn btn-outline text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            <a class="btn btn-outline text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <li class="vct-auth-actions">
+            <a class="vct-btn vct-btn--ghost" id="register" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
+            <a class="vct-btn vct-btn--primary" id="login" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
         </li>
 }
 </ul>

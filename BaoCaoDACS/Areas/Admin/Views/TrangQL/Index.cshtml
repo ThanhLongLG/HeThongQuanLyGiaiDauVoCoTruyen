@@ -1,45 +1,56 @@
-﻿@{
+@{
+    ViewData["Title"] = "Tổng quan";
     Layout = "~/Views/Shared/Admin_layout.cshtml";
 }
 
-
-<h3 class="mt-2 mb-4">DASHBOARD</h3>
-
-<h2 class="mb-4">📊 Thống kê</h2>
-
-
-<div class="row g-4">
-    <div class="col-sm-12 col-md-6 col-lg-4">
-        <div class="card bg-primary text-white shadow-lg rounded-3">
-            <div class="card-body text-center">
-                <h4 class="fw-bold">👥 Người Dùng</h4>
-                <p class="fs-1 fw-bold mb-2">@ViewBag.khachhangcount người</p>
-                <hr class="border-light" />
-                <a class="text-white text-decoration-none fw-semibold" asp-controller="NguoiDung" asp-action="Index">Xem chi tiết →</a>
-            </div>
-        </div>
+<header class="vct-dashboard-header">
+    <div>
+        <div class="vct-page-kicker">Bảng điều hành</div>
+        <h1 class="vct-page-title">Tổng quan hệ thống</h1>
+        <p class="vct-page-subtitle">Theo dõi nhanh quy mô người dùng, giải đấu và các trận đấu đang được quản lý.</p>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-4">
-        <div class="card bg-success text-white shadow-lg rounded-3">
-            <div class="card-body text-center">
-                <h4 class="fw-bold">Giải Đấu</h4>
-                <p class="fs-1 fw-bold mb-2">@ViewBag.Giadaucount giải đấu</p>
-                <hr class="border-light" />
-                <a class="text-white text-decoration-none fw-semibold" asp-controller="GiaiDau" asp-action="Index">Xem chi tiết →</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-6 col-lg-4">
-        <div class="card bg-secondary text-white shadow-lg rounded-3">
-            <div class="card-body text-center">
-                <h4 class="fw-bold"><span class="glyphicon glyphicon-briefcase"></span>Trận Đấu</h4>
-                <p class="fs-1 fw-bold mb-2">@ViewBag.trandaucount trận đấu</p>
-                <hr class="border-light" />
-                <a class="text-white text-decoration-none fw-semibold" asp-controller="TranDau" asp-action="Index">Xem chi tiết →</a>
-            </div>
-        </div>
-    </div>
-   
-</div>
+</header>
 
+<section class="vct-stats-grid" aria-label="Thống kê tổng quan">
+    <article class="vct-stat-card vct-stat-card--users">
+        <div class="vct-stat-card__head">
+            <span class="vct-seal" aria-hidden="true"><i class="fa-regular fa-user"></i></span>
+            <span>Người dùng</span>
+        </div>
+        <div class="vct-stat-card__value">
+            <strong class="vct-stat-card__number">@ViewBag.khachhangcount</strong>
+            <span class="vct-stat-card__unit">người</span>
+        </div>
+        <a class="vct-stat-card__link" asp-controller="NguoiDung" asp-action="Index">
+            Xem chi tiết <span aria-hidden="true">→</span>
+        </a>
+    </article>
 
+    <article class="vct-stat-card vct-stat-card--tournaments">
+        <div class="vct-stat-card__head">
+            <span class="vct-seal" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span>
+            <span>Giải đấu</span>
+        </div>
+        <div class="vct-stat-card__value">
+            <strong class="vct-stat-card__number">@ViewBag.Giadaucount</strong>
+            <span class="vct-stat-card__unit">giải đấu</span>
+        </div>
+        <a class="vct-stat-card__link" asp-controller="GiaiDau" asp-action="Index">
+            Xem chi tiết <span aria-hidden="true">→</span>
+        </a>
+    </article>
+
+    <article class="vct-stat-card vct-stat-card--matches">
+        <div class="vct-stat-card__head">
+            <span class="vct-seal" aria-hidden="true"><i class="fa-solid fa-people-arrows-left-right"></i></span>
+            <span>Trận đấu</span>
+        </div>
+        <div class="vct-stat-card__value">
+            <strong class="vct-stat-card__number">@ViewBag.trandaucount</strong>
+            <span class="vct-stat-card__unit">trận đấu</span>
+        </div>
+        <a class="vct-stat-card__link" asp-controller="TranDau" asp-action="Index">
+            Xem chi tiết <span aria-hidden="true">→</span>
+        </a>
+    </article>
+</section>

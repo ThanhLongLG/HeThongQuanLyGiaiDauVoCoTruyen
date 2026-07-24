@@ -113,6 +113,7 @@ function renderTeamAthlete(data, container) {
 function createAthleteCard(athlete, side) {
     return `
               <div class="athlete-header ${side}-header">
+                  <span class="corner-label">${side === 'blue' ? 'Góc Xanh' : 'Góc Đỏ'}</span>
                   <h3 class="athlete-name">${athlete.hoTen || 'Chưa xác định'}</h3>
                   <span class="athlete-club">${athlete.clb || 'Chưa xác định'}</span>
               </div>
@@ -587,6 +588,7 @@ function renderTeamAthlete(data, container) {
 function createAthleteCard(athlete, side) {
     return `
               <div class="athlete-header ${side}-header">
+                  <span class="corner-label">${side === 'blue' ? 'Góc Xanh' : 'Góc Đỏ'}</span>
                   <h3 class="athlete-name">${athlete.hoTen || 'Chưa xác định'}</h3>
                   <span class="athlete-club">${athlete.clb || 'Chưa xác định'}</span>
               </div>

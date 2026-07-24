@@ -5,12 +5,13 @@
     var winRateMap = ViewData["WinRateMap"] as Dictionary<string, float>;
 }
 
-<div class="container my-4">
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-primary text-white py-3">
+<div class="container my-4 vct-schedule-page">
+    <div class="card vct-schedule-panel mb-4">
+        <div class="card-header vct-schedule-heading py-3">
             <h3 class="mb-0">
                 <i class="fas fa-calendar-alt me-2"></i>Lịch Thi Đấu
             </h3>
+            <span>Lịch trình và trạng thái các trận đấu</span>
         </div>
 
         <div class="card-body">
@@ -159,7 +160,7 @@
                             <div class="match-actions">
                                 <!-- Bạn có thể đổi lại route/action theo hệ thống của bạn -->
                                 <button type="button"
-                                        class="btn btn-sm btn-success"
+                                        class="vct-btn vct-btn--score"
                                         onclick="xuLyChonGiaiDau2('@match.MatchId')">
                                     <i class="fas fa-calculator"></i> Chấm điểm
                                 </button>
@@ -167,7 +168,7 @@
                                 <a asp-controller="Home"
                                    asp-action="ChiTietTranDau"
                                    asp-route-id="@match.MatchId"
-                                   class="btn btn-sm btn-outline">
+                                   class="vct-btn vct-btn--ghost">
                                     <i class="fas fa-eye"></i> Chi tiết
                                 </a>
                             </div>
@@ -367,6 +368,159 @@
     }
 
 
+</style>
+<style>
+    .vct-schedule-page .vct-schedule-panel {
+        overflow: hidden;
+        border: 1px solid var(--vct-stone);
+        border-radius: var(--vct-radius);
+        background: var(--vct-ink-soft);
+        box-shadow: var(--vct-shadow);
+        color: var(--vct-ivory);
+    }
+
+    .vct-schedule-page .vct-schedule-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--vct-stone);
+        background: rgba(28, 26, 22, .74);
+        color: var(--vct-ivory);
+    }
+
+    .vct-schedule-page .vct-schedule-heading span {
+        color: var(--vct-ivory-muted);
+        font-size: .8rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .vct-schedule-page .card-body {
+        background: transparent;
+    }
+
+    .vct-schedule-page .match-card {
+        border-color: var(--vct-stone);
+        background: var(--vct-ink-card);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, .18);
+        color: var(--vct-ivory);
+        transition: border-color .2s ease, transform .2s ease;
+    }
+
+    .vct-schedule-page .match-card:hover {
+        border-color: rgba(179, 146, 90, .65);
+        transform: translateY(-2px);
+    }
+
+    .vct-schedule-page .match-status {
+        border: 1px solid transparent;
+    }
+
+    .vct-schedule-page .status-scheduled {
+        border-color: rgba(179, 146, 90, .38);
+        background: rgba(179, 146, 90, .1);
+        color: var(--vct-gold-light);
+    }
+
+    .vct-schedule-page .status-ongoing {
+        border-color: rgba(92, 130, 115, .45);
+        background: rgba(92, 130, 115, .12);
+        color: #8caf9f;
+    }
+
+    .vct-schedule-page .status-completed {
+        border-color: var(--vct-stone);
+        background: rgba(168, 155, 133, .08);
+        color: var(--vct-ivory-muted);
+    }
+
+    .vct-schedule-page .match-time {
+        color: var(--vct-ivory);
+        font-family: var(--vct-mono);
+    }
+
+    .vct-schedule-page .match-date,
+    .vct-schedule-page .competitor-club,
+    .vct-schedule-page .match-info,
+    .vct-schedule-page .match-referee,
+    .vct-schedule-page .winrate-row {
+        color: var(--vct-ivory-muted);
+    }
+
+    .vct-schedule-page .competitor-name {
+        color: var(--vct-ivory);
+        font-family: var(--vct-display);
+    }
+
+    .vct-schedule-page .red-corner .competitor-name,
+    .vct-schedule-page .winrate-item.red b {
+        color: #c78680;
+    }
+
+    .vct-schedule-page .blue-corner {
+        text-align: right;
+    }
+
+    .vct-schedule-page .blue-corner .competitor-name,
+    .vct-schedule-page .winrate-item.blue b {
+        color: #8197ad;
+    }
+
+    .vct-schedule-page .vs-indicator {
+        border: 1px solid var(--vct-stone);
+        background: var(--vct-ink);
+        color: var(--vct-gold-light);
+        font-family: var(--vct-mono);
+    }
+
+    .vct-schedule-page .vs-indicator.live {
+        border-color: var(--vct-lacquer);
+        background: rgba(156, 76, 70, .18);
+        color: #d5aaa6;
+        box-shadow: 0 0 0 5px rgba(156, 76, 70, .07);
+    }
+
+    .vct-schedule-page .match-category {
+        color: var(--vct-ivory);
+    }
+
+    .vct-schedule-page .match-actions {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid var(--vct-stone);
+    }
+
+    .vct-schedule-page .vct-btn--score {
+        border-color: rgba(156, 76, 70, .62);
+        background: rgba(156, 76, 70, .18);
+        color: #d8b5b1;
+    }
+
+    .vct-schedule-page .vct-btn--score:hover {
+        border-color: var(--vct-lacquer);
+        background: rgba(156, 76, 70, .28);
+        color: var(--vct-ivory);
+    }
+
+    .vct-schedule-page .winrate-bar {
+        background: rgba(74, 103, 132, .58);
+    }
+
+    .vct-schedule-page .winrate-fill {
+        background: var(--vct-lacquer);
+    }
+
+    @@media (max-width: 575.98px) {
+        .vct-schedule-page .vct-schedule-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .vct-schedule-page .matches-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 @section Scripts {
     <script>

@@ -125,14 +125,8 @@ namespace BaoCaoDACS.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
 
             }
-            Input = new()
-            {
-                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
-                {
-                    Text = i,
-                    Value = i
-                })
-            };
+            Input = new();
+            await PopulateRoleListAsync();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -140,6 +134,7 @@ namespace BaoCaoDACS.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+            ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -209,7 +204,22 @@ namespace BaoCaoDACS.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            await PopulateRoleListAsync();
             return Page();
+        }
+
+        private async Task PopulateRoleListAsync()
+        {
+            Input ??= new InputModel();
+            var roleNames = await _roleManager.Roles
+                .Select(role => role.Name)
+                .ToListAsync();
+
+            Input.RoleList = roleNames.Select(roleName => new SelectListItem
+            {
+                Text = roleName,
+                Value = roleName
+            }).ToList();
         }
 
         private ApplicationUser CreateUser()
