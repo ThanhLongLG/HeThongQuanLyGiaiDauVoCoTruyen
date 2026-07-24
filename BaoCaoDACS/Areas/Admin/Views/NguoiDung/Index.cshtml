@@ -1,5 +1,8 @@
 ﻿@{
+<<<<<<< HEAD
     ViewData["Title"] = "Quản lý người dùng";
+=======
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
     Layout = "~/Views/Shared/Admin_layout.cshtml";
 }
 
@@ -10,7 +13,11 @@
 	<title>@ViewData["Title"] Admin</title>
 	<link href="~/css/admin.css" rel="stylesheet" />
 </head>
+<<<<<<< HEAD
 <nav aria-label="breadcrumb">
+=======
+<nav class="mt-2 mb-4" aria-label="breadcrumb">
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a class="text-white text-decoration-none" asp-area="Admin" asp-controller="TrangQL" asp-action="Index">TrangChu</a></li>
         <li class="breadcrumb-item"><a class=" text-white text-decoration-none" asp-area="Admin" asp-action="Index">Danh Sách Khach Hang</a></li>
@@ -18,6 +25,7 @@
     </ol>
 </nav>
 
+<<<<<<< HEAD
 <header class="mb-4">
     <div class="vct-page-kicker">Quản lý hệ thống</div>
     <h1 class="vct-page-title">Danh sách người dùng</h1>
@@ -25,6 +33,9 @@
 </header>
 
 <div>
+=======
+<div class="container-fluid mt-4">
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -34,15 +45,24 @@
     }
 
 
+<<<<<<< HEAD
     <div class="card vct-panel">
         <div class="card-header vct-panel__header d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Quản lý Người dùng</h4>
             <button class="vct-btn vct-btn--gold" onclick="location.href='@Url.Action("Add", "NguoiDung")'">
                 <i class="bi bi-plus-lg"></i> Thêm người tham gia
+=======
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Quản lý Người dùng</h4>
+            <button class="btn btn-light" onclick="location.href='@Url.Action("Add", "NguoiDung")'">
+                <i class="bi bi-plus-circle me-2"></i> Thêm người tham gia
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
             </button>
         </div>
         <div class="card-body">
             <div class="row align-items-center mb-3">
+<<<<<<< HEAD
                 <div class="col-lg-7">
                     <form asp-controller="NguoiDung" asp-action="Index" method="get">
                         <div class="vct-search">
@@ -60,6 +80,25 @@
                                 Kết quả tìm kiếm cho: <strong>"@ViewBag.searchValue"</strong>
                             </h6>
                             <a asp-controller="NguoiDung" asp-action="Index" class="vct-btn vct-btn--ghost ms-3">
+=======
+                <div class="col-md-5">
+                    <form asp-controller="NguoiDung" asp-action="Index" method="get">
+                        <div class="input-group">
+                            <input name="searchValue" type="text" class="form-control my-input" placeholder="Bạn muốn tìm gì ?"
+                                   value="@ViewBag.searchValue">
+                            <button class="btn btn-primary my-button" type="submit">Tìm kiếm</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-7">
+                    @if (!string.IsNullOrEmpty(ViewBag.searchValue))
+                    {
+                        <div class="d-flex align-items-center">
+                            <h6 class="mb-0 text-primary">
+                                Kết quả tìm kiếm cho: <strong>"@ViewBag.searchValue"</strong>
+                            </h6>
+                            <a asp-controller="NguoiDung" asp-action="Index" class="btn btn-sm btn-outline-secondary ms-3">
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                                 <i class="bi bi-x-circle me-1"></i> Xóa bộ lọc
                             </a>
                         </div>
@@ -68,6 +107,7 @@
             </div>
 
             <div class="table-responsive">
+<<<<<<< HEAD
                 <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -79,12 +119,28 @@
                     </tr>
                 </thead>
                 <tbody>
+=======
+                <table class="table table-striped table-hover border">
+                    <thead class="table-dark">
+                <thead>
+                    <tr class="text-white">
+                        <th>Ten</th>
+                        <th>Club</th>
+                      
+                        <th>SDT</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-light">
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                     @foreach (var item in Model)
                     {
                         <tr>
                      
                             <td>@item.FullName</td>
                             <td>@item.Club</td>
+<<<<<<< HEAD
                             <td class="vct-mono-value">@item.sdt</td>
                             <td>@item.email</td>
                             <td class="vct-action-column">
@@ -93,6 +149,14 @@
                                     <a asp-action="Update" asp-route-id="@item.ParticipantID" class="vct-icon-btn vct-icon-btn--edit" title="Chỉnh sửa" aria-label="Chỉnh sửa @item.FullName"><i class="bi bi-pencil"></i></a>
                                     <a asp-action="Delete" asp-route-id="@item.ParticipantID" class="vct-icon-btn vct-icon-btn--delete" title="Xóa" aria-label="Xóa @item.FullName"><i class="bi bi-trash"></i></a>
                                 </div>
+=======
+                            <th>@item.sdt</th>
+                            <th>@item.email</th>
+                            <td>
+                                <a asp-action="Display" asp-route-id="@item.ParticipantID" class="btn btn-info">Chi tiết</a>
+                                <a asp-action="Update" asp-route-id="@item.ParticipantID" class="btn btn-primary">Sửa</a>
+                                <a asp-action="Delete" asp-route-id="@item.ParticipantID" class="btn btn-danger">Xóa</a>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                             </td>
                         </tr>
                     }
@@ -100,11 +164,14 @@
             </table>
             </div>
         </div>
+<<<<<<< HEAD
         <div class="card-footer">
             <div class="d-flex justify-content-between align-items-center">
                 <span>Tổng số: @(Model == null ? 0 : Model.Count) người dùng</span>
                 <a asp-controller="TrangQL" asp-action="Index" class="vct-btn vct-btn--ghost"><i class="bi bi-arrow-left"></i> Quay lại trang quản trị</a>
             </div>
+=======
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
         </div>
     </div>
 

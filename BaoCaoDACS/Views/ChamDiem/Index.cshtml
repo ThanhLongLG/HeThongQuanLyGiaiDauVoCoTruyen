@@ -14,6 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <meta id="vctThemeColor" name="theme-color" content="#1c1a16">
     <title>Hệ Thống Chấm Điểm Võ Cổ Truyền</title>
     <script>
@@ -40,10 +41,20 @@
     <link href="~/css/vct-theme-mobile.css" rel="stylesheet" asp-append-version="true" media="(max-width: 1199.98px)" />
 </head>
 <body class="vct-public vct-scoring">
+=======
+    <title>Hệ Thống Chấm Điểm Võ Cổ Truyền</title>
+    <link href="~/css/Chamdiem.css" rel="stylesheet" />
+    <!-- Bootstrap CSS --> 
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/css/video.css" rel="stylesheet" />
+</head>
+<body>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
     <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
+<<<<<<< HEAD
                 <a class="vct-brand scoring-brand" href="/Home/Index" aria-label="VCT Score - Trang chủ">
                     <span class="vct-seal vct-seal--brand" aria-hidden="true">V</span>
                     <span class="vct-brand__copy">
@@ -58,10 +69,25 @@
                         <form class="scoring-header-actions" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                             <a class="vct-btn vct-btn--ghost" href="/Home/Index"><i class="bi bi-house"></i> Trang chủ</a>
                             <button type="submit" class="vct-btn vct-btn--primary logout-btn"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+=======
+                <div class="logo">
+                    <h1>VTC Socre</h1>
+                </div>
+                <div class="user-info">
+                    @if (SignInManager.IsSignedIn(User))
+                        {
+                    <span class="user-name">Trọng tài: @UserManager.GetUserName(User)</span>
+                   
+                    
+                        <form class="p-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="logout-btn">Log out</button>
+                             <a class="btn btn-primary text-white" href="/Home/Index">Trang Chủ</a>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                         </form>
                         }
                             else
                         {
+<<<<<<< HEAD
                                 <a class="vct-btn vct-btn--primary" id="login" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
                                 <a class="vct-btn vct-btn--ghost" href="/Home/Index">Trang chủ</a>
                         }
@@ -69,6 +95,11 @@
                         <i class="bi bi-sun-fill vct-theme-toggle__sun" aria-hidden="true"></i>
                         <i class="bi bi-moon-stars-fill vct-theme-toggle__moon" aria-hidden="true"></i>
                     </button>
+=======
+                                <a class="btn btn-primary text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                <a class="btn btn-primary text-white" href="/Home/Index">Trang Chủ</a>
+                        }
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                 </div>
             </div>
         </div>
@@ -77,7 +108,11 @@
     <!-- Điều hướng -->
     <nav>
         <div class="container">
+<<<<<<< HEAD
             <ul class="nav-links scoring-nav">
+=======
+            <ul class="nav-links">
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                 <li><a href="#" class="nav-tab active" data-main-tab="chamdiem">Chấm điểm</a></li>
                 <li><a href="#" class="nav-tab" data-main-tab="ketqua">Kết quả</a></li>
                 <li><a href="#" class="nav-tab" data-main-tab="quydinh">Quy định</a></li>
@@ -94,7 +129,11 @@
             </div>
             <!-- Tabs for different scoring types -->
             <div class="scoring-tabs">
+<<<<<<< HEAD
                 <div class="tab active" data-tab="combat">Đối kháng</div>
+=======
+                <div class="tab active" data-tab="combat">Đối Kháng</div>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                 <div class="tab" data-tab="performance">Quyền pháp</div>
                 <div class="tab" data-tab="weapon">Binh khí</div>
                 <div class="tab" data-tab="team">Đồng đội</div>
@@ -110,9 +149,15 @@
                         <span class="timer-label">THỜI GIAN HIỆP</span>
                         <div class="timer-display" id="combat-timer">02:00</div>
                         <div class="timer-controls">
+<<<<<<< HEAD
                             <button class="timer-btn timer-btn--primary" id="start-timer"><i class="bi bi-play-fill"></i> Bắt đầu</button>
                             <button class="timer-btn timer-btn--secondary" id="pause-timer"><i class="bi bi-pause-fill"></i> Tạm dừng</button>
                             <button class="timer-btn timer-btn--secondary" id="reset-timer"><i class="bi bi-arrow-counterclockwise"></i> Đặt lại</button>
+=======
+                            <button class="timer-btn" id="start-timer">Bắt đầu</button>
+                            <button class="timer-btn" id="pause-timer">Tạm dừng</button>
+                            <button class="timer-btn" id="reset-timer">Đặt lại</button>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                         </div>
                     </div>
                 </section>
@@ -131,10 +176,14 @@
 
                 <!-- Result Selection Section -->
                 <section class="combat-result-section">
+<<<<<<< HEAD
                     <div class="combat-result-heading">
                         <span class="vct-page-kicker">Phương thức kết thúc</span>
                         <h2>Kết quả hiệp đấu</h2>
                     </div>
+=======
+                    <span style="font-weight: 700; font-size: 1.1em;">KẾT QUẢ (RESULT):</span>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                     <div class="combat-result-options">
                         <label class="combat-result-radio" id="radio-scoring">
                             <input type="radio" name="combat-result" value="SCORING" checked>
@@ -241,9 +290,15 @@
 
 
     <!-- Kết quả -->
+<<<<<<< HEAD
     <section class="main-section tab-main-section" id="ketqua-section">
         <div class="section-header">Kết quả</div>
         <div class="section-body">
+=======
+    <section class="main-section tab-main-section" >
+        <div class="section-header">Kết quả</div>
+        <div class="section-body" id="ketqua-section">
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
             <ul>
                 <li>Đối kháng 60kg: Nguyễn Văn An - thắng</li>
                 <li> Nguyễn Quốc An - 9.40 điểm</li>
@@ -319,7 +374,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<<<<<<< HEAD
     <script src="~/js/theme-toggle.js" asp-append-version="true"></script>
+=======
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
 
     <br />
   
@@ -330,7 +388,11 @@
 <script src="~/js/hamxuly3.js"></script>
 <script src="~/js/chamdiemtrandau.js" ></script>
 <script src="~/js/chamdiem.js"></script>
+<<<<<<< HEAD
 <script src="~/js/Truycapvaochamdiem.js"></script>
+=======
+<script src="~/js/loadthongtintrang.js"></script>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
 <script src="~/js/uploadvideo.js"></script>
 <script src="~/js/hamxuly4.js"></script>
 </html>
@@ -349,7 +411,11 @@
                 return response.json();
             })
             .then(matches => {
+<<<<<<< HEAD
                 const ul = document.querySelector('#ketqua-section ul');
+=======
+                const ul = document.getElementById('#ketqua-section ul');
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                 ul.innerHTML = ''; // Xóa kết quả cũ
 
                 if (!matches || matches.length === 0) {
@@ -371,7 +437,11 @@
                 });
             })
             .catch(error => {
+<<<<<<< HEAD
                 const ul = document.querySelector('#ketqua-section ul');
+=======
+                const ul = document.getElementById('ketqua-section');
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                 ul.innerHTML = `<li>Lỗi khi lấy kết quả: ${error.message}</li>`;
             });
     }
@@ -381,4 +451,8 @@
         renderTournamentResults(currentMatchId);
     });
 
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e

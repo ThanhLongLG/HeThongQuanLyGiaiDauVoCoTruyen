@@ -1,16 +1,12 @@
-# Build output
 bin/
 obj/
 BaoCaoDACS/project/
-# Visual Studio
 .vs/
 
-# Python
 venv/
 .venv/
 env/
 __pycache__/
 *.pyc
 
-# Media
 *.mp4

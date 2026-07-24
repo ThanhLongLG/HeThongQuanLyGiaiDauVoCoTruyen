@@ -56,7 +56,11 @@ function handleSubmitWeaponScore() {
             <p><strong>Lỗi thăng bằng/chạm đất:</strong> ${balanceCount}</p>
             <p><strong>Lỗi binh khí chạm đất:</strong> ${groundCount}</p>
             <hr>
+<<<<<<< HEAD
             <h3 class="vct-score-summary">Điểm cuối cùng: ${finalScore}</h3>
+=======
+            <h3 style="color: green;">Điểm cuối cùng: ${finalScore}</h3>
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
         </div>
     `,
         icon: 'question',
@@ -248,4 +252,8 @@ function updateWeaponFinalScore() {
     if (finalScoreEl) {
         finalScoreEl.textContent = final.toFixed(2);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
