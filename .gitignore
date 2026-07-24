@@ -1,7 +1,7 @@
 # Build output
 bin/
 obj/
-
+BaoCaoDACS/project/
 # Visual Studio
 .vs/
 
