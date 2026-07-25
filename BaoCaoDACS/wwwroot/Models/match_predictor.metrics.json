@@ -1,0 +1,35 @@
+{
+  "trainedAtUtc": "2026-07-25T02:21:47.7171744Z",
+  "data": {
+    "candidateMatches": 64,
+    "validMatches": 64,
+    "rejectedMatches": 0,
+    "rejectedReasons": {},
+    "firstMatchUtc": "2025-01-01T08:00:00",
+    "lastMatchUtc": "2025-12-14T18:17:00",
+    "tournaments": 2
+  },
+  "split": {
+    "strategy": "chronological-by-match",
+    "trainMatches": 51,
+    "testMatches": 13,
+    "trainRows": 102,
+    "testRows": 13
+  },
+  "metrics": {
+    "Accuracy": 0.6153846153846154,
+    "AreaUnderRocCurve": 0.7380952380952381,
+    "F1Score": 0.5454545454545454,
+    "PositivePrecision": 0.75,
+    "PositiveRecall": 0.42857142857142855,
+    "NegativePrecision": 0.5555555555555556,
+    "NegativeRecall": 0.8333333333333334,
+    "LogLoss": 0.8997178499331641
+  },
+  "finalTrainingRows": 128,
+  "model": {
+    "trainer": "LbfgsLogisticRegression",
+    "activeFile": "match_predictor.zip",
+    "sha256": "8B4D4071DCB658BA7C392DF9BF57384D01DD2B11A40AF18FB76CB4048C2B0B5C"
+  }
+}

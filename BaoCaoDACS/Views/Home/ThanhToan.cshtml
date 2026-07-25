@@ -1,95 +1,107 @@
-﻿@using BaoCaoDACS.Models.VnPay
-@{
-    Layout = "_Layout";
-}
-
+@using BaoCaoDACS.Models.VnPay
 @model PaymentMultiViewModel
 
-<div class="container mt-5">
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<link href="~/css/Payment.css" rel="stylesheet" asp-append-version="true" />
+
+<section class="vct-payment-page" aria-labelledby="payment-page-title">
+    <div class="vct-payment-heading">
+        <div>
+            <div class="vct-page-kicker">Phí tham gia giải đấu</div>
+            <h1 id="payment-page-title">Thanh toán</h1>
+            <p>Kiểm tra thông tin và chọn phương thức thanh toán phù hợp.</p>
+        </div>
+        <span class="vct-payment-secure"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Giao dịch bảo mật</span>
+    </div>
+
     @if (Model == null)
     {
-        <div class="alert alert-warning text-center">
-            <h4>
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                Bạn chưa đăng ký tham gia giải đấu
-            </h4>
-            <p>Vui lòng đăng ký tham gia trước khi thanh toán.</p>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
-                <i class="fas fa-calendar-alt me-2"></i>Xem Các Giải Đấu
+        <div class="vct-payment-empty">
+            <span class="vct-seal" aria-hidden="true"><i class="bi bi-receipt"></i></span>
+            <h2>Chưa có khoản phí cần thanh toán</h2>
+            <p>Bạn cần đăng ký tham gia một giải đấu trước khi thực hiện thanh toán.</p>
+            <a class="vct-payment-primary" asp-controller="Home" asp-action="Index" asp-fragment="GiaDau">
+                <i class="bi bi-trophy" aria-hidden="true"></i>
+                Xem các giải đấu
             </a>
         </div>
     }
     else
     {
-        <div class="card shadow-lg">
-            <div class="card-header bg-primary text-white">
-                <h3 class="mb-0">
-                    <i class="fas fa-money-check-alt me-2"></i>
-                    Thanh Toán Phí Tham Gia Giải Đấu
-                </h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="payment-info">
-                            <h5>Thông Tin Thanh Toán</h5>
-                            <hr />
-                            <p><strong>Họ và Tên:</strong> @Model.MomoInfo.FullName</p>
-                            <p><strong>Số Tiền Thanh Toán:</strong> @Model.MomoInfo.Amount.ToString("N0") VNĐ</p>
-                            <p><strong>Nội Dung:</strong> @Model.MomoInfo.OrderInfo</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <div class="payment-methods">
-                            <h5>Phương Thức Thanh Toán</h5>
-                            <hr />
-                            <form method="POST" asp-action="CreatePaymentUrl" asp-controller="Payment">
-                                <input type="hidden" asp-for="MomoInfo.FullName" value="@Model.MomoInfo.FullName" />
-                                <input type="hidden" asp-for="MomoInfo.Amount" value="@Model.MomoInfo.Amount" />
-                                <input type="hidden" asp-for="MomoInfo.OrderInfo" value="@Model.MomoInfo.OrderInfo" />
-
-                                <div class="payment-options">
-                                    <button class="btn btn-success btn-lg mb-3" name="PayUrl" type="submit">
-                                        <i class="fab fa-cc-mastercard me-2"></i>Thanh Toán MoMo
-                                    </button>
-
-                                    <div class="text-muted small">
-                                        <p>
-                                            <i class="fas fa-shield-alt me-2 text-success"></i>
-                                            Giao dịch an toàn và bảo mật
-                                        </p>
-                                    </div>
-                                </div>
-                            </form>
-                            <form method="POST" asp-action="CreateVnpayPaymentUrl" asp-controller="Payment">
-                                <input type="hidden" asp-for="VnpayInfo.Name" value="@Model.VnpayInfo.Name" />
-                                <input type="hidden" asp-for="VnpayInfo.Amount" value="@Model.VnpayInfo.Amount" />
-                                <input type="hidden" asp-for="VnpayInfo.OrderDescription" value="@Model.VnpayInfo.OrderDescription" />
-                                <input type="hidden" asp-for="VnpayInfo.OrderType" value="other" />
-
-                                <button class="btn btn-primary btn-lg mb-3" type="submit">
-                                    <i class="fab fa-cc-visa me-2"></i>Thanh Toán VNPAY
-                                </button>
-                            </form>
-                        </div>
+        <div class="vct-payment-layout">
+            <article class="vct-payment-summary">
+                <div class="vct-payment-summary__header">
+                    <span class="vct-seal" aria-hidden="true"><i class="bi bi-receipt-cutoff"></i></span>
+                    <div>
+                        <h2>Chi tiết thanh toán</h2>
+                        <p>Vui lòng kiểm tra trước khi tiếp tục.</p>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer text-muted">
-                <small>
-                    <i class="fas fa-info-circle me-2"></i>
-                    Sau khi thanh toán thành công, bạn sẽ được xác nhận tham gia giải đấu
-                </small>
-            </div>
+
+                <dl class="vct-payment-details">
+                    <div>
+                        <dt>Người tham dự</dt>
+                        <dd>@Model.MomoInfo.FullName</dd>
+                    </div>
+                    <div>
+                        <dt>Nội dung</dt>
+                        <dd>@Model.MomoInfo.OrderInfo</dd>
+                    </div>
+                    <div class="vct-payment-details__total">
+                        <dt>Tổng thanh toán</dt>
+                        <dd>@Model.MomoInfo.Amount.ToString("N0") <span>VNĐ</span></dd>
+                    </div>
+                </dl>
+
+                <p class="vct-payment-summary__note">
+                    <i class="bi bi-info-circle" aria-hidden="true"></i>
+                    Sau khi thanh toán thành công, trạng thái tham gia giải sẽ được xác nhận.
+                </p>
+            </article>
+
+            <section class="vct-payment-methods" aria-labelledby="payment-method-title">
+                <div class="vct-payment-methods__heading">
+                    <div class="vct-page-kicker">Phương thức</div>
+                    <h2 id="payment-method-title">Chọn cách thanh toán</h2>
+                </div>
+
+                <form method="post" asp-action="CreatePaymentUrl" asp-controller="Payment">
+                    <input type="hidden" asp-for="MomoInfo.FullName" />
+                    <input type="hidden" asp-for="MomoInfo.Amount" />
+                    <input type="hidden" asp-for="MomoInfo.OrderInfo" />
+                    <button class="vct-payment-method vct-payment-method--momo" name="PayUrl" type="submit">
+                        <span class="vct-payment-method__icon"><i class="bi bi-wallet2" aria-hidden="true"></i></span>
+                        <span class="vct-payment-method__copy">
+                            <strong>Ví điện tử MoMo</strong>
+                            <small>Thanh toán nhanh qua ứng dụng MoMo</small>
+                        </span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+
+                <form method="post" asp-action="CreateVnpayPaymentUrl" asp-controller="Payment">
+                    <input type="hidden" asp-for="VnpayInfo.Name" />
+                    <input type="hidden" asp-for="VnpayInfo.Amount" />
+                    <input type="hidden" asp-for="VnpayInfo.OrderDescription" />
+                    <input type="hidden" asp-for="VnpayInfo.OrderType" />
+                    <button class="vct-payment-method vct-payment-method--vnpay" type="submit">
+                        <span class="vct-payment-method__icon"><i class="bi bi-bank" aria-hidden="true"></i></span>
+                        <span class="vct-payment-method__copy">
+                            <strong>VNPAY</strong>
+                            <small>Thẻ ATM, tài khoản ngân hàng hoặc mã QR</small>
+                        </span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+
+                <div class="vct-payment-trust">
+                    <span><i class="bi bi-lock-fill" aria-hidden="true"></i> Kết nối mã hóa</span>
+                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Đối tác xác thực</span>
+                </div>
+            </section>
         </div>
     }
-</div>
-
-<style>
-    .payment-info, .payment-methods {
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
-</style>
+</section>

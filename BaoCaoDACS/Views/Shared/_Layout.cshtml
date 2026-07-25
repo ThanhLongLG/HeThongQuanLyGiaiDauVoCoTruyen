@@ -42,10 +42,7 @@
             </a>
             <nav class="navbar navbar-expand-xl navbar-dark">
                 <div class="container-fluid">
-                    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-                            aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+
                     <div class="collapse navbar-collapse" id="navbarMenu">
                         <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
                             <li class="nav-item">
@@ -78,11 +75,17 @@
                     </div>
                 </div>
             </nav>
-            <partial name="_LoginPartial" />
-            <button type="button" class="vct-theme-toggle" data-theme-toggle aria-label="Chuyển sang giao diện sáng" title="Chuyển sang giao diện sáng">
-                <i class="bi bi-sun-fill vct-theme-toggle__sun" aria-hidden="true"></i>
-                <i class="bi bi-moon-stars-fill vct-theme-toggle__moon" aria-hidden="true"></i>
-            </button>
+            <div class="vct-header-actions">
+                <partial name="_LoginPartial" />
+                <button type="button" class="vct-theme-toggle" data-theme-toggle aria-label="Chuyển sang giao diện sáng" title="Chuyển sang giao diện sáng">
+                    <i class="bi bi-sun-fill vct-theme-toggle__sun" aria-hidden="true"></i>
+                    <i class="bi bi-moon-stars-fill vct-theme-toggle__moon" aria-hidden="true"></i>
+                </button>
+                <button class="navbar-toggler vct-mobile-nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                        aria-controls="navbarMenu" aria-expanded="false" aria-label="Mở menu điều hướng">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                </button>
+            </div>
             <div id="real-time-clock" class="ms-2" style="color: white; font-size: 0.8rem; font-weight: bold;"></div>
         </div>
     </header>

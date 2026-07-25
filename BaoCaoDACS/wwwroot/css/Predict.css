@@ -1,0 +1,393 @@
+.vct-predict-page {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+    padding: clamp(34px, 6vw, 72px) 0;
+    color: var(--vct-ivory);
+}
+
+.vct-predict-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+}
+
+.vct-predict-heading h1 {
+    margin: 4px 0 7px;
+    color: var(--vct-ivory);
+    font-family: var(--vct-display);
+    font-size: clamp(2rem, 5vw, 3.15rem);
+    line-height: 1.05;
+}
+
+.vct-predict-heading p {
+    max-width: 630px;
+    margin: 0;
+    color: var(--vct-ivory-muted);
+    font-size: .92rem;
+}
+
+.vct-predict-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    border: 1px solid var(--vct-stone);
+    border-radius: 999px;
+    background: var(--vct-ink-card);
+    color: var(--vct-gold-light);
+    font-family: var(--vct-mono);
+    font-size: .7rem;
+}
+
+.vct-predict-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .94fr);
+    gap: 22px;
+    align-items: stretch;
+}
+
+.vct-predict-card,
+.vct-predict-result,
+.vct-predict-placeholder {
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid var(--vct-stone);
+    border-radius: 22px;
+    background: var(--vct-ink-soft);
+    box-shadow: var(--vct-shadow);
+}
+
+.vct-predict-card__header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 23px 26px;
+    border-bottom: 1px solid var(--vct-stone);
+    background:
+        radial-gradient(circle at 12% 0%, rgba(156, 76, 70, .14), transparent 16rem),
+        var(--vct-ink-card);
+}
+
+.vct-predict-card__header h2,
+.vct-predict-result h2,
+.vct-predict-placeholder h2 {
+    margin: 0 0 4px;
+    color: var(--vct-ivory);
+    font-family: var(--vct-display);
+    font-size: 1.35rem;
+}
+
+.vct-predict-card__header p {
+    margin: 0;
+    color: var(--vct-ivory-muted);
+    font-size: .72rem;
+}
+
+.vct-predict-card__body {
+    padding: 28px 26px;
+}
+
+.vct-predict-step {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 14px;
+}
+
+.vct-predict-step__number {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid var(--vct-stone);
+    border-radius: 50%;
+    background: var(--vct-ink-card);
+    color: var(--vct-gold-light);
+    font-family: var(--vct-mono);
+    font-size: .68rem;
+}
+
+.vct-predict-field {
+    display: grid;
+    gap: 8px;
+}
+
+.vct-predict-field label {
+    color: var(--vct-ivory-muted);
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.vct-predict-select {
+    position: relative;
+}
+
+.vct-predict-select > i:first-child {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 14px;
+    color: var(--vct-gold-light);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.vct-predict-select > i:last-child {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    color: var(--vct-ivory-muted);
+    font-size: .7rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.vct-predict-select select {
+    width: 100%;
+    min-height: 49px;
+    padding: 11px 38px 11px 42px;
+    border: 1px solid var(--vct-stone);
+    border-radius: 12px;
+    appearance: none;
+    background: var(--vct-ink);
+    color: var(--vct-ivory);
+    font-family: var(--vct-body);
+    font-size: .82rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.vct-predict-select select:hover:not(:disabled),
+.vct-predict-select select:focus {
+    border-color: var(--vct-gold);
+    background: var(--vct-ink-card);
+    box-shadow: 0 0 0 3px rgba(179, 146, 90, .12);
+}
+
+.vct-predict-select select:disabled {
+    color: var(--vct-ivory-muted);
+    cursor: not-allowed;
+    opacity: .65;
+}
+
+.vct-predict-select option {
+    background: var(--vct-ink);
+    color: var(--vct-ivory);
+}
+
+.vct-predict-help {
+    min-height: 1em;
+    color: var(--vct-ivory-muted);
+    font-size: .68rem;
+}
+
+.vct-predict-divider {
+    width: 1px;
+    height: 20px;
+    margin: 4px 0 4px 18px;
+    background: var(--vct-stone);
+}
+
+.vct-predict-submit {
+    display: inline-flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 27px;
+    border: 1px solid var(--vct-lacquer);
+    border-radius: 999px;
+    background: var(--vct-lacquer);
+    color: #fffaf1;
+    font-family: var(--vct-body);
+    font-size: .8rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.vct-predict-submit:hover,
+.vct-predict-submit:focus-visible {
+    border-color: var(--vct-lacquer-dark);
+    background: var(--vct-lacquer-dark);
+    outline: none;
+}
+
+.vct-predict-result {
+    padding: 26px;
+}
+
+.vct-predict-result__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.vct-predict-result__top > i {
+    color: var(--vct-jade);
+    font-size: 1.35rem;
+}
+
+.vct-predict-fighters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+}
+
+.vct-predict-fighter {
+    display: grid;
+    gap: 6px;
+}
+
+.vct-predict-fighter--b {
+    text-align: right;
+}
+
+.vct-predict-fighter__label {
+    color: var(--vct-ivory-muted);
+    font-size: .66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.vct-predict-fighter strong {
+    overflow: hidden;
+    color: var(--vct-ivory);
+    font-size: .9rem;
+    text-overflow: ellipsis;
+}
+
+.vct-predict-percent {
+    color: var(--vct-gold-light);
+    font-family: var(--vct-mono);
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.vct-predict-versus {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid var(--vct-stone);
+    border-radius: 50%;
+    color: var(--vct-ivory-muted);
+    font-family: var(--vct-mono);
+    font-size: .65rem;
+}
+
+.vct-predict-meter {
+    display: flex;
+    overflow: hidden;
+    height: 9px;
+    margin: 20px 0 27px;
+    gap: 3px;
+    border-radius: 999px;
+    background: var(--vct-stone);
+}
+
+.vct-predict-meter__a {
+    background: var(--vct-gold);
+}
+
+.vct-predict-meter__b {
+    background: var(--vct-lacquer);
+}
+
+.vct-predict-winner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid rgba(179, 146, 90, .32);
+    border-radius: 14px;
+    background: rgba(179, 146, 90, .08);
+}
+
+.vct-predict-winner div {
+    display: grid;
+    gap: 3px;
+}
+
+.vct-predict-winner small {
+    color: var(--vct-ivory-muted);
+    font-size: .67rem;
+}
+
+.vct-predict-winner strong {
+    color: var(--vct-gold-light);
+    font-size: .92rem;
+}
+
+.vct-predict-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 18px 0 0;
+    color: var(--vct-ivory-muted);
+    font-size: .67rem;
+    line-height: 1.5;
+}
+
+.vct-predict-placeholder {
+    display: flex;
+    min-height: 410px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 34px;
+    text-align: center;
+}
+
+.vct-predict-placeholder__icon {
+    display: grid;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 18px;
+    place-items: center;
+    border: 1px solid var(--vct-stone);
+    border-radius: 50%;
+    background: var(--vct-ink-card);
+    color: var(--vct-gold-light);
+    font-size: 1.45rem;
+}
+
+.vct-predict-placeholder p {
+    max-width: 320px;
+    margin: 4px 0 0;
+    color: var(--vct-ivory-muted);
+    font-size: .78rem;
+}
+
+html[data-theme="light"] .vct-predict-select select {
+    background: #f7f0e5;
+}
+
+@media (max-width: 899.98px) {
+    .vct-predict-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .vct-predict-placeholder {
+        min-height: 270px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .vct-predict-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .vct-predict-card__header,
+    .vct-predict-card__body,
+    .vct-predict-result {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+}

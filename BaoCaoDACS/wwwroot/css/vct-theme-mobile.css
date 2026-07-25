@@ -6,35 +6,41 @@
 
 @media (max-width: 1199.98px) {
     .vct-public .header-container {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: flex-start;
+        gap: 0 12px;
         padding-top: 10px;
         padding-bottom: 10px;
     }
 
     .vct-public .header-container > .vct-brand {
-        order: 1;
-        margin-right: auto;
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+        margin: 0;
     }
 
-    .vct-public .header-container > .vct-account-nav {
-        order: 2;
-    }
-
-    .vct-public .header-container > .vct-theme-toggle {
-        order: 3;
+    .vct-public .header-container > .vct-header-actions {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: 8px;
+        justify-self: end;
     }
 
     .vct-public .header-container > #real-time-clock {
-        order: 4;
+        display: none;
     }
 
     .vct-public .navbar {
-        order: 5;
+        grid-column: 1 / -1;
+        grid-row: 2;
         width: 100%;
+        min-height: 0;
+        padding: 0;
     }
 
     .vct-public .navbar > .container-fluid {
@@ -45,22 +51,63 @@
         position: relative;
         z-index: 2;
         display: inline-grid;
-        margin-left: auto;
         place-items: center;
         pointer-events: auto;
     }
 
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle {
+        border-color: #80623b;
+        background: rgba(128, 98, 59, .14);
+        color: #332719 !important;
+        box-shadow: 0 2px 8px rgba(77, 61, 42, .12);
+    }
+
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle:hover,
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle:focus-visible,
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle[aria-expanded="true"] {
+        border-color: #654922;
+        background: rgba(128, 98, 59, .24);
+        color: #21180f !important;
+    }
+
     .vct-public .navbar-collapse {
         width: 100%;
-        padding: 10px 0;
+        padding: 12px 0 2px;
+    }
+
+    .vct-public .navbar-collapse:not(.show) {
+        display: none;
     }
 
     .vct-public .navbar-collapse.show {
         display: block !important;
     }
 
-    .vct-public .navbar-nav {
+    .vct-public .navbar .navbar-nav {
         width: 100%;
+    }
+
+    .vct-public .vct-header-actions .vct-account-nav {
+        width: auto;
+        flex-direction: row;
+        align-items: center;
+        margin: 0;
+    }
+
+    .vct-public .vct-header-actions .vct-account-nav .nav-item {
+        width: auto;
+    }
+
+    .vct-public .vct-header-actions .vct-account-trigger {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+        justify-content: center;
+        padding: 0 !important;
+    }
+
+    .vct-public .vct-header-actions .vct-account-trigger::after {
+        display: none;
     }
 
     .vct-public .navbar .nav-link {
@@ -159,32 +206,110 @@
 
     .vct-public .header-container {
         align-items: center !important;
-        flex-direction: row !important;
-        justify-content: flex-start !important;
     }
 
     .vct-public .header-container > .vct-brand {
         align-self: center;
-        margin-right: auto;
     }
 
     .vct-public .header-container > #real-time-clock {
         display: none;
     }
 
-    .vct-public .navbar-nav {
+    .vct-public .navbar .navbar-nav {
         align-items: stretch;
         flex-direction: column;
     }
 
-    .vct-public .navbar-nav .nav-item {
+    .vct-public .navbar .navbar-nav .nav-item {
         width: 100%;
         margin: 0;
     }
 
-    .vct-public .navbar-nav .nav-link {
+    .vct-public .navbar .navbar-nav .nav-link {
         width: 100%;
         text-align: left;
+    }
+
+    .vct-public .vct-header-actions .vct-theme-toggle,
+    .vct-public .vct-header-actions .vct-mobile-nav-toggle {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+    }
+
+    .vct-public .navbar-collapse.show {
+        margin-top: 10px;
+        border-top: 1px solid var(--vct-stone);
+    }
+
+    .vct-public .vct-schedule-page,
+    .vct-public .vct-schedule-panel,
+    .vct-public .vct-schedule-page .card-body,
+    .vct-public .vct-schedule-page .matches-grid,
+    .vct-public .vct-schedule-page .match-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .vct-public .vct-schedule-page {
+        margin-right: 0;
+        margin-left: 0;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .vct-public .vct-schedule-page .card-body {
+        padding: 12px;
+    }
+
+    .vct-public .vct-schedule-page .matches-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .vct-public .vct-schedule-page .match-card {
+        overflow: hidden;
+        padding: 14px 12px 12px;
+    }
+
+    .vct-public .vct-schedule-page .match-header,
+    .vct-public .vct-schedule-page .match-actions {
+        flex-wrap: wrap;
+    }
+
+    .vct-public .vct-schedule-page .match-competitors,
+    .vct-public .vct-schedule-page .competitor,
+    .vct-public .vct-schedule-page .winrate-row,
+    .vct-public .vct-schedule-page .winrate-item,
+    .vct-public .vct-schedule-page .winrate-bar {
+        min-width: 0;
+    }
+
+    .vct-public .vct-schedule-page .competitor-name,
+    .vct-public .vct-schedule-page .competitor-club,
+    .vct-public .vct-schedule-page .match-info {
+        overflow-wrap: anywhere;
+    }
+
+    .vct-public .vct-schedule-page .winrate-item {
+        flex: 0 1 30%;
+    }
+
+    .vct-public .vct-schedule-page .winrate-item span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .vct-public .vct-schedule-page .winrate-bar {
+        flex: 1 1 40px;
+    }
+
+    .vct-public .vct-schedule-page .match-actions > * {
+        flex: 1 1 120px;
+        justify-content: center;
     }
 
     .vct-scoring > header {
@@ -276,20 +401,55 @@
 }
 
 @media (max-width: 480px) {
-    .vct-public .header-container > .vct-account-nav {
-        order: 6;
-        width: 100%;
+    .vct-public .header-container {
+        gap: 0 8px;
+        padding-right: 12px;
+        padding-left: 12px;
     }
 
-    .vct-public .vct-auth-actions {
-        display: grid;
-        width: 100%;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    .vct-public .header-container > .vct-brand {
+        min-width: 0;
+        gap: 8px;
     }
 
-    .vct-public .vct-auth-actions .vct-btn {
-        width: 100%;
-        padding-inline: 12px;
+    .vct-public .header-container > .vct-brand .vct-seal--brand {
+        width: 42px;
+        height: 42px;
+    }
+
+    .vct-public .header-container > .vct-brand .vct-brand__name {
+        font-size: 1rem;
+    }
+
+    .vct-public .header-container > .vct-brand .vct-brand__sub {
+        font-size: .56rem;
+        letter-spacing: .11em;
+    }
+
+    .vct-public .vct-header-actions {
+        gap: 6px;
+    }
+
+    .vct-public .vct-header-actions .vct-account-trigger,
+    .vct-public .vct-header-actions .vct-theme-toggle,
+    .vct-public .vct-header-actions .vct-mobile-nav-toggle {
+        width: 38px;
+        height: 38px;
+        min-height: 38px;
+        padding: 0;
+    }
+
+    .vct-public .vct-header-actions .vct-account-nav--guest #register {
+        display: none;
+    }
+
+    .vct-public .vct-header-actions .vct-account-nav--guest .vct-auth-actions {
+        width: auto;
+    }
+
+    .vct-public .vct-header-actions .vct-account-nav--guest #login {
+        min-height: 38px;
+        padding: 8px 12px;
     }
 
     .vct-scoring .scoring-header-actions {
