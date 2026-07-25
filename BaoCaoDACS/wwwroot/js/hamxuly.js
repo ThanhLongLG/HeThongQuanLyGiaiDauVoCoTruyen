@@ -77,7 +77,6 @@ function attachTeamScoringEvents() {
     let teamDirectEliminated = false;
 
     if (teamDirectBtn) {
-<<<<<<< HEAD
         teamDirectBtn.addEventListener('click', async () => {
             if (!teamDirectEliminated) {
                 const confirmation = await Swal.fire({
@@ -90,11 +89,6 @@ function attachTeamScoringEvents() {
                 });
 
                 if (confirmation.isConfirmed) {
-=======
-        teamDirectBtn.addEventListener('click', () => {
-            if (!teamDirectEliminated) {
-                if (confirm('Xác nhận loại trực tiếp đội này?')) {
->>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                     teamDirectStatus.textContent = 'ĐÃ LOẠI TRỰC TIẾP';
                     teamDirectEliminated = true;
                     teamDirectBtn.disabled = true;
@@ -177,11 +171,7 @@ async function handleSubmitTeamScore() {
              <p><strong>Lỗi trang phục:</strong> ${costumeCount}</p>
               <p><strong>Trạng thái loại trực tiếp:</strong> ${directStatus || 'Không'}</p>
             <hr>
-<<<<<<< HEAD
             <h3 class="vct-score-summary">Điểm cuối cùng: ${finalScore}</h3>
-=======
-            <h3 style="color: green;">Điểm cuối cùng: ${finalScore}</h3>
->>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
         </div>
     `,
             icon: 'question',

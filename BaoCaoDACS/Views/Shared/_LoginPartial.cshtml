@@ -8,7 +8,6 @@
 @if (SignInManager.IsSignedIn(User))
 {
         <li class="nav-item dropdown">
-<<<<<<< HEAD
             <a class="nav-link dropdown-toggle vct-account-trigger" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu tài khoản">
                 <span class="vct-seal vct-seal--small" aria-hidden="true"><i class="bi bi-person"></i></span>
             </a>
@@ -30,33 +29,6 @@
                 <li class="vct-logout">
                     <form class="dropdown-item p-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                         <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
-=======
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <div class="photo">
-                    <img src="~/img/anime3.png" alt="Profile Photo">
-                </div>
-                <b class="caret d-none d-lg-block d-xl-block"></b>
-                <p class="d-lg-none">
-                    Log out
-                </p>
-            </a>
-            <ul class="dropdown-menu">
-                <li>  <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"> @UserManager.GetUserName(User)</a> </li>
-                <li><a class="dropdown-item" asp-area=""  asp-controller="Home" asp-action="ThanhToan">Thanh Toán</a></li>
-                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Profile">Profile</a></li>
-                <li><a class="dropdown-item" asp-area="" asp-controller="Predict" asp-action="Index">Dự Đoán Kết Quả</a></li>
-                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                {
-                    <li>
-                        <a class="dropdown-item" href="/Admin/TrangQL/Index">Admin</a>
-                        
-                    </li>
-                }
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <form class="dropdown-item p-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit" class="dropdown-item">Log out</button>
->>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
                     </form>
                 </li>
             </ul>
@@ -65,15 +37,9 @@
 }
 else
 {
-<<<<<<< HEAD
         <li class="vct-auth-actions">
             <a class="vct-btn vct-btn--ghost" id="register" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
             <a class="vct-btn vct-btn--primary" id="login" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
-=======
-        <li class="auth-buttons">
-            <a class="btn btn-outline text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            <a class="btn btn-outline text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
->>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
         </li>
 }
 </ul>

@@ -55,6 +55,21 @@
         pointer-events: auto;
     }
 
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle {
+        border-color: #80623b;
+        background: rgba(128, 98, 59, .14);
+        color: #332719 !important;
+        box-shadow: 0 2px 8px rgba(77, 61, 42, .12);
+    }
+
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle:hover,
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle:focus-visible,
+    html[data-theme="light"] .vct-public .vct-mobile-nav-toggle[aria-expanded="true"] {
+        border-color: #654922;
+        background: rgba(128, 98, 59, .24);
+        color: #21180f !important;
+    }
+
     .vct-public .navbar-collapse {
         width: 100%;
         padding: 12px 0 2px;
@@ -226,6 +241,75 @@
     .vct-public .navbar-collapse.show {
         margin-top: 10px;
         border-top: 1px solid var(--vct-stone);
+    }
+
+    .vct-public .vct-schedule-page,
+    .vct-public .vct-schedule-panel,
+    .vct-public .vct-schedule-page .card-body,
+    .vct-public .vct-schedule-page .matches-grid,
+    .vct-public .vct-schedule-page .match-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .vct-public .vct-schedule-page {
+        margin-right: 0;
+        margin-left: 0;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .vct-public .vct-schedule-page .card-body {
+        padding: 12px;
+    }
+
+    .vct-public .vct-schedule-page .matches-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .vct-public .vct-schedule-page .match-card {
+        overflow: hidden;
+        padding: 14px 12px 12px;
+    }
+
+    .vct-public .vct-schedule-page .match-header,
+    .vct-public .vct-schedule-page .match-actions {
+        flex-wrap: wrap;
+    }
+
+    .vct-public .vct-schedule-page .match-competitors,
+    .vct-public .vct-schedule-page .competitor,
+    .vct-public .vct-schedule-page .winrate-row,
+    .vct-public .vct-schedule-page .winrate-item,
+    .vct-public .vct-schedule-page .winrate-bar {
+        min-width: 0;
+    }
+
+    .vct-public .vct-schedule-page .competitor-name,
+    .vct-public .vct-schedule-page .competitor-club,
+    .vct-public .vct-schedule-page .match-info {
+        overflow-wrap: anywhere;
+    }
+
+    .vct-public .vct-schedule-page .winrate-item {
+        flex: 0 1 30%;
+    }
+
+    .vct-public .vct-schedule-page .winrate-item span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .vct-public .vct-schedule-page .winrate-bar {
+        flex: 1 1 40px;
+    }
+
+    .vct-public .vct-schedule-page .match-actions > * {
+        flex: 1 1 120px;
+        justify-content: center;
     }
 
     .vct-scoring > header {
