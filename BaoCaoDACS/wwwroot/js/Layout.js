@@ -8,7 +8,8 @@
         event.stopPropagation();
         const modal = document.getElementById('register-tournament-modal');
         modal.dataset.tournamentId = tournamentId;
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
+        document.body.classList.add('modal-open');
     }
 
 
@@ -16,6 +17,7 @@
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.style.display = 'none';  // Ẩn modal
+            document.body.classList.remove('modal-open');
         } else {
             console.error("Không tìm thấy modal:", modalId);
         }
@@ -34,7 +36,7 @@
       });
        
     //ham gửi dữ liệu đăng kí
-    document.querySelector('#register-tournament-modal form').addEventListener('submit', async function (e) {
+    document.querySelector('#register-tournament-modal form')?.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const tournamentId = document.querySelector('#register-tournament-modal').dataset.tournamentId;
@@ -43,7 +45,6 @@
             FullName: document.getElementById('register-name').value,
             Club: document.getElementById('register-club').value || "Không có",
             sdt: document.getElementById('register-phone').value,
-            email: document.getElementById('register-email').value,
             TournamentID: parseInt(tournamentId, 10),
             Score: 0
         };
@@ -187,25 +188,25 @@ function escapeHtml(s) {
                 if (isAuthenticated) {
                     if (isEnded) {
                         actionButtonHtml = `
-                        <button class="btn btn-secondary w-100" disabled title="Giải đấu đã kết thúc">
+                        <button class="vct-btn vct-tournament-register-btn is-disabled w-100" disabled title="Giải đấu đã kết thúc">
                             Đã Kết Thúc
                         </button>`;
                     } else {
                         actionButtonHtml = `
-                        <button class="btn btn-primary w-100" onclick="showRegisterModal(event, ${tournament.tournamentID})">
-                            Đăng Ký Tham Gia
+                        <button class="vct-btn vct-tournament-register-btn w-100" onclick="showRegisterModal(event, ${tournament.tournamentID})">
+                            <i class="bi bi-person-plus" aria-hidden="true"></i> Đăng ký tham gia
                         </button>`;
                     }
                 } else {
                     if (isEnded) {
                         actionButtonHtml = `
-                        <button class="btn btn-secondary w-100" disabled title="Giải đấu đã kết thúc">
+                        <button class="vct-btn vct-tournament-register-btn is-disabled w-100" disabled title="Giải đấu đã kết thúc">
                             Đã Kết Thúc
                         </button>`;
                     } else {
                         actionButtonHtml = `
-                        <button class="btn btn-secondary w-100" disabled title="Vui lòng đăng nhập để đăng ký">
-                            Đăng Ký Tham Gia
+                        <button class="vct-btn vct-tournament-register-btn is-disabled w-100" disabled title="Vui lòng đăng nhập để đăng ký">
+                            <i class="bi bi-lock" aria-hidden="true"></i> Đăng ký tham gia
                         </button>`;
                     }
                 }

@@ -1,108 +1,164 @@
-﻿<head>
-
-	<link href="~/css/profile.css" rel="stylesheet" />
-
-</head>
 @model BaoCaoDACS.Models.Participant
-@if (Model == null)
-{
-    <div class="alert alert-info text-center py-4" style="font-size: 18px;">
-        <i class="bi bi-info-circle"></i> Bạn chưa tham gia giải đấu nào.Vui Lòng đăng ký
-    </div>
 
+@{
+    ViewData["Title"] = "Chỉnh sửa hồ sơ";
 }
-else
-{
-<div class="card">
-        <div class="card-header">
-            <h5 class="title">Edit Profile</h5>
+
+<link href="~/css/Profile.css" rel="stylesheet" asp-append-version="true" />
+
+<section class="vct-profile-page" aria-labelledby="profile-page-title">
+    <div class="vct-profile-heading">
+        <div>
+            <div class="vct-page-kicker">Thông tin võ sinh</div>
+            <h1 id="profile-page-title">Chỉnh sửa hồ sơ</h1>
+            <p>Cập nhật thông tin cá nhân dùng trong danh sách và các giải đấu.</p>
         </div>
-        <div class="card-body">
-        <form class="text-decoration-none" asp-action="Profile" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-                <div class="row">
-                    <div class="col-md-5 pr-md-1">
-                        <div class="form-group">
-                        <label>Club</label>
-                        <input asp-for="Club" type="text" class="form-control" placeholder="Club" value="@Model.Club">
-                        </div>
-                    </div>
-                    <div class="col-md-3 px-md-1">
-                        <div class="form-group">
-                            <label>Username</label>
-                        <input asp-for="FullName" type="text" class="form-control" placeholder="Username" value="@Model.FullName">
-                        </div>
-                    </div>
-                    <div class="col-md-4 pl-md-1">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                        <input asp-for="email" type="email" class="form-control" placeholder="admin@gmail.com" value="@Model.email">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 pr-md-1">
-                        <div class="form-group">
-                            <label>Số điện thoại</label>
-                        <input asp-for="sdt" type="text" class="form-control" placeholder="0123456789" value="@Model.sdt">
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-md-1">
-                        <div class="form-group">
-                            <label>Tuổi</label>
-                        <input asp-for="tuoi" type="text" class="form-control" placeholder="18" value="@Model.tuoi">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Address</label>
-                        <input asp-for="Diachi" type="text" class="form-control" placeholder="Home Address" value="@Model.Diachi">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 pr-md-1">
-                        <div class="form-group">
-                            <label>Chiều Cao</label>
-                        <input asp-for="ChieuCao" type="text" class="form-control" placeholder="170cm" value="@Model.ChieuCao">
-                        </div>
-                    </div>
-                    <div class="col-md-4 px-md-1">
-                        <div class="form-group">
-                            <label>Cân Nặng</label>
-                        <input asp-for="CanNang" type="text" class="form-control" placeholder="50kg" value="@Model.CanNang">
-                        </div>
-                    </div>
-                   
-                </div>
-            <div class="card-footer">
-                <button type="submit" class="btn btn-fill btn-primary">Save</button>
-            </div>
-            </form>
-        </div>
-        
+        <a class="vct-profile-back" asp-controller="Home" asp-action="Index">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            Về trang chủ
+        </a>
     </div>
 
+    @if (TempData["SuccessMessage"] is string successMessage)
+    {
+        <div class="vct-profile-alert vct-profile-alert--success" role="status">
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span>@successMessage</span>
+        </div>
+    }
+
+    @if (Model == null)
+    {
+        <div class="vct-profile-empty">
+            <span class="vct-seal" aria-hidden="true"><i class="bi bi-person-plus"></i></span>
+            <h2>Chưa có hồ sơ võ sinh</h2>
+            <p>Bạn cần đăng ký tham gia một giải đấu trước khi chỉnh sửa hồ sơ.</p>
+            <a class="vct-profile-submit" asp-controller="Home" asp-action="Index" asp-fragment="GiaDau">
+                <i class="bi bi-trophy" aria-hidden="true"></i>
+                Xem giải đấu
+            </a>
+        </div>
+    }
+    else
+    {
+        <form class="vct-profile-card needs-validation"
+              asp-controller="Home"
+              asp-action="Profile"
+              method="post"
+              novalidate>
+            <div class="vct-profile-card__header">
+                <span class="vct-seal" aria-hidden="true"><i class="bi bi-person-vcard"></i></span>
+                <div>
+                    <h2>Thông tin cá nhân</h2>
+                    <p>Các trường có dấu <span>*</span> là bắt buộc.</p>
+                </div>
+            </div>
+
+            <div class="vct-profile-card__body">
+                <div asp-validation-summary="ModelOnly" class="vct-profile-validation" role="alert"></div>
+                <input asp-for="ParticipantID" type="hidden" />
+
+                <div class="vct-profile-grid">
+                    <div class="vct-profile-field">
+                        <label asp-for="FullName">Họ và tên <span>*</span></label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-person" aria-hidden="true"></i>
+                            <input asp-for="FullName" autocomplete="name" placeholder="Nguyễn Văn A" required />
+                        </div>
+                        <span asp-validation-for="FullName" class="vct-profile-field-error"></span>
+                    </div>
+
+                    <div class="vct-profile-field">
+                        <label asp-for="Club">Câu lạc bộ <span>*</span></label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-shield" aria-hidden="true"></i>
+                            <input asp-for="Club" autocomplete="organization" placeholder="Tên câu lạc bộ" required />
+                        </div>
+                        <span asp-validation-for="Club" class="vct-profile-field-error"></span>
+                    </div>
+
+                    <div class="vct-profile-field">
+                        <label asp-for="email">Email</label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-envelope" aria-hidden="true"></i>
+                            <input asp-for="email" type="email" autocomplete="email" placeholder="ten@example.com" />
+                        </div>
+                        <span asp-validation-for="email" class="vct-profile-field-error"></span>
+                    </div>
+
+                    <div class="vct-profile-field">
+                        <label asp-for="sdt">Số điện thoại</label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-telephone" aria-hidden="true"></i>
+                            <input asp-for="sdt" type="tel" autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx" />
+                        </div>
+                        <span asp-validation-for="sdt" class="vct-profile-field-error"></span>
+                    </div>
+
+                    <div class="vct-profile-field">
+                        <label asp-for="tuoi">Tuổi</label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-calendar3" aria-hidden="true"></i>
+                            <input asp-for="tuoi" type="number" inputmode="numeric" min="1" max="120" placeholder="18" />
+                        </div>
+                        <span asp-validation-for="tuoi" class="vct-profile-field-error"></span>
+                    </div>
+
+                    <div class="vct-profile-field">
+                        <label asp-for="Diachi">Địa chỉ</label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                            <input asp-for="Diachi" autocomplete="street-address" placeholder="Địa chỉ hiện tại" />
+                        </div>
+                        <span asp-validation-for="Diachi" class="vct-profile-field-error"></span>
+                    </div>
+
+                    <div class="vct-profile-field">
+                        <label asp-for="ChieuCao">Chiều cao (cm)</label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-arrows-vertical" aria-hidden="true"></i>
+                            <input asp-for="ChieuCao" type="number" inputmode="decimal" min="1" step="0.1" placeholder="170" />
+                        </div>
+                        <span asp-validation-for="ChieuCao" class="vct-profile-field-error"></span>
+                    </div>
+
+                    <div class="vct-profile-field">
+                        <label asp-for="CanNang">Cân nặng (kg)</label>
+                        <div class="vct-profile-input">
+                            <i class="bi bi-speedometer2" aria-hidden="true"></i>
+                            <input asp-for="CanNang" type="number" inputmode="decimal" min="1" step="0.1" placeholder="60" />
+                        </div>
+                        <span asp-validation-for="CanNang" class="vct-profile-field-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vct-profile-card__footer">
+                <a class="vct-profile-cancel" asp-controller="Home" asp-action="Index">Hủy</a>
+                <button type="submit" class="vct-profile-submit">
+                    <i class="bi bi-check2-circle" aria-hidden="true"></i>
+                    Lưu thay đổi
+                </button>
+            </div>
+        </form>
+    }
+</section>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>
-        // Kích hoạt validation Bootstrap
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
+        (() => {
+            "use strict";
+            const form = document.querySelector(".vct-profile-card.needs-validation");
+            if (!form) return;
+
+            form.addEventListener("submit", event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add("was-validated");
+            });
         })();
     </script>
-}
 }

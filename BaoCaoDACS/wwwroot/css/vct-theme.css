@@ -934,6 +934,341 @@ html.vct-theme-ready .vct-theme-toggle {
     color: var(--vct-ivory);
 }
 
+.vct-public .vct-tournament-register-btn {
+    min-height: 44px;
+    border: 1px solid var(--vct-lacquer);
+    background: var(--vct-lacquer);
+    background-image: none;
+    color: #fffaf1 !important;
+    box-shadow: none;
+    text-transform: none;
+}
+
+.vct-public .vct-tournament-register-btn:hover,
+.vct-public .vct-tournament-register-btn:focus-visible {
+    border-color: var(--vct-lacquer-dark);
+    background: var(--vct-lacquer-dark);
+    color: #fffaf1 !important;
+    outline: none;
+}
+
+.vct-public .vct-tournament-register-btn.is-disabled,
+.vct-public .vct-tournament-register-btn:disabled {
+    border-color: var(--vct-stone);
+    background: var(--vct-ink-card);
+    color: var(--vct-ivory-muted) !important;
+    cursor: not-allowed;
+    opacity: .72;
+    transform: none;
+}
+
+.vct-public #register-tournament-modal {
+    position: fixed;
+    z-index: 1400;
+    inset: 0;
+    display: none;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 16px;
+    background: rgba(12, 10, 8, .72);
+    backdrop-filter: blur(8px);
+}
+
+.vct-public #register-tournament-modal .vct-registration-card {
+    position: relative;
+    overflow: hidden;
+    width: min(100%, 680px);
+    max-width: 680px;
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--vct-stone);
+    border-radius: 22px;
+    background: var(--vct-ink-soft);
+    color: var(--vct-ivory);
+    box-shadow: var(--vct-shadow);
+}
+
+.vct-public .vct-registration-card__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 25px 28px 21px;
+    border-bottom: 1px solid var(--vct-stone);
+    background:
+        radial-gradient(circle at 12% 0%, rgba(156, 76, 70, .14), transparent 16rem),
+        var(--vct-ink-card);
+}
+
+.vct-public .vct-registration-card__header h2 {
+    margin: 2px 0 4px;
+    color: var(--vct-ivory);
+    font-family: var(--vct-display);
+    font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+.vct-public .vct-registration-card__header p {
+    margin: 0;
+    color: var(--vct-ivory-muted);
+    font-size: .82rem;
+}
+
+.vct-public .vct-registration-close {
+    position: absolute;
+    z-index: 2;
+    top: 14px;
+    right: 14px;
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--vct-stone);
+    border-radius: 50%;
+    background: var(--vct-ink-soft);
+    color: var(--vct-ivory-muted);
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.vct-public .vct-registration-close:hover,
+.vct-public .vct-registration-close:focus-visible {
+    border-color: var(--vct-lacquer);
+    color: var(--vct-lacquer);
+    outline: none;
+}
+
+.vct-public .vct-registration-form {
+    padding: 25px 28px 28px;
+}
+
+.vct-public .vct-registration-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.vct-public .vct-registration-form .form-group {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+}
+
+.vct-public .vct-registration-form label {
+    color: var(--vct-ivory-muted);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .025em;
+}
+
+.vct-public .vct-registration-form label span {
+    color: var(--vct-lacquer);
+}
+
+.vct-public .vct-registration-form input {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 14px;
+    border: 1px solid var(--vct-stone);
+    border-radius: 12px;
+    background: var(--vct-ink);
+    color: var(--vct-ivory);
+    font-family: var(--vct-body);
+    outline: none;
+    transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.vct-public .vct-registration-form input::placeholder {
+    color: var(--vct-ivory-muted);
+    opacity: .72;
+}
+
+.vct-public .vct-registration-form input:hover {
+    border-color: rgba(179, 146, 90, .55);
+}
+
+.vct-public .vct-registration-form input:focus {
+    border-color: var(--vct-gold);
+    background: var(--vct-ink-card);
+    box-shadow: 0 0 0 3px rgba(179, 146, 90, .12);
+}
+
+.vct-public .vct-registration-form input[readonly] {
+    border-color: var(--vct-stone);
+    background: var(--vct-ink-card);
+    color: var(--vct-ivory-muted);
+    cursor: not-allowed;
+}
+
+.vct-public .vct-registration-form input[readonly]:focus {
+    border-color: var(--vct-stone);
+    box-shadow: none;
+}
+
+.vct-public .vct-field-help {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--vct-ivory-muted);
+    font-size: .68rem;
+}
+
+.vct-public .vct-field-help i {
+    color: var(--vct-gold-light);
+}
+
+.vct-public .vct-registration-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0;
+    color: var(--vct-ivory-muted);
+    font-size: .76rem;
+}
+
+.vct-public .vct-registration-note i {
+    color: var(--vct-jade);
+}
+
+.vct-public .vct-registration-submit {
+    width: 100%;
+    min-height: 48px;
+    border-color: var(--vct-lacquer);
+    background: var(--vct-lacquer);
+    color: #fffaf1 !important;
+    box-shadow: none;
+}
+
+.vct-public .vct-registration-submit:hover,
+.vct-public .vct-registration-submit:focus-visible {
+    border-color: var(--vct-lacquer-dark);
+    background: var(--vct-lacquer-dark);
+    color: #fffaf1 !important;
+    outline: none;
+}
+
+/* Tương thích với markup đăng ký cũ khi tiến trình Razor chưa được khởi động lại. */
+.vct-public #register-tournament-modal .modal-content:not(.vct-registration-card) {
+    width: min(100%, 680px);
+    max-width: 680px;
+    padding: 30px;
+    border: 1px solid var(--vct-stone);
+    border-radius: 22px;
+    background: var(--vct-ink-soft);
+    color: var(--vct-ivory);
+    box-shadow: var(--vct-shadow);
+}
+
+.vct-public #register-tournament-modal .modal-content:not(.vct-registration-card) > h2 {
+    margin: 0 0 22px;
+    padding-right: 42px;
+    color: var(--vct-ivory);
+    font-family: var(--vct-display);
+    font-size: clamp(1.7rem, 4vw, 2.1rem);
+}
+
+.vct-public #registrationForm:not(.vct-registration-form) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.vct-public #registrationForm:not(.vct-registration-form) .form-group {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+}
+
+.vct-public #registrationForm:not(.vct-registration-form) label {
+    color: var(--vct-ivory-muted);
+    font-size: .76rem;
+    font-weight: 700;
+}
+
+.vct-public #registrationForm:not(.vct-registration-form) input {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 14px;
+    border: 1px solid var(--vct-stone);
+    border-radius: 12px;
+    background: var(--vct-ink);
+    color: var(--vct-ivory);
+    outline: none;
+    box-shadow: none;
+}
+
+.vct-public #registrationForm:not(.vct-registration-form) input:focus {
+    border-color: var(--vct-gold);
+    background: var(--vct-ink-card);
+    box-shadow: 0 0 0 3px rgba(179, 146, 90, .12);
+}
+
+.vct-public #registrationForm:not(.vct-registration-form) .btn-primary {
+    grid-column: 1 / -1;
+    min-height: 48px;
+    border: 1px solid var(--vct-lacquer) !important;
+    border-radius: 999px;
+    background: var(--vct-lacquer) !important;
+    background-image: none !important;
+    color: #fffaf1 !important;
+    box-shadow: none !important;
+    filter: none !important;
+    text-shadow: none !important;
+}
+
+.vct-public #registrationForm:not(.vct-registration-form) .btn-primary:hover,
+.vct-public #registrationForm:not(.vct-registration-form) .btn-primary:focus-visible {
+    border-color: var(--vct-lacquer-dark) !important;
+    background: var(--vct-lacquer-dark) !important;
+    outline: none;
+}
+
+.vct-public .tournament-card .countdown-group {
+    padding: 14px;
+    border: 1px solid var(--vct-stone);
+    border-radius: 14px;
+    background: rgba(28, 26, 22, .32);
+}
+
+.vct-public .tournament-card .countdown-container {
+    width: 100%;
+    margin: 0;
+}
+
+.vct-public .tournament-card .countdown {
+    width: 100%;
+    gap: 8px;
+}
+
+.vct-public .tournament-card .countdown-item {
+    min-width: 0;
+    padding: 4px !important;
+    background: transparent !important;
+}
+
+.vct-public .tournament-card .countdown-value {
+    width: 100%;
+    min-width: 44px;
+    height: 52px;
+    border: 1px solid var(--vct-stone);
+    border-radius: 10px;
+    background: var(--vct-ink-card) !important;
+    color: var(--vct-gold-light);
+    font-family: var(--vct-mono);
+    font-size: 1.08rem;
+    box-shadow: none;
+}
+
+.vct-public .tournament-card .countdown-label,
+.vct-public .tournament-card .countdown-label.text-muted {
+    margin-top: 7px;
+    color: var(--vct-ivory-muted) !important;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+}
+
 .vct-public .form-control,
 .vct-public .form-select {
     border-color: var(--vct-stone);
@@ -1823,94 +2158,6 @@ body.vct-scoring .vct-score-summary {
     font-family: var(--vct-mono);
 }
 
-@media (max-width: 991.98px) {
-    .vct-scoring > nav {
-        top: 79px;
-    }
-
-    .vct-scoring .match-details {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .vct-scoring .scoring-tabs {
-        width: 100%;
-        border-radius: 14px;
-    }
-
-    .vct-scoring .scoring-tabs .tab {
-        min-width: 0;
-        padding-inline: 12px;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .vct-scoring > header {
-        position: relative;
-    }
-
-    .vct-scoring .header-content,
-    .vct-scoring .user-info {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .vct-scoring .user-info {
-        width: 100%;
-        gap: 10px;
-    }
-
-    .vct-scoring .user-name {
-        text-align: left;
-    }
-
-    .vct-scoring > nav {
-        position: relative;
-        top: 0;
-        overflow-x: auto;
-    }
-
-    .vct-scoring .scoring-nav {
-        margin-inline: auto;
-    }
-
-    .vct-scoring .match-header {
-        flex-direction: column;
-    }
-
-    .vct-scoring .match-details {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .vct-scoring .scoring-tabs {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .vct-scoring .combat-result-options {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .vct-scoring .tab-content {
-        padding: 16px;
-    }
-}
-
-@media (max-width: 480px) {
-    .vct-scoring .scoring-header-actions {
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .vct-scoring .scoring-header-actions .vct-btn {
-        width: 100%;
-    }
-
-    .vct-scoring .match-details,
-    .vct-scoring .combat-result-options {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* Admin shell */
 .vct-admin .side-bar {
     width: 270px;
@@ -2538,84 +2785,6 @@ body.vct-scoring .vct-score-summary {
     color: var(--vct-ink);
 }
 
-@media (max-width: 1199.98px) {
-    .vct-public .header-container {
-        flex-wrap: wrap;
-        gap: 10px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    .vct-public .navbar {
-        order: 3;
-        width: 100%;
-    }
-
-    .vct-public .navbar-collapse {
-        padding: 10px 0;
-    }
-
-    .vct-public .navbar .nav-link {
-        padding: 11px 8px !important;
-    }
-
-    .vct-public .navbar .nav-link::after {
-        right: auto;
-        bottom: 4px;
-        left: 8px;
-        width: 36px;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .vct-hero__seal {
-        opacity: .5;
-    }
-
-    .vct-stats-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .vct-hero,
-    .vct-hero__inner {
-        min-height: 540px;
-    }
-
-    .vct-hero::before {
-        right: -35vw;
-        width: 95vw;
-    }
-
-    .vct-hero h1 {
-        font-size: clamp(2.8rem, 14vw, 4.2rem);
-    }
-
-    .vct-public .results-section {
-        overflow-x: auto;
-    }
-
-    .vct-admin .contents {
-        margin-left: 0;
-        padding: 28px 16px;
-    }
-
-    .vct-admin .my-nav-bar {
-        width: 100%;
-    }
-
-    .vct-search {
-        flex-direction: column;
-    }
-
-    .vct-panel__header {
-        align-items: flex-start !important;
-        gap: 14px;
-        flex-direction: column;
-    }
-}
-
 /* Light theme */
 html[data-theme="light"] body.vct-public,
 html[data-theme="light"] body.vct-admin {
@@ -2690,6 +2859,22 @@ html[data-theme="light"] .vct-public .vct-auth-actions #login:focus-visible {
     background: var(--vct-lacquer-dark) !important;
     color: #fffaf1 !important;
     outline: none;
+}
+
+html[data-theme="light"] body.vct-public .tournament-card .countdown-group {
+    border-color: var(--vct-stone);
+    background: #eee5d8;
+}
+
+html[data-theme="light"] body.vct-public .tournament-card .countdown-value {
+    border-color: #d3c4ad;
+    background: #e2d6c5 !important;
+    color: var(--vct-gold);
+}
+
+html[data-theme="light"] body.vct-public .tournament-card .countdown-label,
+html[data-theme="light"] body.vct-public .tournament-card .countdown-label.text-muted {
+    color: var(--vct-ivory-muted) !important;
 }
 
 html[data-theme="light"] .vct-hero {
@@ -2899,13 +3084,3 @@ html[data-theme="light"] .swal2-html-container {
     color: var(--vct-ivory);
 }
 
-@media (max-width: 991.98px) {
-    .admin-topbar__title {
-        display: none;
-    }
-
-    .vct-theme-toggle {
-        width: 38px;
-        height: 38px;
-    }
-}
