@@ -195,7 +195,9 @@ namespace BaoCaoDACS.Controllers
 
                 // Lưu kết quả cho Participant Xanh
                 var socre = await _context.socre
-                   .FirstOrDefaultAsync(p => p.ParticipantId == scoreData.BlueParticipantId);
+                   .FirstOrDefaultAsync(p =>
+                       p.ParticipantId == scoreData.BlueParticipantId &&
+                       p.MatchId == scoreData.MatchId);
 
 
 
@@ -219,7 +221,9 @@ namespace BaoCaoDACS.Controllers
 
                 // Lưu kết quả cho Participant Đỏ
                 var socre2 = await _context.socre
-                  .FirstOrDefaultAsync(p => p.ParticipantId == scoreData.RedParticipantId);
+                  .FirstOrDefaultAsync(p =>
+                      p.ParticipantId == scoreData.RedParticipantId &&
+                      p.MatchId == scoreData.MatchId);
 
 
 
