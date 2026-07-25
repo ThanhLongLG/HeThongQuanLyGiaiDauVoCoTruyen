@@ -1,89 +1,190 @@
-﻿@model BaoCaoDACS.Models.PredictMatchViewModel
+@model BaoCaoDACS.Models.PredictMatchViewModel
 
-<div class="container mt-4">
+@{
+    ViewData["Title"] = "Dự đoán kết quả";
+    var fighterAProbability = Math.Clamp(Model.FighterAProbPercent ?? 0, 0, 100);
+    var fighterBProbability = Math.Clamp(Model.FighterBProbPercent ?? 0, 0, 100);
+}
 
-    <div class="card shadow p-4">
-        <h3 class="text-center text-primary mb-3">
-            🔮 Dự đoán kết quả trận đấu
-        </h3>
+<link href="~/css/Predict.css" rel="stylesheet" asp-append-version="true" />
 
-        <form asp-controller="Predict" asp-action="Index" method="get">
-            <div class="mb-3">
-                <label class="form-label fw-bold">Chọn giải đấu</label>
-
-                <select asp-for="SelectedTournamentId"
-                        asp-items="Model.Tournaments"
-                        class="form-select"
-                        id="tournamentSelect"
-                        name="tournamentId">
-                    <option value="">-- Chọn giải --</option>
-                </select>
-            </div>
-
-
-            <div class="mb-3">
-                <label class="form-label fw-bold">Chọn trận đấu</label>
-
-                <select asp-for="SelectedMatchId"
-                        asp-items="Model.Matches"
-                        class="form-select"
-                        id="matchSelect"
-                        name="matchId">
-                    <option value="">-- Chọn trận --</option>
-                </select>
-            </div>
-
-
-            <button class="btn btn-primary w-100 mt-3">Dự đoán</button>
-        </form>
+<section class="vct-predict-page" aria-labelledby="predict-page-title">
+    <div class="vct-predict-heading">
+        <div>
+            <div class="vct-page-kicker">Phân tích bằng AI</div>
+            <h1 id="predict-page-title">Dự đoán kết quả</h1>
+            <p>Chọn giải đấu và trận đấu để xem khả năng chiến thắng của từng võ sĩ.</p>
+        </div>
+        <span class="vct-predict-badge"><i class="bi bi-cpu" aria-hidden="true"></i> ML.NET</span>
     </div>
 
-    @if (Model.WinnerName != null)
-    {
-        <div class="card shadow p-4 mt-4">
-            <h4 class="text-success text-center">✨ Kết quả dự đoán</h4>
-
-            <p>
-                <b>@Model.FighterAName</b>:
-                <span class="text-primary">
-                    @Model.FighterAProbPercent?.ToString("0.00")%
-                </span>
-            </p>
-            <p>
-                <b>@Model.FighterBName</b>:
-                <span class="text-danger">
-                    @Model.FighterBProbPercent?.ToString("0.00")%
-                </span>
-            </p>
-
-            <div class="alert alert-info mt-3">
-                AI dự đoán người thắng: <strong>@Model.WinnerName</strong>
+    <div class="vct-predict-layout">
+        <form class="vct-predict-card" asp-controller="Predict" asp-action="Index" method="get">
+            <div class="vct-predict-card__header">
+                <span class="vct-seal" aria-hidden="true"><i class="bi bi-stars"></i></span>
+                <div>
+                    <h2>Chọn trận đấu</h2>
+                    <p>Dữ liệu trận đấu sẽ được đưa vào mô hình dự đoán.</p>
+                </div>
             </div>
-        </div>
-    }
-</div>
+
+            <div class="vct-predict-card__body">
+                <div class="vct-predict-step">
+                    <span class="vct-predict-step__number">01</span>
+                    <div class="vct-predict-field">
+                        <label asp-for="SelectedTournamentId">Giải đấu</label>
+                        <div class="vct-predict-select">
+                            <i class="bi bi-trophy" aria-hidden="true"></i>
+                            <select asp-for="SelectedTournamentId"
+                                    asp-items="Model.Tournaments"
+                                    id="tournamentSelect"
+                                    name="tournamentId"
+                                    required>
+                                <option value="">Chọn một giải đấu</option>
+                            </select>
+                            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vct-predict-divider" aria-hidden="true"></div>
+
+                <div class="vct-predict-step">
+                    <span class="vct-predict-step__number">02</span>
+                    <div class="vct-predict-field">
+                        <label asp-for="SelectedMatchId">Trận đấu</label>
+                        <div class="vct-predict-select">
+                            <i class="bi bi-lightning-charge" aria-hidden="true"></i>
+                            <select asp-for="SelectedMatchId"
+                                    asp-items="Model.Matches"
+                                    id="matchSelect"
+                                    name="matchId"
+                                    required
+                                    disabled="@(Model.SelectedTournamentId == null ? "disabled" : null)">
+                                <option value="">Chọn một trận đấu</option>
+                            </select>
+                            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                        </div>
+                        <small id="matchSelectStatus" class="vct-predict-help" aria-live="polite">
+                            @if (Model.SelectedTournamentId == null)
+                            {
+                                <text>Hãy chọn giải đấu trước.</text>
+                            }
+                            else if (Model.Matches.Count == 0)
+                            {
+                                <text>Giải đấu này chưa có trận phù hợp.</text>
+                            }
+                        </small>
+                    </div>
+                </div>
+
+                <button class="vct-predict-submit" type="submit">
+                    <i class="bi bi-magic" aria-hidden="true"></i>
+                    Phân tích trận đấu
+                </button>
+            </div>
+        </form>
+
+        @if (Model.WinnerName != null)
+        {
+            <article class="vct-predict-result" aria-labelledby="prediction-result-title">
+                <div class="vct-predict-result__top">
+                    <div>
+                        <div class="vct-page-kicker">Kết quả phân tích</div>
+                        <h2 id="prediction-result-title">Tỷ lệ chiến thắng</h2>
+                    </div>
+                    <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
+                </div>
+
+                <div class="vct-predict-fighters">
+                    <div class="vct-predict-fighter vct-predict-fighter--a">
+                        <span class="vct-predict-fighter__label">Võ sĩ A</span>
+                        <strong>@Model.FighterAName</strong>
+                        <span class="vct-predict-percent">@fighterAProbability.ToString("0.00")%</span>
+                    </div>
+                    <span class="vct-predict-versus" aria-hidden="true">VS</span>
+                    <div class="vct-predict-fighter vct-predict-fighter--b">
+                        <span class="vct-predict-fighter__label">Võ sĩ B</span>
+                        <strong>@Model.FighterBName</strong>
+                        <span class="vct-predict-percent">@fighterBProbability.ToString("0.00")%</span>
+                    </div>
+                </div>
+
+                <div class="vct-predict-meter"
+                     role="img"
+                     aria-label="@Model.FighterAName @fighterAProbability.ToString("0.00") phần trăm, @Model.FighterBName @fighterBProbability.ToString("0.00") phần trăm">
+                    <span class="vct-predict-meter__a" style="width: @(fighterAProbability.ToString(System.Globalization.CultureInfo.InvariantCulture))%"></span>
+                    <span class="vct-predict-meter__b" style="width: @(fighterBProbability.ToString(System.Globalization.CultureInfo.InvariantCulture))%"></span>
+                </div>
+
+                <div class="vct-predict-winner">
+                    <span class="vct-seal" aria-hidden="true"><i class="bi bi-trophy-fill"></i></span>
+                    <div>
+                        <small>AI đánh giá cao hơn</small>
+                        <strong>@Model.WinnerName</strong>
+                    </div>
+                </div>
+
+                <p class="vct-predict-note">
+                    <i class="bi bi-info-circle" aria-hidden="true"></i>
+                    Kết quả chỉ mang tính tham khảo, được tính từ dữ liệu hiện có của hệ thống.
+                </p>
+            </article>
+        }
+        else
+        {
+            <aside class="vct-predict-placeholder">
+                <span class="vct-predict-placeholder__icon" aria-hidden="true"><i class="bi bi-bar-chart-line"></i></span>
+                <h2>Kết quả sẽ hiển thị tại đây</h2>
+                <p>Hoàn tất hai bước bên cạnh để bắt đầu phân tích trận đấu.</p>
+            </aside>
+        }
+    </div>
+</section>
 
 @section Scripts {
     <script>
-        const tournamentSelect = document.getElementById('tournamentSelect');
-        const matchSelect = document.getElementById('matchSelect');
+        (() => {
+            "use strict";
 
-        tournamentSelect.addEventListener('change', function () {
-            const tid = this.value;
-            matchSelect.innerHTML = '<option value="">-- Chọn trận --</option>';
+            const tournamentSelect = document.getElementById("tournamentSelect");
+            const matchSelect = document.getElementById("matchSelect");
+            const status = document.getElementById("matchSelectStatus");
 
-            if (!tid) return;
+            if (!tournamentSelect || !matchSelect || !status) return;
 
-            fetch(`/Predict/GetMatchesByTournament?tournamentId=${tid}`)
-                .then(r => r.json())
-                .then(data => {
-                    data.forEach(m => {
-                        const opt = document.createElement('option');
-                        opt.value = m.id;
-                        opt.text = m.text;
-                        matchSelect.appendChild(opt);
+            tournamentSelect.addEventListener("change", async function () {
+                const tournamentId = this.value;
+                matchSelect.innerHTML = '<option value="">Chọn một trận đấu</option>';
+                matchSelect.disabled = true;
+
+                if (!tournamentId) {
+                    status.textContent = "Hãy chọn giải đấu trước.";
+                    return;
+                }
+
+                status.textContent = "Đang tải danh sách trận đấu...";
+
+                try {
+                    const response = await fetch(`/Predict/GetMatchesByTournament?tournamentId=${encodeURIComponent(tournamentId)}`);
+                    if (!response.ok) throw new Error("Không thể tải danh sách trận đấu.");
+
+                    const matches = await response.json();
+                    matches.forEach(match => {
+                        const option = document.createElement("option");
+                        option.value = match.id;
+                        option.textContent = match.text;
+                        matchSelect.appendChild(option);
                     });
-                });
-        });
+
+                    matchSelect.disabled = matches.length === 0;
+                    status.textContent = matches.length === 0
+                        ? "Giải đấu này chưa có trận phù hợp."
+                        : `Đã tìm thấy ${matches.length} trận đấu.`;
+                } catch {
+                    status.textContent = "Không tải được danh sách trận. Vui lòng thử lại.";
+                }
+            });
+        })();
     </script>
 }

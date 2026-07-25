@@ -257,6 +257,41 @@ html.vct-theme-ready .vct-theme-toggle {
     padding-left: 24px;
 }
 
+.vct-public .vct-header-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+}
+
+.vct-public .vct-header-actions .vct-account-nav {
+    width: auto;
+    margin: 0;
+}
+
+.vct-public .vct-mobile-nav-toggle {
+    display: none;
+    border: 1px solid var(--vct-stone);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--vct-ivory);
+    box-shadow: none;
+}
+
+.vct-public .vct-mobile-nav-toggle > i {
+    font-size: 1.55rem;
+    line-height: 1;
+}
+
+.vct-public .vct-mobile-nav-toggle:hover,
+.vct-public .vct-mobile-nav-toggle:focus-visible,
+.vct-public .vct-mobile-nav-toggle[aria-expanded="true"] {
+    border-color: var(--vct-gold);
+    background: var(--vct-ink-card);
+    color: var(--vct-gold-light);
+    outline: none;
+}
+
 .vct-public .navbar {
     min-width: 0;
     flex: 1;
@@ -2802,6 +2837,7 @@ html[data-theme="light"] .vct-public .header {
 
 html[data-theme="light"] .vct-public .navbar-toggler {
     border-color: var(--vct-stone);
+    color: var(--vct-ink);
 }
 
 html[data-theme="light"] .vct-public .navbar-toggler-icon {

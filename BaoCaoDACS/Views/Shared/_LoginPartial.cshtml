@@ -3,35 +3,7 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-<<<<<<< HEAD
 <ul class="navbar-nav vct-account-nav">
-=======
-<style>
-
-        .photo {
-            display: inline-block;
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            vertical-align: middle;
-            overflow: hidden;
-        }
-
-        .photo img {
-            width: 100%;
-        }
-
-        .caret {
-            position: absolute;
-            left: 80%;
-            top: 55%;
-            margin-left: 0;
-        }
-</style>
-
-
-<ul class="navbar-nav">
->>>>>>> 942de3dc1bfc43ef38f75998d5f118697dc1747e
    
 @if (SignInManager.IsSignedIn(User))
 {

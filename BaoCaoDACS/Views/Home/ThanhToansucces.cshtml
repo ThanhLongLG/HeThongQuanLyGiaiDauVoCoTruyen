@@ -1,36 +1,76 @@
-﻿@{
-    Layout = "_Layout";
+@{
+    ViewData["Title"] = "Kết quả thanh toán";
+    var hasMessage = ViewBag.Message != null;
+    var isSuccessful = ViewBag.Message == "Thanh toán thành công!";
 }
 
-@if (ViewBag.Message != null)
-{
-    <div class="alert @(ViewBag.Message == "Thanh toán thành công!" ? "alert-success" : "alert-danger") text-center mt-5">
-        <h3>@ViewBag.Message</h3>
-        @if (ViewBag.Amount != null)
+<link href="~/css/Payment.css" rel="stylesheet" asp-append-version="true" />
+
+<section class="vct-payment-page vct-payment-status-page" aria-labelledby="payment-status-title">
+    <article class="vct-payment-status @(isSuccessful ? "vct-payment-status--success" : hasMessage ? "vct-payment-status--failed" : "vct-payment-status--empty")">
+        <span class="vct-payment-status__icon" aria-hidden="true">
+            <i class="bi @(isSuccessful ? "bi-check2-circle" : hasMessage ? "bi-x-circle" : "bi-receipt")"></i>
+        </span>
+
+        @if (hasMessage)
         {
-            <p><strong>Số tiền:</strong> @String.Format("{0:N0}", Convert.ToInt32(ViewBag.Amount)) VNĐ</p>
+            <div class="vct-page-kicker">Kết quả giao dịch</div>
+            <h1 id="payment-status-title">@ViewBag.Message</h1>
+
+            @if (isSuccessful)
+            {
+                <p>Khoản thanh toán của bạn đã được hệ thống ghi nhận.</p>
+            }
+            else
+            {
+                <p>Giao dịch chưa hoàn tất. Bạn có thể quay lại và thử phương thức khác.</p>
+            }
+
+            @if (ViewBag.Amount != null || ViewBag.OrderInfo != null || ViewBag.BankCode != null || ViewBag.PayDate != null || ViewBag.TxnRef != null)
+            {
+                <dl class="vct-payment-receipt">
+                    @if (ViewBag.Amount != null)
+                    {
+                        <div><dt>Số tiền</dt><dd>@String.Format("{0:N0}", Convert.ToInt64(ViewBag.Amount)) VNĐ</dd></div>
+                    }
+                    @if (ViewBag.OrderInfo != null)
+                    {
+                        <div><dt>Nội dung</dt><dd>@ViewBag.OrderInfo</dd></div>
+                    }
+                    @if (ViewBag.BankCode != null)
+                    {
+                        <div><dt>Ngân hàng</dt><dd>@ViewBag.BankCode</dd></div>
+                    }
+                    @if (ViewBag.PayDate != null)
+                    {
+                        <div><dt>Thời gian</dt><dd>@ViewBag.PayDate</dd></div>
+                    }
+                    @if (ViewBag.TxnRef != null)
+                    {
+                        <div><dt>Mã giao dịch</dt><dd>@ViewBag.TxnRef</dd></div>
+                    }
+                </dl>
+            }
         }
-        @if (ViewBag.OrderInfo != null)
+        else
         {
-            <p><strong>Nội dung:</strong> @ViewBag.OrderInfo</p>
+            <div class="vct-page-kicker">Thông tin giao dịch</div>
+            <h1 id="payment-status-title">Chưa có dữ liệu thanh toán</h1>
+            <p>Hệ thống không nhận được thông tin giao dịch để hiển thị.</p>
         }
-        @if (ViewBag.BankCode != null)
-        {
-            <p><strong>Ngân hàng:</strong> @ViewBag.BankCode</p>
-        }
-        @if (ViewBag.PayDate != null)
-        {
-            <p><strong>Thời gian thanh toán:</strong> @ViewBag.PayDate</p>
-        }
-        @if (ViewBag.TxnRef != null)
-        {
-            <p><strong>Mã giao dịch:</strong> @ViewBag.TxnRef</p>
-        }
-    </div>
-}
-else
-{
-    <div class="alert alert-info text-center mt-5">
-        <h4>Không có thông tin giao dịch.</h4>
-    </div>
-}
+
+        <div class="vct-payment-status__actions">
+            @if (!isSuccessful)
+            {
+                <a class="vct-payment-secondary" asp-controller="Home" asp-action="ThanhToan">
+                    <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
+                    Thử lại
+                </a>
+            }
+            <a class="vct-payment-primary" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-house" aria-hidden="true"></i>
+                Về trang chủ
+            </a>
+        </div>
+    </article>
+</section>
