@@ -42,26 +42,82 @@ namespace BAO_CAO.Areas.Admin.Controllers
         }
 
         // Danh sách kết quả
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string? searchString)
         {
             try
             {
-                // Sử dụng phương thức GetAllAsync từ repository
-                var ketQuas = await _ketquareponsitory.GetAllAsync(searchString);
+                var keyword = searchString?.Trim();
+                var query = _context.socre.AsNoTracking();
 
-                // Tổng số bản ghi
-                ViewBag.TotalCount = await _ketquareponsitory.GetTotalCountAsync();
+                if (!string.IsNullOrWhiteSpace(keyword))
+                {
+                    query = query.Where(score =>
+                        score.participant.FullName.Contains(keyword) ||
+                        score.MatchId.Contains(keyword) ||
+                        (score.match.Tournament != null &&
+                         score.match.Tournament.Name.Contains(keyword)));
+                }
 
-                // Truyền search value để giữ lại giá trị tìm kiếm
-                ViewBag.SearchValue = searchString;
+                var tournamentGroups = await query
+                    .GroupBy(score => new
+                    {
+                        score.match.TournamentID,
+                        TournamentName = score.match.Tournament != null
+                            ? score.match.Tournament.Name
+                            : "Chưa gắn giải đấu"
+                    })
+                    .Select(group => new ResultTournamentGroupViewModel
+                    {
+                        TournamentId = group.Key.TournamentID,
+                        TournamentName = group.Key.TournamentName,
+                        ResultCount = group.Count()
+                    })
+                    .OrderBy(group => group.TournamentId == null)
+                    .ThenBy(group => group.TournamentName)
+                    .ToListAsync();
 
-                return View(ketQuas);
+                return View(new ResultAdminIndexViewModel
+                {
+                    SearchValue = keyword,
+                    TotalResults = tournamentGroups.Sum(group => group.ResultCount),
+                    TournamentGroups = tournamentGroups
+                });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Lỗi khi tải danh sách kết quả");
                 return View("Error");
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentResults(int? tournamentId, string? searchString)
+        {
+            var keyword = searchString?.Trim();
+            var query = _context.socre
+                .AsNoTracking()
+                .Include(score => score.participant)
+                .Include(score => score.match)
+                    .ThenInclude(match => match.LoaiHinhThiDau)
+                .Where(score => score.match.TournamentID == tournamentId);
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(score =>
+                    score.participant.FullName.Contains(keyword) ||
+                    score.MatchId.Contains(keyword) ||
+                    (score.match.Tournament != null &&
+                     score.match.Tournament.Name.Contains(keyword)));
+            }
+
+            var results = await query
+                .OrderBy(score => score.match.Date)
+                .ThenBy(score => score.MatchId)
+                .ThenBy(score => score.participant.FullName)
+                .ThenBy(score => score.ScoreId)
+                .ToListAsync();
+
+            return PartialView("_TournamentResults", results);
         }
 
        

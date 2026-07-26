@@ -1,0 +1,48 @@
+@model IReadOnlyList<BaoCaoDACS.Models.Socre>
+
+@if (Model.Count == 0)
+{
+    <div class="p-4 text-center" style="color: var(--vct-ivory-muted)">
+        Không có kết quả trong nhóm này.
+    </div>
+}
+else
+{
+    <div class="table-responsive result-tournament-group__body">
+        <table class="table table-striped table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Người tham gia</th>
+                    <th>Trận đấu</th>
+                    <th>Loại hình</th>
+                    <th>Mã trận</th>
+                    <th>Điểm</th>
+                    <th>Kết quả</th>
+                    <th class="vct-action-column">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ScoreId</td>
+                        <td>@(item.participant?.FullName ?? "N/A")</td>
+                        <td>@(item.match?.Vongdau ?? "N/A")</td>
+                        <td>@(item.match?.LoaiHinhThiDau?.Name ?? "N/A")</td>
+                        <td>@(item.match?.MatchId ?? "N/A")</td>
+                        <td class="vct-mono-value">@item.Diem</td>
+                        <td>@item.KietQua</td>
+                        <td class="vct-action-column">
+                            <div class="vct-actions" role="group" aria-label="Thao tác với kết quả @item.ScoreId">
+                                <a asp-action="Display" asp-route-id="@item.ScoreId" class="vct-icon-btn vct-icon-btn--view" title="Xem chi tiết" aria-label="Xem chi tiết kết quả @item.ScoreId"><i class="bi bi-eye"></i></a>
+                                <a asp-action="Update" asp-route-id="@item.ScoreId" class="vct-icon-btn vct-icon-btn--edit" title="Chỉnh sửa" aria-label="Chỉnh sửa kết quả @item.ScoreId"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.ScoreId" class="vct-icon-btn vct-icon-btn--delete" title="Xóa" aria-label="Xóa kết quả @item.ScoreId"><i class="bi bi-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -44,10 +44,66 @@ namespace BAO_CAO.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string? searchValue)
         {
-            var Match = await _tranDaureponsitory.GetAllAsync(searchValue);
-           
-            ViewBag.searchValue = searchValue;  
-            return View(Match);
+            var keyword = searchValue?.Trim();
+            var query = _context.match.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(match =>
+                    match.MatchId.Contains(keyword) ||
+                    match.Vongdau.Contains(keyword) ||
+                    (match.Tournament != null && match.Tournament.Name.Contains(keyword)));
+            }
+
+            var tournamentGroups = await query
+                .GroupBy(match => new
+                {
+                    match.TournamentID,
+                    TournamentName = match.Tournament != null
+                        ? match.Tournament.Name
+                        : "Chưa gắn giải đấu"
+                })
+                .Select(group => new MatchTournamentGroupViewModel
+                {
+                    TournamentId = group.Key.TournamentID,
+                    TournamentName = group.Key.TournamentName,
+                    MatchCount = group.Count()
+                })
+                .OrderBy(group => group.TournamentId == null)
+                .ThenBy(group => group.TournamentName)
+                .ToListAsync();
+
+            return View(new MatchAdminIndexViewModel
+            {
+                SearchValue = keyword,
+                TotalMatches = tournamentGroups.Sum(group => group.MatchCount),
+                TournamentGroups = tournamentGroups
+            });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentMatches(int? tournamentId, string? searchValue)
+        {
+            var keyword = searchValue?.Trim();
+            var query = _context.match
+                .AsNoTracking()
+                .Include(match => match.LoaiHinhThiDau)
+                .Where(match => match.TournamentID == tournamentId);
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(match =>
+                    match.MatchId.Contains(keyword) ||
+                    match.Vongdau.Contains(keyword) ||
+                    (match.Tournament != null && match.Tournament.Name.Contains(keyword)));
+            }
+
+            var matches = await query
+                .OrderBy(match => match.Date)
+                .ThenBy(match => match.MatchId)
+                .ToListAsync();
+
+            return PartialView("_TournamentMatches", matches);
         }
 
     public async Task<IActionResult> Add()

@@ -17,16 +17,26 @@ namespace BaoCaoDACS.Reponsitory
         public async Task<IEnumerable<Match>> GetAllAsync(string? searchValue)
         {
             var query = _context.match
+                .AsNoTracking()
                 .Include(m => m.Tournament)
-                 .Include(m => m.LoaiHinhThiDau)
+                .Include(m => m.LoaiHinhThiDau)
                 .AsQueryable();
 
-            if (!string.IsNullOrEmpty(searchValue))
+            if (!string.IsNullOrWhiteSpace(searchValue))
             {
-                query = query.Where(c => c.Vongdau.Contains(searchValue));
+                var keyword = searchValue.Trim();
+                query = query.Where(m =>
+                    m.Vongdau.Contains(keyword) ||
+                    m.MatchId.Contains(keyword) ||
+                    (m.Tournament != null && m.Tournament.Name.Contains(keyword)));
             }
 
-            return await query.ToListAsync();
+            return await query
+                .OrderBy(m => m.TournamentID == null)
+                .ThenBy(m => m.Tournament!.Name)
+                .ThenBy(m => m.Date)
+                .ThenBy(m => m.MatchId)
+                .ToListAsync();
         }
         public async Task<IEnumerable<Match>> GetAllAsync()
         {
