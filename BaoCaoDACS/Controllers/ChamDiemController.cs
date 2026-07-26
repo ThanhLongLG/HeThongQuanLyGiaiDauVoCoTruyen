@@ -1,12 +1,15 @@
 ﻿using System.Diagnostics;
+using System.Data;
 using BaoCaoDACS.Models;
 using BaoCaoDACS.Reponsitory;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace BaoCaoDACS.Controllers
 {
+    [Authorize]
     public class ChamDiemController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -193,6 +196,9 @@ namespace BaoCaoDACS.Controllers
                 string kietQua2 = DetermineResultText(redScoreValue, blueScoreValue);
                 byte kq2 = DetermineResultByte(redScoreValue, blueScoreValue);
 
+                await using var transaction = await _context.Database
+                    .BeginTransactionAsync(IsolationLevel.Serializable);
+
                 // Lưu kết quả cho Participant Xanh
                 var socre = await _context.socre
                    .FirstOrDefaultAsync(p =>
@@ -214,9 +220,6 @@ namespace BaoCaoDACS.Controllers
                     socre.Kq = kq1;
                     socre.KietQua = kietQua1;
                     socre.Danhgia = scoreData.BlueCautions.ToString();
-
-                    await _context.SaveChangesAsync();
-
                 }
 
                 // Lưu kết quả cho Participant Đỏ
@@ -238,9 +241,6 @@ namespace BaoCaoDACS.Controllers
                     socre2.Kq = kq2;
                     socre2.KietQua = kietQua2;
                     socre2.Danhgia = scoreData.BlueCautions.ToString();
-
-                    await _context.SaveChangesAsync();
-
                 }
                 var match = await _context.match
                   .FirstOrDefaultAsync(p => p.MatchId == scoreData.MatchId);
@@ -251,9 +251,11 @@ namespace BaoCaoDACS.Controllers
                 else
                 {
                     match.trangthai = 1;
-                    await _context.SaveChangesAsync();
-
                 }
+
+                // Lưu hai kết quả và trạng thái trận trong transaction hiện tại.
+                // Ranking service dùng cùng DbContext nên sẽ tham gia transaction này.
+                await _context.SaveChangesAsync();
 
                 // Log kết quả
                 _logger.LogInformation($"Đã lưu kết quả trận đấu {scoreData.MatchId}. " +
@@ -261,6 +263,7 @@ namespace BaoCaoDACS.Controllers
 
                 // Cập nhật Elo sau khi chấm điểm
                 await _rankingService.UpdateAfterMatchAsync(scoreData.MatchId);
+                await transaction.CommitAsync();
 
                 return Ok(new
                 {

@@ -16,6 +16,7 @@ namespace BaoCaoDACS.Models
         [Required]
         public string Trongtai { get; set; }
         public int? trangthai { get; set; }
+        public bool EloProcessed { get; set; }
         [Required]
         public DateTime Date { get; set; }
 

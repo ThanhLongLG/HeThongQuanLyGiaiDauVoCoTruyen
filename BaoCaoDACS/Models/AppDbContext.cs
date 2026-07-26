@@ -19,6 +19,10 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         .HasIndex(p => new { p.UserId, p.TournamentID })
         .IsUnique();
 
+        modelBuilder.Entity<TournamentRanking>()
+            .HasIndex(r => new { r.UserId, r.TournamentId })
+            .IsUnique();
+
         modelBuilder.Entity<Participant>()
         .HasOne(p => p.Tournament)
         .WithMany(t => t.participant)

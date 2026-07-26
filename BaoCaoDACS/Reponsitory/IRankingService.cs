@@ -13,7 +13,11 @@ namespace BaoCaoDACS.Reponsitory
         Task RebuildTournamentAsync(int tournamentId);
         Task<List<LeaderboardRowDto>> GetLeaderboardAsync(int tournamentId, int take = 50);
 
-        Task<List<OpponentSuggestionDto>> SuggestOpponentsAsync(string userId, int tournamentId, int take = 10);
+        Task<List<OpponentSuggestionDto>> SuggestOpponentsAsync(
+            string userId,
+            int tournamentId,
+            string matchId,
+            int take = 10);
     }
 
     public class LeaderboardRowDto

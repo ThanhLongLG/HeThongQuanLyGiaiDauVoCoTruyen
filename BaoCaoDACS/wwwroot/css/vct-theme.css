@@ -876,6 +876,11 @@ html.vct-theme-ready .vct-theme-toggle {
     color: var(--vct-ivory-muted);
 }
 
+html[data-theme="dark"] .vct-public .tournament-card .tournament-meta .bi.text-muted,
+html[data-theme="dark"] .vct-public .tournament-card .tournament-location .bi.text-muted {
+    color: var(--vct-gold-light) !important;
+}
+
 .vct-public .calendar-section {
     margin-top: 70px;
 }

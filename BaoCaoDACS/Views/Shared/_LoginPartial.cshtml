@@ -3,7 +3,7 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-<ul class="navbar-nav vct-account-nav">
+<ul class="navbar-nav vct-account-nav @(SignInManager.IsSignedIn(User) ? "" : "vct-account-nav--guest")">
    
 @if (SignInManager.IsSignedIn(User))
 {

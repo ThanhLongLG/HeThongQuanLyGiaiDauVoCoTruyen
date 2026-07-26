@@ -388,7 +388,11 @@ namespace BAO_CAO.Areas.Admin.Controllers
                 return NotFound(new { message = "Không tìm thấy User của VĐV #1" });
 
             // gợi ý theo Elo + cân nặng + chiều cao + tuổi (bạn đã implement)
-            var suggestions = await _rankingService.SuggestOpponentsAsync(first.UserId, match.TournamentID.Value, take);
+            var suggestions = await _rankingService.SuggestOpponentsAsync(
+                first.UserId,
+                match.TournamentID.Value,
+                matchId,
+                take);
 
             // Loại bỏ trường hợp đã được thêm vào match (để không trùng)
             var existParticipantIds = await _context.socre
