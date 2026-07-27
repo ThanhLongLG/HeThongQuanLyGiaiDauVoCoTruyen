@@ -1,4 +1,4 @@
-﻿@model BaoCaoDACS.Models.Participant
+﻿@model BaoCaoDACS.Areas.Admin.Models.ParticipantAdminDetailsViewModel
 @{
     ViewData["Title"] = "Chi tiết người tham gia";
     Layout = "~/Views/Shared/Admin_layout.cshtml";
@@ -44,29 +44,29 @@ else
                                         <tbody>
                                             <tr>
                                                 <th class="text-primary" style="width: 40%;">Mã người tham gia</th>
-                                                <td>@Model.ParticipantID</td>
+                                                <td>@Model.Participant.ParticipantID</td>
                                             </tr>
                                             <tr>
                                                 <th class="text-primary">Họ và tên</th>
-                                                <td>@Model.FullName</td>
+                                                <td>@Model.Participant.FullName</td>
                                             </tr>
                                             <tr>
                                                 <th class="text-primary">Câu lạc bộ</th>
-                                                <td>@Model.Club</td>
+                                                <td>@Model.Participant.Club</td>
                                             </tr>
                                             
-                                            @if (Model.sdt != null)
+                                            @if (Model.Participant.sdt != null)
                                             {
                                                 <tr>
                                                     <th class="text-primary">Số điện thoại</th>
-                                                    <td>@Model.sdt</td>
+                                                    <td>@Model.Participant.sdt</td>
                                                 </tr>
                                             }
-                                            @if (Model.email != null)
+                                            @if (Model.Participant.email != null)
                                             {
                                                 <tr>
                                                     <th class="text-primary">Email</th>
-                                                    <td>@Model.email</td>
+                                                    <td>@Model.Participant.email</td>
                                                 </tr>
                                             }
                                         </tbody>
@@ -74,7 +74,62 @@ else
                                 </div>
                             </div>
                         </div>
+                        <hr class="my-4" />
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">Điểm ranking theo giải đấu</h6>
+                            <a class="btn btn-primary btn-sm"
+                               asp-action="Update"
+                               asp-route-id="@Model.Participant.ParticipantID">
+                                <i class="bi bi-pencil me-1"></i> Chỉnh sửa ranking
+                            </a>
+                        </div>
 
+                        @if (Model.Rankings.Count == 0)
+                        {
+                            <div class="alert alert-info mb-0">
+                                Người tham gia này chưa có dữ liệu ranking.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Giải đấu</th>
+                                            <th>Điểm</th>
+                                            <th>Hạng</th>
+                                            <th>Số trận</th>
+                                            <th>Thắng</th>
+                                            <th>Thua</th>
+                                            <th>Cập nhật</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var ranking in Model.Rankings)
+                                        {
+                                            var tierName = ranking.Tier switch
+                                            {
+                                                0 => "Đồng",
+                                                1 => "Bạc",
+                                                2 => "Vàng",
+                                                3 => "Bạch kim",
+                                                _ => "Không xác định"
+                                            };
+                                            <tr>
+                                                <td>@ranking.TournamentName</td>
+                                                <td class="vct-mono-value fw-bold">@ranking.Rating.ToString("0.##")</td>
+                                                <td>@tierName</td>
+                                                <td>@ranking.MatchesPlayed</td>
+                                                <td>@ranking.Wins</td>
+                                                <td>@ranking.Losses</td>
+                                                <td>@ranking.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
                         
                     </div>
                 </div>

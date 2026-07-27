@@ -974,6 +974,10 @@ html[data-theme="dark"] .vct-public .tournament-card .tournament-location .bi.te
     color: var(--vct-ivory);
 }
 
+.vct-public .swal2-container {
+    z-index: 1500;
+}
+
 .vct-public .vct-tournament-register-btn {
     min-height: 44px;
     border: 1px solid var(--vct-lacquer);

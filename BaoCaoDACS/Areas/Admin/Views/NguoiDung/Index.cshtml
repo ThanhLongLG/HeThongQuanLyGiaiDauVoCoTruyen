@@ -1,6 +1,9 @@
-﻿@{
+﻿@model IEnumerable<BaoCaoDACS.Models.Participant>
+@{
     ViewData["Title"] = "Quản lý người dùng";
     Layout = "~/Views/Shared/Admin_layout.cshtml";
+    var currentRankings = ViewBag.CurrentRankings as IReadOnlyDictionary<string, BaoCaoDACS.Models.TournamentRanking>
+        ?? new Dictionary<string, BaoCaoDACS.Models.TournamentRanking>();
 }
 
 
@@ -75,18 +78,33 @@
                         <th>Câu lạc bộ</th>
                         <th>Số điện thoại</th>
                         <th>Email</th>
+                        <th>Điểm ranking</th>
+                        <th>Hạng</th>
                         <th class="vct-action-column">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
+                        currentRankings.TryGetValue(item.ParticipantID, out var ranking);
+                        var tierName = ranking?.Tier switch
+                        {
+                            0 => "Đồng",
+                            1 => "Bạc",
+                            2 => "Vàng",
+                            3 => "Bạch kim",
+                            _ => "Chưa có"
+                        };
                         <tr>
                      
                             <td>@item.FullName</td>
                             <td>@item.Club</td>
                             <td class="vct-mono-value">@item.sdt</td>
                             <td>@item.email</td>
+                            <td class="vct-mono-value">
+                                @(ranking == null ? "Chưa có" : ranking.Rating.ToString("0.##"))
+                            </td>
+                            <td>@tierName</td>
                             <td class="vct-action-column">
                                 <div class="vct-actions" role="group" aria-label="Thao tác với @item.FullName">
                                     <a asp-action="Display" asp-route-id="@item.ParticipantID" class="vct-icon-btn vct-icon-btn--view" title="Xem chi tiết" aria-label="Xem chi tiết @item.FullName"><i class="bi bi-eye"></i></a>
@@ -102,7 +120,7 @@
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-between align-items-center">
-                <span>Tổng số: @(Model == null ? 0 : Model.Count) người dùng</span>
+                <span>Tổng số: @(Model?.Count() ?? 0) người dùng</span>
                 <a asp-controller="TrangQL" asp-action="Index" class="vct-btn vct-btn--ghost"><i class="bi bi-arrow-left"></i> Quay lại trang quản trị</a>
             </div>
         </div>

@@ -2,6 +2,7 @@
 using BaoCaoDACS.Models;
 using BaoCaoDACS.Reponsitory;
 using BaoCaoDACS.Reponsitory.Services;
+using BaoCaoDACS.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.ML;  
@@ -50,6 +51,7 @@ builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("Mo
 builder.Services.AddScoped<IRankingService, EFRankingService>();
 builder.Services.AddScoped<IMatchPredictionService, EFMatchPredictionService>();
 builder.Services.AddScoped<IMomoService, MomoService>();
+builder.Services.AddHostedService<TournamentStatusBackgroundService>();
 
 
 

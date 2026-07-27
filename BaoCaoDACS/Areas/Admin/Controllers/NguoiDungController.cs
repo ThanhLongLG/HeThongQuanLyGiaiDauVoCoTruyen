@@ -38,7 +38,37 @@ namespace BAO_CAO.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string? searchValue)
         {
-            var participants = await _nguoidungreponsitory.GetAllAsync(searchValue);
+            var participants = (await _nguoidungreponsitory.GetAllAsync(searchValue)).ToList();
+            var userIds = participants
+                .Where(p => !string.IsNullOrWhiteSpace(p.UserId))
+                .Select(p => p.UserId!)
+                .Distinct()
+                .ToList();
+            var tournamentIds = participants
+                .Where(p => p.TournamentID.HasValue)
+                .Select(p => p.TournamentID!.Value)
+                .Distinct()
+                .ToList();
+
+            var rankings = userIds.Count == 0 || tournamentIds.Count == 0
+                ? new List<TournamentRanking>()
+                : await _context.TournamentRankings
+                    .AsNoTracking()
+                    .Where(r => userIds.Contains(r.UserId)
+                        && tournamentIds.Contains(r.TournamentId))
+                    .ToListAsync();
+
+            ViewBag.CurrentRankings = participants
+                .Where(p => !string.IsNullOrWhiteSpace(p.UserId) && p.TournamentID.HasValue)
+                .Select(p => new
+                {
+                    p.ParticipantID,
+                    Ranking = rankings.FirstOrDefault(r =>
+                        r.UserId == p.UserId
+                        && r.TournamentId == p.TournamentID!.Value)
+                })
+                .Where(x => x.Ranking != null)
+                .ToDictionary(x => x.ParticipantID, x => x.Ranking!);
             ViewBag.searchValue = searchValue;  
             return View(participants);
         }
@@ -134,7 +164,8 @@ namespace BAO_CAO.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(khachHang);
+
+            return View(await BuildAdminDetailsViewModelAsync(khachHang));
         }
 
         public async Task<IActionResult> Delete(string id)
@@ -211,12 +242,13 @@ namespace BAO_CAO.Areas.Admin.Controllers
             var tournaments = await _context.Tournaments.ToListAsync();
             ViewBag.Tournaments = new SelectList(tournaments, "TournamentID", "Name", participant.TournamentID);
 
-            return View(participant);
+            return View(await BuildAdminDetailsViewModelAsync(participant));
         }
         [HttpPost]
-        public async Task<IActionResult> Update(string id, Participant khachHang)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(string id, ParticipantAdminDetailsViewModel model)
         {
-            if (id != khachHang.ParticipantID.ToString())
+            if (id != model.Participant.ParticipantID)
             {
                 return NotFound();
             }
@@ -233,17 +265,51 @@ namespace BAO_CAO.Areas.Admin.Controllers
                     }
 
                     // Cập nhật tất cả các thuộc tính
-                    existingCustomer.FullName = khachHang.FullName;
-                    existingCustomer.Club = khachHang.Club;
-                    existingCustomer.sdt = khachHang.sdt;
-                    existingCustomer.email = khachHang.email;
-                    existingCustomer.ChieuCao = khachHang.ChieuCao;
-                    existingCustomer.CanNang = khachHang.CanNang;
-                    existingCustomer.tuoi = khachHang.tuoi;
-                    existingCustomer.Diachi = khachHang.Diachi;
-                    existingCustomer.TournamentID = khachHang.TournamentID;
-                    // Lưu thay đổi vào cơ sở dữ liệu
-                    await _nguoidungreponsitory.UpdateAsync(existingCustomer);
+                    existingCustomer.FullName = model.Participant.FullName;
+                    existingCustomer.Club = model.Participant.Club;
+                    existingCustomer.sdt = model.Participant.sdt;
+                    existingCustomer.email = model.Participant.email;
+                    existingCustomer.ChieuCao = model.Participant.ChieuCao;
+                    existingCustomer.CanNang = model.Participant.CanNang;
+                    existingCustomer.tuoi = model.Participant.tuoi;
+                    existingCustomer.Diachi = model.Participant.Diachi;
+                    existingCustomer.TournamentID = model.Participant.TournamentID;
+
+                    var rankingIds = model.Rankings
+                        .Select(r => r.Id)
+                        .Distinct()
+                        .ToList();
+                    var participantRankings = string.IsNullOrWhiteSpace(existingCustomer.UserId)
+                        ? new List<TournamentRanking>()
+                        : await _context.TournamentRankings
+                            .Where(r => r.UserId == existingCustomer.UserId
+                                && rankingIds.Contains(r.Id))
+                            .ToListAsync();
+
+                    if (participantRankings.Count != rankingIds.Count)
+                    {
+                        ModelState.AddModelError(
+                            nameof(model.Rankings),
+                            "Có dữ liệu ranking không hợp lệ hoặc không thuộc người tham gia này.");
+                    }
+                    else
+                    {
+                        foreach (var ranking in participantRankings)
+                        {
+                            var submittedRanking = model.Rankings.First(r => r.Id == ranking.Id);
+                            ranking.Rating = submittedRanking.Rating;
+                            ranking.Tier = CalculateTier(submittedRanking.Rating);
+                            ranking.UpdatedAt = DateTime.UtcNow;
+                        }
+                    }
+
+                    if (!ModelState.IsValid)
+                    {
+                        return await ReturnUpdateViewAsync(model);
+                    }
+
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Đã cập nhật thông tin và điểm ranking thành công.";
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -252,9 +318,82 @@ namespace BAO_CAO.Areas.Admin.Controllers
                     ModelState.AddModelError("", "Có lỗi xảy ra khi cập nhật khách hàng: " + ex.Message);
                 }
             }
+
+            return await ReturnUpdateViewAsync(model);
+        }
+
+        private async Task<ParticipantAdminDetailsViewModel> BuildAdminDetailsViewModelAsync(
+            Participant participant)
+        {
+            var rankings = new List<ParticipantRankingEditViewModel>();
+
+            if (!string.IsNullOrWhiteSpace(participant.UserId))
+            {
+                rankings = await _context.TournamentRankings
+                    .AsNoTracking()
+                    .Where(r => r.UserId == participant.UserId)
+                    .OrderByDescending(r => r.Tournament.StartDate)
+                    .Select(r => new ParticipantRankingEditViewModel
+                    {
+                        Id = r.Id,
+                        TournamentId = r.TournamentId,
+                        TournamentName = r.Tournament.Name,
+                        Rating = r.Rating,
+                        Tier = r.Tier,
+                        MatchesPlayed = r.MatchesPlayed,
+                        Wins = r.Wins,
+                        Losses = r.Losses,
+                        UpdatedAt = r.UpdatedAt
+                    })
+                    .ToListAsync();
+            }
+
+            return new ParticipantAdminDetailsViewModel
+            {
+                Participant = participant,
+                Rankings = rankings
+            };
+        }
+
+        private async Task<IActionResult> ReturnUpdateViewAsync(
+            ParticipantAdminDetailsViewModel submittedModel)
+        {
             var tournaments = await _context.Tournaments.ToListAsync();
-            ViewBag.Tournaments = new SelectList(tournaments, "TournamentID", "Name", khachHang.TournamentID);
-            return View(khachHang);
+            ViewBag.Tournaments = new SelectList(
+                tournaments,
+                "TournamentID",
+                "Name",
+                submittedModel.Participant.TournamentID);
+
+            var participant = await _nguoidungreponsitory
+                .GetByIdAsync(submittedModel.Participant.ParticipantID);
+            if (participant == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = await BuildAdminDetailsViewModelAsync(participant);
+            var submittedRatings = submittedModel.Rankings
+                .ToDictionary(r => r.Id, r => r.Rating);
+
+            foreach (var ranking in viewModel.Rankings)
+            {
+                if (submittedRatings.TryGetValue(ranking.Id, out var rating))
+                {
+                    ranking.Rating = rating;
+                }
+            }
+
+            viewModel.Participant = submittedModel.Participant;
+            return View("Update", viewModel);
+        }
+
+        private static int CalculateTier(float rating)
+        {
+            if (rating < 900) return 0;
+            if (rating < 1100) return 1;
+            if (rating < 1300) return 2;
+            return 3;
         }
     }   
 }

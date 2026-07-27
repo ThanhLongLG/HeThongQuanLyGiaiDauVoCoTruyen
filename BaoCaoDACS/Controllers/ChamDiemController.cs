@@ -26,8 +26,27 @@ namespace BaoCaoDACS.Controllers
             _rankingService = rankingService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string? matchId)
         {
+            if (!string.IsNullOrWhiteSpace(matchId))
+            {
+                var match = await _context.match
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(m => m.MatchId == matchId);
+
+                if (match == null)
+                {
+                    return NotFound();
+                }
+
+                if (match.Date.Date > GetVietnamToday())
+                {
+                    TempData["ScoringWarning"] =
+                        $"Trận {match.MatchId} chỉ được chấm điểm từ ngày {match.Date:dd/MM/yyyy}.";
+                    return RedirectToAction("LichThiDau", "Home");
+                }
+            }
+
             return View();
         }
         [HttpGet]
@@ -182,6 +201,22 @@ namespace BaoCaoDACS.Controllers
                     return BadRequest(new { message = "Thông tin trận đấu không đầy đủ" });
                 }
 
+                var match = await _context.match
+                    .FirstOrDefaultAsync(p => p.MatchId == scoreData.MatchId);
+
+                if (match == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy thông tin Trận đấu" });
+                }
+
+                if (match.Date.Date > GetVietnamToday())
+                {
+                    return Conflict(new
+                    {
+                        message = $"Trận đấu chỉ được chấm điểm từ ngày {match.Date:dd/MM/yyyy}."
+                    });
+                }
+
                 // Chuyển đổi điểm số
                 float blueScoreValue = float.TryParse(scoreData.BlueScore, out float blueScore)
                     ? blueScore
@@ -242,16 +277,7 @@ namespace BaoCaoDACS.Controllers
                     socre2.KietQua = kietQua2;
                     socre2.Danhgia = scoreData.BlueCautions.ToString();
                 }
-                var match = await _context.match
-                  .FirstOrDefaultAsync(p => p.MatchId == scoreData.MatchId);
-                if (match == null)
-                {
-                    return NotFound(new { message = "Không tìm thấy thông tin Trận đấu" });
-                }
-                else
-                {
-                    match.trangthai = 1;
-                }
+                match.trangthai = 1;
 
                 // Lưu hai kết quả và trạng thái trận trong transaction hiện tại.
                 // Ranking service dùng cùng DbContext nên sẽ tham gia transaction này.
@@ -299,6 +325,22 @@ namespace BaoCaoDACS.Controllers
         {
             try
             {
+                var match = await _context.match
+                    .FirstOrDefaultAsync(p => p.MatchId == performanceData.MatchId);
+
+                if (match == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy thông tin Trận đấu" });
+                }
+
+                if (match.Date.Date > GetVietnamToday())
+                {
+                    return Conflict(new
+                    {
+                        message = $"Trận đấu chỉ được chấm điểm từ ngày {match.Date:dd/MM/yyyy}."
+                    });
+                }
+
                 // Tìm bản ghi socre tương ứng
                 var socre = await _context.socre
                     .FirstOrDefaultAsync(s =>
@@ -330,21 +372,9 @@ namespace BaoCaoDACS.Controllers
                 // Để trống KQ
                 socre.Kq = null;
 
-                // Lưu thay đổi
+                match.trangthai = 1;
                 await _context.SaveChangesAsync();
 
-                var match = await _context.match
-                  .FirstOrDefaultAsync(p => p.MatchId == performanceData.MatchId);
-                if (match == null)
-                {
-                    return NotFound(new { message = "Không tìm thấy thông tin Trận đấu" });
-                }
-                else
-                {
-                    match.trangthai = 1;
-                    await _context.SaveChangesAsync();
-
-                }
                 return Ok(new
                 {
                     message = "Chấm điểm biểu diễn thành công",
@@ -355,6 +385,26 @@ namespace BaoCaoDACS.Controllers
             {
                 return StatusCode(500, new { message = "Có lỗi xảy ra khi chấm điểm", error = ex.Message });
             }
+        }
+
+        private static DateTime GetVietnamToday()
+        {
+            foreach (var timeZoneId in new[] { "Asia/Ho_Chi_Minh", "SE Asia Standard Time" })
+            {
+                try
+                {
+                    var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+                    return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone).Date;
+                }
+                catch (TimeZoneNotFoundException)
+                {
+                }
+                catch (InvalidTimeZoneException)
+                {
+                }
+            }
+
+            return DateTime.UtcNow.AddHours(7).Date;
         }
 
     }

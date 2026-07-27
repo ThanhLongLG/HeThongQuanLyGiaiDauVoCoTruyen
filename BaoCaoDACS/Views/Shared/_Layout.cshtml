@@ -177,9 +177,93 @@
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        (() => {
+            const modal = document.getElementById('tournamentModal');
+            const select = modal?.querySelector('select');
+            const spinner = modal?.querySelector('.loading-spinner');
+            const confirmButton = modal?.querySelector('.btn-confirm');
+            const cancelButton = modal?.querySelector('.btn-cancel');
+
+            const closeScoringModal = () => {
+                if (!modal) return;
+                modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            };
+
+            const formatMatchLabel = (match) => {
+                const details = [
+                    match.tournamentName,
+                    match.loaiHinhThiDau,
+                    match.vongdau ? `Vòng ${match.vongdau}` : null,
+                    match.date,
+                    match.sanDau ? `Sàn ${match.sanDau}` : null
+                ].filter(Boolean);
+
+                return `${match.matchId} — ${details.join(' · ')}`;
+            };
+
+            window.hienThiDanhSachGiaiDau = async () => {
+                if (!modal || !select || !spinner) return;
+
+                modal.style.display = 'flex';
+                document.body.classList.add('modal-open');
+                spinner.style.display = 'block';
+                select.disabled = true;
+                select.replaceChildren(new Option('Đang tải danh sách trận đấu...', ''));
+
+                try {
+                    const response = await fetch('/Home/GetMatches', {
+                        headers: { Accept: 'application/json' },
+                        credentials: 'same-origin'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Không thể tải danh sách trận đấu (HTTP ${response.status}).`);
+                    }
+
+                    const matches = await response.json();
+                    select.replaceChildren(new Option('Chọn trận đấu', ''));
+
+                    matches.forEach((match) => {
+                        select.add(new Option(formatMatchLabel(match), match.matchId));
+                    });
+
+                    if (matches.length === 0) {
+                        select.replaceChildren(new Option('Hiện không có trận đấu cần chấm điểm', ''));
+                    }
+                } catch (error) {
+                    console.error('Lỗi tải danh sách trận đấu:', error);
+                    select.replaceChildren(new Option('Không thể tải danh sách trận đấu', ''));
+                    Swal.fire('Lỗi', error.message, 'error');
+                } finally {
+                    spinner.style.display = 'none';
+                    select.disabled = false;
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            };
+
+            confirmButton?.addEventListener('click', () => {
+                const matchId = select?.value;
+                if (!matchId) {
+                    Swal.fire('Cảnh báo', 'Vui lòng chọn một trận đấu.', 'warning');
+                    return;
+                }
+
+                window.location.href = `/ChamDiem/Index?matchId=${encodeURIComponent(matchId)}`;
+            });
+
+            cancelButton?.addEventListener('click', closeScoringModal);
+            modal?.addEventListener('click', (event) => {
+                if (event.target === modal) closeScoringModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal?.style.display === 'flex') {
+                    closeScoringModal();
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
-
-<script>
-    // ... (giữ nguyên toàn bộ khối script chấm điểm phía dưới, không có conflict)
-</script>

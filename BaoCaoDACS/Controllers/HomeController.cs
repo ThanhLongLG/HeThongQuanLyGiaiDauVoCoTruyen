@@ -119,14 +119,10 @@ namespace BaoCaoDACS.Controllers
         {
             return View();
         }
-        
-        public IActionResult ChamDiem()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> LichThiDau()
         {
+            ViewBag.VietnamToday = GetVietnamToday();
+
             var matches = await _context.match
                 .Include(m => m.Socre).ThenInclude(s => s.participant)
                 .Where(m => m.trangthai != 1)
@@ -543,11 +539,13 @@ namespace BaoCaoDACS.Controllers
             {
                 try
                 {
+                    var vietnamToday = GetVietnamToday();
+
                     var matches = await _context.match
                         .Include(m => m.LoaiHinhThiDau)
                         .Include(m => m.Tournament)
                         .Include(m => m.Socre)
-                        .Where(m => m.trangthai != 1)
+                        .Where(m => m.trangthai != 1 && m.Date.Date <= vietnamToday)
                         .AsNoTracking()
                         .Select(m => new
                         {
@@ -580,6 +578,26 @@ namespace BaoCaoDACS.Controllers
                     });
                 }
             }
+
+        private static DateTime GetVietnamToday()
+        {
+            foreach (var timeZoneId in new[] { "Asia/Ho_Chi_Minh", "SE Asia Standard Time" })
+            {
+                try
+                {
+                    var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+                    return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone).Date;
+                }
+                catch (TimeZoneNotFoundException)
+                {
+                }
+                catch (InvalidTimeZoneException)
+                {
+                }
+            }
+
+            return DateTime.UtcNow.AddHours(7).Date;
+        }
 
         [HttpGet]
         public async Task<IActionResult> TopScores()

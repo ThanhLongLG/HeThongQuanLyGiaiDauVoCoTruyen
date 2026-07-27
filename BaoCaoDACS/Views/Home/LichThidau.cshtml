@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = "Lịch Thi Đấu";
     var now = DateTime.Now;
+    var scoringToday = ViewBag.VietnamToday is DateTime vietnamToday
+        ? vietnamToday
+        : DateTime.Today;
     var winRateMap = ViewData["WinRateMap"] as Dictionary<string, float>;
 }
 
@@ -158,12 +161,23 @@
                             </div>
 
                             <div class="match-actions">
-                                <!-- Bạn có thể đổi lại route/action theo hệ thống của bạn -->
-                                <button type="button"
-                                        class="vct-btn vct-btn--score"
-                                        onclick="xuLyChonGiaiDau2('@match.MatchId')">
-                                    <i class="fas fa-calculator"></i> Chấm điểm
-                                </button>
+                                @if (match.Date.Date <= scoringToday)
+                                {
+                                    <button type="button"
+                                            class="vct-btn vct-btn--score"
+                                            onclick="xuLyChonGiaiDau2('@match.MatchId')">
+                                        <i class="fas fa-calculator"></i> Chấm điểm
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button"
+                                            class="vct-btn vct-btn--score"
+                                            disabled
+                                            title="Chỉ được chấm điểm từ ngày @match.Date.ToString("dd/MM/yyyy")">
+                                        <i class="fas fa-lock"></i> Chưa đến ngày
+                                    </button>
+                                }
 
                                 <a asp-controller="Home"
                                    asp-action="ChiTietTranDau"
@@ -524,6 +538,18 @@
 </style>
 @section Scripts {
     <script>
+        @if (TempData["ScoringWarning"] is string scoringWarning)
+        {
+            <text>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Chưa đến ngày thi đấu',
+                    text: @Json.Serialize(scoringWarning),
+                    confirmButtonText: 'Đã hiểu'
+                });
+            </text>
+        }
+
         async function xuLyChonGiaiDau2(matchId) {
             try {
                 console.log('xuLyChonGiaiDau, matchId =', matchId);

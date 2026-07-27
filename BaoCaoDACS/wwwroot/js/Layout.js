@@ -93,15 +93,14 @@
                 });
                 return;
             }
-            Swal.fire({
+            closeModal('register-tournament-modal');
+            resetForm();
+
+            await Swal.fire({
                 title: 'Thành công!',
                 text: 'Đăng ký thành công!',
                 icon: 'success',
                 confirmButtonText: 'OK'
-            }).then(() => {
-                closeModal('register-tournament-modal');
-                resetForm();
-                // optionally refresh list: location.reload();
             });
 
         } catch (err) {
