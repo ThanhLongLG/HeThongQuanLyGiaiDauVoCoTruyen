@@ -1,0 +1,78 @@
+@model BaoCaoDACS.Areas.Admin.Models.NewsFormViewModel
+@{
+    var isEdit = Model.NewsId > 0;
+}
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+<input asp-for="NewsId" type="hidden" />
+<input asp-for="ExistingImageUrl" type="hidden" />
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài viết" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Summary" class="form-label"></label>
+            <textarea asp-for="Summary" class="form-control" rows="3"
+                      placeholder="Tóm tắt ngắn hiển thị trên thẻ tin tức"></textarea>
+            <span asp-validation-for="Summary" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Content" class="form-label"></label>
+            <textarea asp-for="Content" class="form-control vct-news-editor" rows="14"
+                      placeholder="Nhập nội dung đầy đủ của bài viết"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+            <small class="form-text">Các đoạn xuống dòng sẽ được giữ nguyên khi hiển thị.</small>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <aside class="vct-form-aside">
+            <div class="mb-3">
+                <label asp-for="ImageFile" class="form-label"></label>
+                @if (isEdit && !string.IsNullOrWhiteSpace(Model.ExistingImageUrl))
+                {
+                    <img id="newsImagePreview" class="vct-news-form-preview" src="@Model.ExistingImageUrl" alt="Ảnh hiện tại" />
+                }
+                else
+                {
+                    <img id="newsImagePreview" class="vct-news-form-preview d-none" src="" alt="Ảnh xem trước" />
+                }
+                <input asp-for="ImageFile" class="form-control" type="file"
+                       accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                <small class="form-text">JPG, PNG, WEBP hoặc GIF; tối đa 5 MB.@(isEdit ? " Để trống nếu giữ ảnh hiện tại." : "")</small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PublishedAt" class="form-label"></label>
+                <input asp-for="PublishedAt" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" type="datetime-local" />
+                <span asp-validation-for="PublishedAt" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ExpiresAt" class="form-label"></label>
+                <input asp-for="ExpiresAt" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" type="datetime-local" />
+                <span asp-validation-for="ExpiresAt" class="text-danger"></span>
+                <small class="form-text">Có thể để trống nếu bài viết không hết hạn.</small>
+            </div>
+
+            <div class="form-check form-switch">
+                <input asp-for="IsPublished" class="form-check-input" />
+                <label asp-for="IsPublished" class="form-check-label"></label>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<div class="vct-form-actions">
+    <button type="submit" class="vct-btn vct-btn--gold">
+        <i class="bi bi-check2-circle"></i> @(isEdit ? "Lưu thay đổi" : "Tạo bài viết")
+    </button>
+    <a asp-action="Index" class="vct-btn vct-btn--ghost">Hủy</a>
+</div>

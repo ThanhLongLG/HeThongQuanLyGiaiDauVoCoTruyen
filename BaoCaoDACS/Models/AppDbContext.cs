@@ -55,6 +55,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Socre> socre { get; set; }
     public DbSet<LoaiHinhThiDau> loaiHinhThiDau { get; set; }
     public DbSet<TournamentRanking> TournamentRankings { get; set; }
+    public DbSet<News> News { get; set; }
 
 
 }

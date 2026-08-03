@@ -1,0 +1,37 @@
+@model BaoCaoDACS.Areas.Admin.Models.NewsFormViewModel
+@{
+    ViewData["Title"] = "Chỉnh sửa tin tức";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Tin tức</a></li>
+        <li class="breadcrumb-item active">Chỉnh sửa</li>
+    </ol>
+</nav>
+
+<header class="mb-4">
+    <div class="vct-page-kicker">Cập nhật bài viết</div>
+    <h1 class="vct-page-title">Chỉnh sửa tin tức</h1>
+    <p class="vct-page-subtitle">Điều chỉnh nội dung, ảnh và thời hạn hiển thị.</p>
+</header>
+
+<form asp-action="Edit" asp-route-id="@Model.NewsId" method="post" enctype="multipart/form-data" class="card vct-panel">
+    <div class="card-body p-4">
+        <partial name="_Form" model="Model" />
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("ImageFile")?.addEventListener("change", (event) => {
+            const file = event.target.files?.[0];
+            const preview = document.getElementById("newsImagePreview");
+            if (!file || !preview) return;
+            preview.src = URL.createObjectURL(file);
+            preview.classList.remove("d-none");
+        });
+    </script>
+}

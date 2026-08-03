@@ -1,0 +1,32 @@
+@model News
+@{
+    ViewData["Title"] = "Xóa tin tức";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Tin tức</a></li>
+        <li class="breadcrumb-item active">Xóa</li>
+    </ol>
+</nav>
+
+<div class="vct-confirm-card">
+    <div class="vct-confirm-card__icon"><i class="bi bi-trash3"></i></div>
+    <div class="vct-page-kicker">Xác nhận thao tác</div>
+    <h1>Xóa tin tức?</h1>
+    <p>Bạn sắp xóa bài viết <strong>“@Model.Title”</strong> và ảnh đi kèm. Hành động này không thể hoàn tác.</p>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        <img class="vct-news-delete-preview" src="@Model.ImageUrl" alt="@Model.Title" />
+    }
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <form asp-action="Delete" asp-route-id="@Model.NewsId" method="post" class="vct-form-actions justify-content-center">
+        <button type="submit" class="vct-btn vct-btn--danger">
+            <i class="bi bi-trash3"></i> Xác nhận xóa
+        </button>
+        <a asp-action="Index" class="vct-btn vct-btn--ghost">Hủy</a>
+    </form>
+</div>

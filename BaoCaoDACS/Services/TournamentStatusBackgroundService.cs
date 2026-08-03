@@ -19,6 +19,19 @@ public sealed class TournamentStatusBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        try
+        {
+            await UpdateTournamentStatusesAsync(stoppingToken);
+        }
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
+            return;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Không thể cập nhật trạng thái giải đấu khi ứng dụng khởi động.");
+        }
+
         while (!stoppingToken.IsCancellationRequested)
         {
             var delay = GetDelayUntilNextRun();

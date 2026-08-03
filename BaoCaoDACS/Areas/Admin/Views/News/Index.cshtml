@@ -1,0 +1,126 @@
+@model IReadOnlyCollection<News>
+@{
+    ViewData["Title"] = "Quản lý tin tức";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+    var now = DateTime.Now;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="TrangQL" asp-action="Index">Trang quản trị</a></li>
+        <li class="breadcrumb-item active">Tin tức</li>
+    </ol>
+</nav>
+
+<header class="mb-4">
+    <div class="vct-page-kicker">Nội dung truyền thông</div>
+    <h1 class="vct-page-title">Quản lý tin tức</h1>
+    <p class="vct-page-subtitle">Tạo, chỉnh sửa, xuất bản và đặt thời hạn hiển thị cho các bài viết.</p>
+</header>
+
+@if (TempData["SuccessMessage"] is string successMessage)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>@successMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+    </div>
+}
+
+<section class="card vct-panel">
+    <div class="card-header vct-panel__header d-flex justify-content-between align-items-center gap-3 flex-wrap">
+        <div>
+            <h2 class="h4 mb-1">Danh sách bài viết</h2>
+            <span class="vct-page-subtitle">@Model.Count bài viết</span>
+        </div>
+        <a asp-action="Create" class="vct-btn vct-btn--gold">
+            <i class="bi bi-plus-lg"></i> Tạo tin mới
+        </a>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="vct-search mb-4">
+            <input type="search" name="search" value="@ViewBag.Search" class="form-control"
+                   placeholder="Tìm theo tiêu đề hoặc mô tả..." />
+            <button class="vct-btn vct-btn--ghost" type="submit">
+                <i class="bi bi-search"></i> Tìm kiếm
+            </button>
+            @if (!string.IsNullOrWhiteSpace(ViewBag.Search))
+            {
+                <a asp-action="Index" class="vct-btn vct-btn--ghost">Xóa lọc</a>
+            }
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Ảnh</th>
+                        <th>Tiêu đề</th>
+                        <th>Ngày đăng</th>
+                        <th>Ngày hết hạn</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            var isExpired = item.ExpiresAt.HasValue && item.ExpiresAt.Value < now;
+                            var isScheduled = item.PublishedAt > now;
+                            var statusClass = !item.IsPublished ? "vct-status--muted"
+                                : isExpired ? "vct-status--danger"
+                                : isScheduled ? "vct-status--warning"
+                                : "vct-status--success";
+                            var statusText = !item.IsPublished ? "Đang ẩn"
+                                : isExpired ? "Hết hạn"
+                                : isScheduled ? "Chờ đăng"
+                                : "Đang hiển thị";
+
+                            <tr>
+                                <td>
+                                    <img class="vct-admin-news-thumb" src="@(item.ImageUrl ?? "/images/anime3.png")" alt="" />
+                                </td>
+                                <td>
+                                    <strong>@item.Title</strong>
+                                    @if (!string.IsNullOrWhiteSpace(item.Summary))
+                                    {
+                                        <small class="vct-admin-news-summary">@item.Summary</small>
+                                    }
+                                </td>
+                                <td>@item.PublishedAt.ToString("HH:mm dd/MM/yyyy")</td>
+                                <td>@(item.ExpiresAt?.ToString("HH:mm dd/MM/yyyy") ?? "Không giới hạn")</td>
+                                <td><span class="vct-status @statusClass">@statusText</span></td>
+                                <td class="text-center">
+                                    <div class="vct-actions">
+                                        <a asp-action="Details" asp-route-id="@item.NewsId" class="vct-icon-btn vct-icon-btn--view" title="Xem">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.NewsId" class="vct-icon-btn vct-icon-btn--edit" title="Chỉnh sửa">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.NewsId" class="vct-icon-btn vct-icon-btn--delete" title="Xóa">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6">
+                                <div class="vct-empty-state vct-empty-state--compact">
+                                    <i class="bi bi-newspaper"></i>
+                                    <p>Chưa có bài viết nào.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

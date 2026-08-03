@@ -1,3 +1,7 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -46,16 +50,16 @@
                     <div class="collapse navbar-collapse" id="navbarMenu">
                         <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
                             <li class="nav-item">
-                                <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                                <a class="nav-link @(currentController == "Home" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#GiaDau">Giải đấu</a>
+                                <a class="nav-link" href="@Url.Action("Index", "Home", new { area = "" })#GiaDau">Giải đấu</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="LichThidau">Lịch thi đấu</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#Ketquamoinhat">Kết quả</a>
+                                <a class="nav-link" href="@Url.Action("Index", "Home", new { area = "" })#Ketquamoinhat">Kết quả</a>
                             </li>
                             <li class="nav-item">
                                 @if (User?.Identity?.IsAuthenticated ?? false)
@@ -69,7 +73,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Tin tức</a>
+                                <a class="nav-link @(currentController == "News" ? "active" : "")" asp-area="" asp-controller="News" asp-action="Index">Tin tức</a>
                             </li>
                         </ul>
                     </div>

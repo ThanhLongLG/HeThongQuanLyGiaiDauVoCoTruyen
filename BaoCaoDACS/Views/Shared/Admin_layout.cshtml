@@ -55,6 +55,7 @@
                 <a class="admin-menu__item @(currentController == "GiaiDau" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="GiaiDau"><i class="fa-solid fa-trophy"></i> Giải đấu</a>
                 <a class="admin-menu__item @(currentController == "TranDau" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="TranDau"><i class="fa-solid fa-people-arrows-left-right"></i> Trận đấu</a>
                 <a class="admin-menu__item @(currentController == "KetQua" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="KetQua"><i class="fa-solid fa-medal"></i> Kết quả</a>
+                <a class="admin-menu__item @(currentController == "News" ? "active" : "")" asp-area="Admin" asp-action="Index" asp-controller="News"><i class="fa-regular fa-newspaper"></i> Tin tức</a>
             </nav>
         </div>
 
@@ -92,6 +93,7 @@
     <!-- Custom JS -->
     <script src="~/js/adminLayout.js"></script>
     <script src="~/js/theme-toggle.js" asp-append-version="true"></script>
+    <script src="~/js/custom-select.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

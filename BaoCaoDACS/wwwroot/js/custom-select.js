@@ -11,7 +11,12 @@
     };
 
     const enhanceSelect = (select) => {
-        if (select.dataset.vctSelectEnhanced === "true") {
+        if (
+            select.dataset.vctSelectEnhanced === "true"
+            || select.dataset.vctSelect === "false"
+            || select.multiple
+            || select.size > 1
+        ) {
             return;
         }
 
@@ -59,6 +64,15 @@
             trigger.setAttribute("aria-expanded", "false");
         };
 
+        const syncState = () => {
+            trigger.disabled = select.disabled;
+            component.classList.toggle("is-disabled", select.disabled);
+
+            if (select.disabled) {
+                close();
+            }
+        };
+
         const open = () => {
             if (select.disabled) {
                 return;
@@ -96,6 +110,7 @@
             });
 
             syncValue();
+            syncState();
         };
 
         trigger.addEventListener("click", () => {
@@ -149,11 +164,16 @@
             open();
             trigger.focus();
         });
+        select.form?.addEventListener("reset", () => {
+            window.requestAnimationFrame(syncValue);
+        });
 
         new MutationObserver(rebuildOptions).observe(select, {
             childList: true,
             subtree: true,
-            characterData: true
+            characterData: true,
+            attributes: true,
+            attributeFilter: ["disabled"]
         });
 
         document.addEventListener("click", (event) => {
@@ -165,13 +185,34 @@
         rebuildOptions();
     };
 
-    const initialize = () => {
-        document.querySelectorAll("select[data-vct-select]").forEach(enhanceSelect);
+    const initialize = (root = document) => {
+        if (root instanceof Element && root.matches("select")) {
+            enhanceSelect(root);
+        }
+
+        root.querySelectorAll?.("select").forEach(enhanceSelect);
+    };
+
+    const start = () => {
+        initialize();
+
+        new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node instanceof Element) {
+                        initialize(node);
+                    }
+                });
+            });
+        }).observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     };
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initialize, { once: true });
+        document.addEventListener("DOMContentLoaded", start, { once: true });
     } else {
-        initialize();
+        start();
     }
 })();

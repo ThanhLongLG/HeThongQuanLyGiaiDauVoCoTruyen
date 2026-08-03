@@ -1,0 +1,107 @@
+@model IReadOnlyCollection<News>
+@{
+    ViewData["Title"] = "Tin tức";
+    var featuredNews = Model.FirstOrDefault();
+    var latestNews = Model.Skip(1).ToList();
+}
+
+<main class="vct-news-shell">
+    <header class="vct-news-masthead">
+        <div class="vct-news-masthead__copy">
+            <div class="vct-page-kicker">VCT Score · Bản tin võ thuật</div>
+            <h1>Nhịp đập<br /><em>Võ Cổ Truyền</em></h1>
+            <p>Những câu chuyện trên võ đài, tin tức giải đấu và dấu ấn của cộng đồng võ thuật Việt Nam.</p>
+        </div>
+
+    </header>
+
+    @if (featuredNews is not null)
+    {
+        <section class="vct-news-featured" aria-labelledby="featured-news-title">
+            <a asp-action="Details" asp-route-id="@featuredNews.NewsId" class="vct-news-featured__image">
+                <img src="@(featuredNews.ImageUrl ?? "/images/anime3.png")" alt="@featuredNews.Title" />
+                <span class="vct-news-featured__number" aria-hidden="true">01</span>
+            </a>
+            <div class="vct-news-featured__body">
+                <div class="vct-news-label">Bài viết nổi bật</div>
+                <div class="vct-news-meta">
+                    <i class="bi bi-calendar3" aria-hidden="true"></i>
+                    <time datetime="@featuredNews.PublishedAt.ToString("yyyy-MM-dd")">
+                        @featuredNews.PublishedAt.ToString("dd.MM.yyyy")
+                    </time>
+                </div>
+                <h2 id="featured-news-title">
+                    <a asp-action="Details" asp-route-id="@featuredNews.NewsId">@featuredNews.Title</a>
+                </h2>
+                @if (!string.IsNullOrWhiteSpace(featuredNews.Summary))
+                {
+                    <p>@featuredNews.Summary</p>
+                }
+                <a asp-action="Details" asp-route-id="@featuredNews.NewsId" class="vct-news-read">
+                    Đọc toàn bộ câu chuyện <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </section>
+
+        @if (latestNews.Count > 0)
+        {
+            <section class="vct-news-latest" aria-labelledby="latest-news-title">
+                <div class="vct-news-section-heading">
+                    <div>
+                        <span>Tin mới</span>
+                        <h2 id="latest-news-title">Mới cập nhật</h2>
+                    </div>
+                    <span class="vct-news-section-heading__count">@latestNews.Count.ToString("D2") bài viết</span>
+                </div>
+
+                <div class="vct-news-grid">
+                    @for (var index = 0; index < latestNews.Count; index++)
+                    {
+                        var item = latestNews[index];
+                        <article class="vct-news-card">
+                            <a asp-action="Details" asp-route-id="@item.NewsId" class="vct-news-card__image">
+                                <img src="@(item.ImageUrl ?? "/images/anime3.png")" alt="@item.Title" loading="lazy" />
+                                <span>@((index + 2).ToString("D2"))</span>
+                            </a>
+                            <div class="vct-news-card__body">
+                                <div class="vct-news-meta">
+                                    <time datetime="@item.PublishedAt.ToString("yyyy-MM-dd")">
+                                        @item.PublishedAt.ToString("dd.MM.yyyy")
+                                    </time>
+                                </div>
+                                <h3>
+                                    <a asp-action="Details" asp-route-id="@item.NewsId">@item.Title</a>
+                                </h3>
+                                @if (!string.IsNullOrWhiteSpace(item.Summary))
+                                {
+                                    <p>@item.Summary</p>
+                                }
+                                <a asp-action="Details" asp-route-id="@item.NewsId" class="vct-news-card__link"
+                                   aria-label="Đọc bài viết @item.Title">
+                                    Đọc tiếp <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </section>
+        }
+    }
+    else
+    {
+        <section class="vct-empty-state">
+            <span class="vct-empty-state__mark">V</span>
+            <div>
+                <p class="vct-news-label">Bảng tin VCT Score</p>
+                <h2>Chưa có tin tức phù hợp</h2>
+                <p>Hãy quay lại sau để xem những cập nhật mới nhất từ cộng đồng võ thuật.</p>
+                @if (!string.IsNullOrWhiteSpace(ViewBag.Search))
+                {
+                    <a asp-action="Index" class="vct-news-read">
+                        Xóa tìm kiếm <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </a>
+                }
+            </div>
+        </section>
+    }
+</main>

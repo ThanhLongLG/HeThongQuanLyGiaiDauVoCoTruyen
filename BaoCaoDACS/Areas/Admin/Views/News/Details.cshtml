@@ -1,0 +1,48 @@
+@model News
+@{
+    ViewData["Title"] = "Chi tiết tin tức";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Tin tức</a></li>
+        <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+</nav>
+
+<header class="mb-4 d-flex justify-content-between align-items-start gap-3 flex-wrap">
+    <div>
+        <div class="vct-page-kicker">Xem bài viết</div>
+        <h1 class="vct-page-title">@Model.Title</h1>
+    </div>
+    <div class="vct-actions">
+        <a asp-action="Edit" asp-route-id="@Model.NewsId" class="vct-btn vct-btn--gold">
+            <i class="bi bi-pencil"></i> Chỉnh sửa
+        </a>
+        <a asp-action="Index" class="vct-btn vct-btn--ghost">Quay lại</a>
+    </div>
+</header>
+
+<article class="card vct-panel vct-admin-news-detail">
+    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        <img class="vct-admin-news-detail__image" src="@Model.ImageUrl" alt="@Model.Title" />
+    }
+    <div class="card-body p-4">
+        <dl class="row vct-news-properties">
+            <dt class="col-sm-3">Ngày đăng</dt>
+            <dd class="col-sm-9">@Model.PublishedAt.ToString("HH:mm, dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">Ngày hết hạn</dt>
+            <dd class="col-sm-9">@(Model.ExpiresAt?.ToString("HH:mm, dd/MM/yyyy") ?? "Không giới hạn")</dd>
+            <dt class="col-sm-3">Công khai</dt>
+            <dd class="col-sm-9">@(Model.IsPublished ? "Có" : "Không")</dd>
+        </dl>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Summary))
+        {
+            <p class="vct-news-detail__lead">@Model.Summary</p>
+        }
+        <div class="vct-news-detail__content">@Model.Content</div>
+    </div>
+</article>

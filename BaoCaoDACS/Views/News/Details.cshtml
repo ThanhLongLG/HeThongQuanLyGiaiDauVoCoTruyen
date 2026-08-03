@@ -1,0 +1,47 @@
+@model News
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<main class="vct-news-detail">
+    <a asp-action="Index" class="vct-news-back">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i> Quay lại danh sách tin
+    </a>
+
+    <article class="vct-news-article">
+        <header class="vct-news-detail__header">
+            <div class="vct-news-detail__eyebrow">
+                <span>Bản tin cổ truyền</span>
+                <span aria-hidden="true"></span>
+                <span>VCT Score</span>
+            </div>
+            <h1>@Model.Title</h1>
+            <div class="vct-news-meta">
+                <i class="bi bi-calendar3" aria-hidden="true"></i>
+                <time datetime="@Model.PublishedAt.ToString("s")">
+                    Đăng lúc @Model.PublishedAt.ToString("HH:mm, dd/MM/yyyy")
+                </time>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(Model.Summary))
+            {
+                <p class="vct-news-detail__lead">@Model.Summary</p>
+            }
+        </header>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <figure class="vct-news-detail__figure">
+                <img class="vct-news-detail__image" src="@Model.ImageUrl" alt="@Model.Title" />
+                <span class="vct-news-detail__seal" aria-hidden="true">V</span>
+            </figure>
+        }
+
+        <div class="vct-news-detail__content">
+            <p>@Model.Content</p>
+        </div>
+
+        <footer class="vct-news-detail__footer" aria-hidden="true">
+            <span></span><i></i><span></span>
+        </footer>
+    </article>
+</main>
